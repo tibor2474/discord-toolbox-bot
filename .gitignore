@@ -1,2 +1,11 @@
 .replit
 replit.nix
+
+poetry.lock
+pyroject.toml
+
+__pycache__/
+.pythonlibs/
+.upm/
+
+.env
