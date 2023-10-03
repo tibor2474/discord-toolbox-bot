@@ -33,8 +33,32 @@ class members(commands.Cog):
 
 
     @member.command()
-    async def guild_avatar(self, ctx):
-        await ctx.respond(f"guild_avatar")
+    async def guild_avatar(self, ctx: commands.Context, member: discord.Member) -> None:
+        if member.guild_avatar != None:
+            png = member.guild_avatar.with_format("png")
+            jpg = member.guild_avatar.with_format("jpg")
+            webp = member.guild_avatar.with_format("webp")
+
+            try:
+                gif = member.guild_avatar.with_format("gif")
+            except:
+                gif = None
+
+            embed = discord.Embed(
+                description=f"[PNG]({png}) " f"[JPG]({jpg}) " f"[WEBP]({webp})" f" [GIF]({gif})"
+                if gif
+                else f"[PNG]({png}) -" f" [JPG]({jpg}) -" f" [WEBP]({webp})",
+                color=bot_color)
+
+            embed.set_author(name=f"{member.display_name}'s avatar", icon_url=image_icon)
+            embed.set_image(url=member.guild_avatar)
+            await ctx.respond(embed=embed)
+        
+        else:
+            embed = discord.Embed(color=bot_color)
+            embed.set_author(name=f"{member.display_name} doesn't have a guild avatar", icon_url=image_icon)
+            await ctx.respond(embed=embed)
+
 
     @member.command()
     async def banner(self, ctx):
