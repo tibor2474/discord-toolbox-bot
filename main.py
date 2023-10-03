@@ -3,7 +3,11 @@ import os
 from discord.ext import commands
 from config import bot_token, bot_time
 
+# set intents
 intents = discord.Intents.default()
+intents.members = True
+intents.presences = True
+
 bot = commands.Bot(intents=intents, help_command=None)
 
 # load commands
