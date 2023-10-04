@@ -9,7 +9,7 @@ class info(commands.Cog):
 
     info = discord.SlashCommandGroup("info", hidden=False)
     
-    @info.command()
+    @info.command(name="member", description="Show info about someone")
     @discord.option("member", discord.Member, description="Select someone", required=True)
     async def member(self, ctx: commands.Context, member: discord.Member) -> None:
         creation_time = int(member.created_at.timestamp())
@@ -40,7 +40,7 @@ class info(commands.Cog):
         await ctx.respond(embed=embed)
     
 
-    @info.command()
+    @info.command(name="server", description="Show info about this server")
     async def server(self, ctx: commands.Context) -> None:
         guild = ctx.guild
         user_count = len([m for m in guild.members if not m.bot])
@@ -101,12 +101,7 @@ class info(commands.Cog):
         await ctx.respond(embed=embed)
 
 
-    @info.command()
-    async def channel(self, ctx):
-        await ctx.respond(f"channel")
-
-
-    @info.command()
+    @info.command(name="role", description="Show info about a role")
     @discord.option("role", discord.Role, description="Select a role", required=True)
     async def role(self, ctx: commands.Context, role: discord.Role):
         creation_time = int(role.created_at.timestamp())
