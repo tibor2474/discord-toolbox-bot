@@ -33,9 +33,7 @@ class server(commands.Cog):
             await ctx.respond(embed=embed)
         
         else:
-            embed = discord.Embed(color=bot_color)
-            embed.set_author(name=f"This server doesn't have an icon", icon_url=image_icon)
-            await ctx.respond(embed=embed)
+            await ctx.respond(f"This server doesn't have an icon")
 
 
     @server.command()
@@ -56,9 +54,7 @@ class server(commands.Cog):
             await ctx.respond(embed=embed)
 
         else:
-            embed = discord.Embed(color=bot_color)
-            embed.set_author(name=f"This server doesn't have a banner", icon_url=image_icon)
-            await ctx.respond(embed=embed)
+            await ctx.respond(f"This server doesn't have a banner")
 
 
     @server.command()
@@ -78,9 +74,7 @@ class server(commands.Cog):
             await ctx.respond(embed=embed)
 
         else:
-            embed = discord.Embed(color=bot_color)
-            embed.set_author(name=f"This server doesn't have an invite background", icon_url=image_icon)
-            await ctx.respond(embed=embed)
+            await ctx.respond(f"This server doesn't have an invite background")
 
 
 

@@ -55,9 +55,7 @@ class members(commands.Cog):
             await ctx.respond(embed=embed)
         
         else:
-            embed = discord.Embed(color=bot_color)
-            embed.set_author(name=f"{member.display_name} doesn't have a server avatar", icon_url=image_icon)
-            await ctx.respond(embed=embed)
+            await ctx.respond(f"{member.display_name} doesn't have a server avatar")
 
 
     @member.command(name="banner", description="Show someones banner (if they have one)")
@@ -68,10 +66,9 @@ class members(commands.Cog):
         if member.banner != None:
             embed.set_author(name=f"{member.name}'s banner", icon_url=member_icon)
             embed.set_image(url=member.banner)
+            await ctx.respond(embed=embed)
         else:
-            embed.set_author(name=f"{member.name} doesn't have a banner", icon_url=image_icon)
-
-        await ctx.respond(embed=embed)
+            await ctx.respond(f"{member.name} doesn't have a banner")
 
 
 
