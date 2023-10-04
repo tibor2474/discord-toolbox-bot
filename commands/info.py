@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from config import bot_color, member_icon, server_icon
+from config import bot_color, member_icon, server_icon, role_icon
 
 class info(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
@@ -10,6 +10,7 @@ class info(commands.Cog):
     info = discord.SlashCommandGroup("info", hidden=False)
     
     @info.command()
+    @discord.option("member", discord.Member, description="Select someone", required=True)
     async def member(self, ctx: commands.Context, member: discord.Member) -> None:
         creation_time = int(member.created_at.timestamp())
         join_time = int(member.joined_at.timestamp())
@@ -28,7 +29,7 @@ class info(commands.Cog):
         if member.activity != None:
             embed.add_field(name="Activity", value=member.activity, inline=False)
         else:
-            embed.add_field(name="Activity", value="None or hidden", inline=False)
+            embed.add_field(name="Activity", value="*None/hidden or offline*", inline=False)
 
         embed.add_field(name="Bot", value=member.bot, inline=True)
         embed.add_field(name="Status", value=member.status, inline=True)
@@ -104,9 +105,33 @@ class info(commands.Cog):
     async def channel(self, ctx):
         await ctx.respond(f"channel")
 
+
     @info.command()
-    async def role(self, ctx):
-       await ctx.respond(f"role")
+    @discord.option("role", discord.Role, description="Select a role", required=True)
+    async def role(self, ctx: commands.Context, role: discord.Role):
+        creation_time = int(role.created_at.timestamp())
+
+        embed = discord.Embed(color=bot_color)
+        embed.set_author(name="Role info", icon_url=role_icon)
+        embed.add_field(name="Role name", value=role.name, inline=False)
+
+        if role.icon != None:
+            embed.set_thumbnail(url=role.icon)
+        elif role.unicode_emoji != None:
+            embed.add_field(name="Emoji", value=role.unicode_emoji, inline=True)
+            
+        embed.add_field(name="Color", value=role.color, inline=True)
+        embed.add_field(name="Mentionable", value=role.mentionable, inline=True)
+        embed.add_field(name="Managed by intergration", value=role.managed, inline=True)
+        
+        embed.add_field(name="Assigned to", value=f'{len(role.members)} members', inline=True)
+        embed.add_field(name="Position", value=role.position, inline=True)
+
+        embed.add_field(name="Displayed separately", value=role.hoist, inline=True)
+        embed.add_field(name="Created", value=f"<t:{creation_time}:R>", inline=True)
+        embed.add_field(name="Role ID", value=f"||{role.id}||", inline=True)
+
+        await ctx.respond(embed=embed)
 
 
 
