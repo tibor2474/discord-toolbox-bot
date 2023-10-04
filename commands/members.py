@@ -61,8 +61,17 @@ class members(commands.Cog):
 
 
     @member.command()
-    async def banner(self, ctx):
-        await ctx.respond(f"banner")
+    @discord.option("member", discord.Member, description="Select a user", required=True)
+    async def banner(self, ctx: commands.Context, member: discord.Member) -> None:
+        embed = discord.Embed(color=bot_color)
+
+        if member.banner != None:
+            embed.set_author(name=f"{member.name}'s banner", icon_url=member_icon)
+            embed.set_image(url=member.banner)
+        else:
+            embed.set_author(name=f"{member.name} doesn't have a banner", icon_url=image_icon)
+
+        await ctx.respond(embed=embed)
 
 
 
