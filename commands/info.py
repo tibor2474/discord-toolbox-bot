@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from config import bot_color, member_icon
+from config import bot_color, member_icon, server_icon
 
 class info(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
@@ -40,8 +40,65 @@ class info(commands.Cog):
     
 
     @info.command()
-    async def server(self, ctx):
-        await ctx.respond(f"server")
+    async def server(self, ctx: commands.Context) -> None:
+        guild = ctx.guild
+        user_count = len([m for m in guild.members if not m.bot])
+        bot_count = len([b for b in guild.members if b.bot])
+        category_count = len(guild.categories)
+        text_count = len(guild.text_channels)
+        voice_count = len(guild.voice_channels)
+        forum_count = len(guild.forum_channels)
+        stage_count = len(guild.stage_channels)
+        guild_date = int(guild.created_at.timestamp())
+        file_limit = guild.filesize_limit / 1048576 # covert byte to megabyte
+        afk_timeout = guild.afk_timeout / 60
+
+        if guild.mfa_level == 0:
+            mfa_level = "None"
+        elif guild.mfa_level == 1:
+            mfa_level = "Low"
+        elif guild.mfa_level == 2:
+            mfa_level = "Medium"
+        elif guild.mfa_level == 3:
+            mfa_level = "High"
+        elif guild.mfa_level == 4:
+            mfa_level = "Very High"
+
+        if guild.afk_channel == None:
+            afk_channel = "Not set"
+        else:
+            afk_channel = guild.afk_channel.mention
+
+        if guild.description != None:
+            embed = discord.Embed(description="**Server description**\n" + guild.description, color=bot_color)
+        else:
+            embed = discord.Embed(color=bot_color)
+        
+        embed.set_author(name="Server info", icon_url=server_icon)
+        embed.add_field(name="Name", value=f"{guild.name}", inline=False)
+
+        embed.add_field(name="Owner", value=f"@{guild.owner.name}", inline=True) # guild.owner shows username#0 so used guild.owner.name as a workaround
+        embed.add_field(name="Region", value=f"{guild.preferred_locale}", inline=True)
+        embed.add_field(name="Verification level", value=f"{mfa_level}", inline=True)
+
+        embed.add_field(name="Server boosts", value=f"{guild.premium_subscription_count} boosts\n{len(guild.premium_subscribers)} booster", inline=True)
+        embed.add_field(name="AFK channel", value=f"{afk_channel}\n{afk_timeout} min timeout", inline=True)
+        embed.add_field(name="Emojis and stickers", value=f"{len(guild.emojis)} emojis\n{len(guild.stickers)} stickers")
+        
+        embed.add_field(name="Channels", value=f"{category_count} categories\n{text_count} text\n{voice_count} voice\n{forum_count} forum\n{stage_count} stage", inline=True)
+        embed.add_field(name="Limits", value=f"{file_limit} MB files\n{guild.sticker_limit} stickers\n{guild.emoji_limit} emojis\n{guild.max_members} users", inline=True)
+        embed.add_field(name="Members", value=f"{user_count} users\n{bot_count} bots", inline=True)
+
+        embed.add_field(name="Roles", value=f"{len(guild.roles)} roles", inline=True)
+        embed.add_field(name="Created", value=f"<t:{guild_date}:R>", inline=True)
+        
+        embed.add_field(name="Server ID", value=f"||{guild.id}||", inline=False)
+        
+        if guild.icon != None:
+            embed.set_thumbnail(url=guild.icon)
+
+        await ctx.respond(embed=embed)
+
 
     @info.command()
     async def channel(self, ctx):
