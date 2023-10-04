@@ -9,8 +9,8 @@ class server(commands.Cog):
 
     server = discord.SlashCommandGroup("server", hidden=False)
 
-    @server.command()
-    async def icon(self, ctx: commands.Context) -> None:
+    @server.command(name="icon", description="Show server icon")
+    async def guild_icon(self, ctx: commands.Context) -> None:
         guild = ctx.guild
         if guild.icon != None:
             png = guild.icon.with_format("png")
@@ -36,8 +36,8 @@ class server(commands.Cog):
             await ctx.respond(f"This server doesn't have an icon")
 
 
-    @server.command()
-    async def banner(self, ctx: commands.Context) -> None:
+    @server.command(name="banner", description="Show server banner image")
+    async def guild_banner(self, ctx: commands.Context) -> None:
         guild = ctx.guild
         if guild.banner != None:
             png = guild.banner.with_format("png")
@@ -57,8 +57,8 @@ class server(commands.Cog):
             await ctx.respond(f"This server doesn't have a banner")
 
 
-    @server.command()
-    async def invite_background(self, ctx: commands.Context) -> None:
+    @server.command(name="invite_background", description="Show server invite background")
+    async def guild_invite_background(self, ctx: commands.Context) -> None:
         guild = ctx.guild
         if guild.splash != None:
             png = guild.splash.with_format("png")
