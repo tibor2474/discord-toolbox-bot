@@ -9,9 +9,9 @@ class members(commands.Cog):
 
     member = discord.SlashCommandGroup("member", hidden=False)
     
-    @member.command()
+    @member.command(name="avatar", description="Show someones avatar")
     @discord.option("member", discord.Member, description="Select a user", required=True)
-    async def avatar(self, ctx: commands.Context, member: discord.Member) -> None:
+    async def member_avatar(self, ctx: commands.Context, member: discord.Member) -> None:
         png = member.avatar.with_format("png")
         jpg = member.avatar.with_format("jpg")
         webp = member.avatar.with_format("webp")
@@ -32,8 +32,8 @@ class members(commands.Cog):
         await ctx.respond(embed=embed)
 
 
-    @member.command()
-    async def guild_avatar(self, ctx: commands.Context, member: discord.Member) -> None:
+    @member.command(name="guild_avatar", description="Show someones server avatar")
+    async def member_guild_avatar(self, ctx: commands.Context, member: discord.Member) -> None:
         if member.guild_avatar != None:
             png = member.guild_avatar.with_format("png")
             jpg = member.guild_avatar.with_format("jpg")
@@ -50,19 +50,19 @@ class members(commands.Cog):
                 else f"[PNG]({png}) -" f" [JPG]({jpg}) -" f" [WEBP]({webp})",
                 color=bot_color)
 
-            embed.set_author(name=f"{member.display_name}'s avatar", icon_url=image_icon)
+            embed.set_author(name=f"{member.display_name}'s server avatar", icon_url=image_icon)
             embed.set_image(url=member.guild_avatar)
             await ctx.respond(embed=embed)
         
         else:
             embed = discord.Embed(color=bot_color)
-            embed.set_author(name=f"{member.display_name} doesn't have a guild avatar", icon_url=image_icon)
+            embed.set_author(name=f"{member.display_name} doesn't have a server avatar", icon_url=image_icon)
             await ctx.respond(embed=embed)
 
 
-    @member.command()
+    @member.command(name="banner", description="Show someones banner (if they have one)")
     @discord.option("member", discord.Member, description="Select a user", required=True)
-    async def banner(self, ctx: commands.Context, member: discord.Member) -> None:
+    async def member_banner(self, ctx: commands.Context, member: discord.Member) -> None:
         embed = discord.Embed(color=bot_color)
 
         if member.banner != None:
