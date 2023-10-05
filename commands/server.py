@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from config import bot_color, image_icon
+from config import bot_color, image_icon, emoji_icon
 
 class server(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
@@ -76,6 +76,16 @@ class server(commands.Cog):
         else:
             await ctx.respond(f"This server doesn't have an invite background")
 
+
+    @server.command(name="emojis", description="Show server emojis")
+    async def guild_emojis(self, ctx: commands.Context) -> None:
+        guild = ctx.guild
+        emojis = [str(x) for x in guild.emojis]
+
+        embed = discord.Embed(color=bot_color, description=" ".join(emojis))
+        embed.set_author(name="Server emojis", icon_url=emoji_icon)
+        embed.set_footer(text=f"{len(emojis)} emojis total")
+        await ctx.respond(embed=embed)
 
 
 def setup(bot: commands.Bot) -> None:
