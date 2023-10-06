@@ -13,11 +13,11 @@ bot = commands.Bot(intents=intents, help_command=None)
 # load commands
 for f in os.listdir("./commands"):
     if f.endswith(".py"):
-        try:
+        #try:
             bot.load_extension("commands." + f[:-3])
-        except Exception as error:
-            print((discord.utils.utcnow().strftime(f"[{bot_time}]")), f"ERROR {f} could not be loaded: {error}")
-        else:
+        #except Exception as error:
+            #print((discord.utils.utcnow().strftime(f"[{bot_time}]")), f"ERROR {f} could not be loaded: {error}")
+        #else:
             print((discord.utils.utcnow().strftime(f"[{bot_time}]")),f"Loaded {f}")
 
 # sync commands
@@ -42,14 +42,18 @@ bot.run(bot_token)
 
 
 # TODO:
-# view server stats (count of users/bots, emojis, etc)
-# user stats
-# view emojis/stickers
-# user images in different formats
-# server logo and banner in different formats
-# set custom slowmode for channels
-# create/delete webhooks
-# set name and pfp for webhooks
-# convert colors (ex. hex to rgb)
+# view server stats (count of users/bots, emojis, etc) - done
+# user stats - done
+# view emojis/stickers - almost done
+# user images in different formats - done
+# server logo and banner in different formats - done
+# set custom slowmode for channels - done
+# create/delete webhooks - skipped
+# set name and pfp for webhooks - skipped
+# convert colors (ex. hex to rgb) - skipped, kinda pointless
 # set permissions for roles
 # set permissions for channels
+# show permissions for a role - done
+# add a help command
+# purge messages from a specific member
+# configure vc channel user limit - done
