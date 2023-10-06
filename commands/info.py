@@ -11,7 +11,7 @@ class info(commands.Cog):
     
     @info.command(name="member", description="Show info about someone")
     @discord.option("member", discord.Member, description="Select someone", required=True)
-    async def member(self, ctx: commands.Context, member: discord.Member) -> None:
+    async def info_member(self, ctx: commands.Context, member: discord.Member) -> None:
         creation_time = int(member.created_at.timestamp())
         join_time = int(member.joined_at.timestamp())
     
@@ -41,7 +41,7 @@ class info(commands.Cog):
     
 
     @info.command(name="server", description="Show info about this server")
-    async def server(self, ctx: commands.Context) -> None:
+    async def info_server(self, ctx: commands.Context) -> None:
         guild = ctx.guild
         user_count = len([m for m in guild.members if not m.bot])
         bot_count = len([b for b in guild.members if b.bot])
@@ -103,7 +103,7 @@ class info(commands.Cog):
 
     @info.command(name="role", description="Show info about a role")
     @discord.option("role", discord.Role, description="Select a role", required=True)
-    async def role(self, ctx: commands.Context, role: discord.Role):
+    async def info_role(self, ctx: commands.Context, role: discord.Role):
         creation_time = int(role.created_at.timestamp())
 
         embed = discord.Embed(color=bot_color)
