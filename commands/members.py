@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from config import bot_color, image_icon
+from config import bot_color, image_icon, member_icon
 
 class members(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
@@ -69,6 +69,18 @@ class members(commands.Cog):
             await ctx.respond(embed=embed)
         else:
             await ctx.respond(f"{member.name} doesn't have a banner")
+
+
+    @member.command(name="permissions", description="Show permissions for a member")
+    async def memberperms(self, ctx: commands.Context, member: discord.Member) -> None:
+        permissions = ', '.join([str(perm[0]).replace("_", " ") for perm in member.guild_permissions if perm[1]])
+
+        if permissions == "":
+            permissions = "*There are no permissions for this member*"
+
+        embed = discord.Embed(color=bot_color, description=permissions)
+        embed.set_author(name=f"Permissions for {member.name}", icon_url=member_icon)
+        await ctx.respond(embed=embed)
 
 
 
