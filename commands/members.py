@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from typing import Union
 from config import bot_color, image_icon, member_icon
 
 class members(commands.Cog):
@@ -72,7 +73,7 @@ class members(commands.Cog):
 
 
     @member.command(name="permissions", description="Show permissions for a member")
-    async def memberperms(self, ctx: commands.Context, member: discord.Member) -> None:
+    async def member_perms(self, ctx: commands.Context, member: discord.Member) -> None:
         permissions = ', '.join([str(perm[0]).replace("_", " ") for perm in member.guild_permissions if perm[1]])
 
         if permissions == "":
@@ -81,6 +82,17 @@ class members(commands.Cog):
         embed = discord.Embed(color=bot_color, description=permissions)
         embed.set_author(name=f"Permissions for {member.name}", icon_url=member_icon)
         await ctx.respond(embed=embed)
+
+
+    @member.command(name="voice_channel", description="Move member to a different voice channel")
+    @discord.option("member", discord.Member, description="Select a member", required=True)
+    @discord.option("channel", Union[discord.VoiceChannel, discord.StageChannel], description="Select a channel", required=True)
+    async def member_move(self, ctx: commands.Context, member: discord.Member, channel: Union[discord.VoiceChannel, discord.StageChannel]) -> None:
+        if member.voice is None:
+            await ctx.respond(f"{member.mention} is not in a voice channel", ephemeral=True)
+        else:
+            await member.move_to(channel, reason=f"command executed by @{ctx.author.name}")
+            await ctx.respond(f"Moved {member.mention} to {channel.mention}", ephemeral=True)
 
 
 
