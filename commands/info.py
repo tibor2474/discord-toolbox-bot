@@ -7,7 +7,7 @@ class info(commands.Cog):
         self.bot = bot
 
 
-    info = discord.SlashCommandGroup("info", "Get info", hidden=False, default_member_permissions=discord.Permissions(kick_members=True, manage_roles=True))
+    info = discord.SlashCommandGroup("info", "Get info", hidden=False, guild_only=True, default_member_permissions=discord.Permissions(kick_members=True, manage_roles=True))
     
     @info.command(name="member", description="Show info about someone")
     @discord.option("member", discord.Member, description="Select someone", required=True)

@@ -7,7 +7,7 @@ class permission(commands.Cog):
         self.bot = bot
 
 
-    permission = discord.SlashCommandGroup("permission", "Modify permissions", hidden=False, default_member_permissions=discord.Permissions(manage_roles=True))
+    permission = discord.SlashCommandGroup("permission", "Modify permissions", hidden=False, guild_only=True, default_member_permissions=discord.Permissions(manage_roles=True))
     show = permission.create_subgroup("show", "Show permissions")
 
     @show.command(name="member", description="Show permissions for a member")

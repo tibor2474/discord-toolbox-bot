@@ -8,7 +8,7 @@ class members(commands.Cog):
         self.bot = bot
 
 
-    member = discord.SlashCommandGroup("member", "Commands for member things", hidden=False, default_member_permissions=discord.Permissions(kick_members=True, move_members=True))
+    member = discord.SlashCommandGroup("member", "Commands for member things", hidden=False, guild_only=True, default_member_permissions=discord.Permissions(kick_members=True, move_members=True))
     
     @member.command(name="avatar", description="Show someones avatar")
     @discord.option("member", discord.Member, description="Select a user", required=True)
