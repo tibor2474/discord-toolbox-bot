@@ -44,7 +44,7 @@ bot.run(bot_token)
 # TODO:
 # view server stats (count of users/bots, emojis, etc) - done
 # user stats - done
-# view emojis/stickers - almost done
+# view emojis/stickers - done (skipped stickers)
 # user images in different formats - done
 # server logo and banner in different formats - done
 # set custom slowmode for channels - done
@@ -57,4 +57,5 @@ bot.run(bot_token)
 # add a help command
 # purge messages from a specific member
 # configure vc channel user limit - done
-# change regian for voice channel
+# change regian for voice channel - done
+# change server verification level
