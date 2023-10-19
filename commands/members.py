@@ -72,7 +72,7 @@ class members(commands.Cog):
             await ctx.respond(f"{member.name} doesn't have a banner")
 
 
-    @member.command(name="permissions", description="Show permissions for a member")
+    @member.command(name="show_permissions", description="Show permissions for a member")
     async def member_perms(self, ctx: commands.Context, member: discord.Member) -> None:
         permissions = ', '.join([str(perm[0]).replace("_", " ") for perm in member.guild_permissions if perm[1]])
 

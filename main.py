@@ -57,3 +57,4 @@ bot.run(bot_token)
 # add a help command
 # purge messages from a specific member
 # configure vc channel user limit - done
+# change regian for voice channel
