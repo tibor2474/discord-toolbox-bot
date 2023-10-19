@@ -72,18 +72,6 @@ class members(commands.Cog):
             await ctx.respond(f"{member.name} doesn't have a banner")
 
 
-    @member.command(name="show_permissions", description="Show permissions for a member")
-    async def member_perms(self, ctx: commands.Context, member: discord.Member) -> None:
-        permissions = ', '.join([str(perm[0]).replace("_", " ") for perm in member.guild_permissions if perm[1]])
-
-        if permissions == "":
-            permissions = "*There are no permissions for this member*"
-
-        embed = discord.Embed(color=bot_color, description=permissions)
-        embed.set_author(name=f"Permissions for {member.name}", icon_url=member_icon)
-        await ctx.respond(embed=embed)
-
-
     @member.command(name="voice_channel", description="Move member to a different voice channel")
     @discord.option("member", discord.Member, description="Select a member", required=True)
     @discord.option("channel", Union[discord.VoiceChannel, discord.StageChannel], description="Select a channel", required=True)
