@@ -117,7 +117,7 @@ class info(commands.Cog):
             
         embed.add_field(name="Color", value=role.color, inline=True)
         embed.add_field(name="Mentionable", value=role.mentionable, inline=True)
-        embed.add_field(name="Managed by intergration", value=role.managed, inline=True)
+        embed.add_field(name="Managed by integration", value=role.managed, inline=True)
         
         embed.add_field(name="Assigned to", value=f'{len(role.members)} members', inline=True)
         embed.add_field(name="Position", value=role.position, inline=True)
