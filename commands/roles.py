@@ -7,7 +7,7 @@ class roles(commands.Cog):
         self.bot = bot
 
     
-    #role = discord.SlashCommandGroup("role", hidden=False, default_member_permissions=discord.Permissions(manage_roles=True))
+    #role = discord.SlashCommandGroup("role", "Role commands", hidden=False, default_member_permissions=discord.Permissions(manage_roles=True))
 
 
 def setup(bot: commands.Bot) -> None:

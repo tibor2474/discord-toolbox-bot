@@ -8,7 +8,7 @@ class channel(commands.Cog):
         self.bot = bot
 
 
-    channel = discord.SlashCommandGroup("channel", hidden=False, default_member_permissions=discord.Permissions(manage_channels=True))
+    channel = discord.SlashCommandGroup("channel", "Change channel settings", hidden=False, default_member_permissions=discord.Permissions(manage_channels=True))
 
     @channel.command(name="slowmode", description="Set custom slowmode for a channel")
     @discord.option("channel", Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel], description="Select a channel", required=True)
