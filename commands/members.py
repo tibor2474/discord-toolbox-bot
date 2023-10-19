@@ -8,7 +8,7 @@ class members(commands.Cog):
         self.bot = bot
 
 
-    member = discord.SlashCommandGroup("member", hidden=False)
+    member = discord.SlashCommandGroup("member", hidden=False, default_member_permissions=discord.Permissions(kick_members=True, move_members=True))
     
     @member.command(name="avatar", description="Show someones avatar")
     @discord.option("member", discord.Member, description="Select a user", required=True)
@@ -72,7 +72,7 @@ class members(commands.Cog):
             await ctx.respond(f"{member.name} doesn't have a banner")
 
 
-    @member.command(name="voice_channel", description="Move member to a different voice channel")
+    @member.command(name="move", description="Move member to a different voice channel")
     @discord.option("member", discord.Member, description="Select a member", required=True)
     @discord.option("channel", Union[discord.VoiceChannel, discord.StageChannel], description="Select a channel", required=True)
     async def member_move(self, ctx: commands.Context, member: discord.Member, channel: Union[discord.VoiceChannel, discord.StageChannel]) -> None:

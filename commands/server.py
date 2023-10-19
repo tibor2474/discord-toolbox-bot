@@ -7,7 +7,7 @@ class server(commands.Cog):
         self.bot = bot
 
 
-    server = discord.SlashCommandGroup("server", hidden=False)
+    server = discord.SlashCommandGroup("server", hidden=False, default_member_permissions=discord.Permissions(kick_members=True, manage_roles=True))
 
     @server.command(name="icon", description="Show server icon")
     async def guild_icon(self, ctx: commands.Context) -> None:
