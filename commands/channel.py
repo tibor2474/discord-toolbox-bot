@@ -42,6 +42,42 @@ class channel(commands.Cog):
         await ctx.respond(f"Changed user limit for {channel.mention} to {limit} members")
 
 
+    @channel.command(name="region", description="Change region for a voice channel")
+    @discord.option("channel", Union[discord.StageChannel, discord.VoiceChannel], description="Select a channel", required=True)
+    @discord.option("region", str, description="Select a region", required=True, choices=[
+        "Automatic",
+        "Brazil",
+        "Hong Kong",
+        "India",
+        "Japan",
+        "Rotterdam",
+        "Russia",
+        "Singapore",
+        "South Africa",
+        "Sydney",
+        "US Central",
+        "US East",
+        "US South",
+        "US West"
+    ])
+    async def channel_region(self, ctx: commands.Context, channel: Union[discord.StageChannel, discord.VoiceChannel], region: str) -> None:
+        global set_region
+        if region == "Automatic":
+            set_region = None
+        elif region == "Hong Kong":
+            set_region = "hongkong"
+        elif region == "South Africa":
+            set_region = "southafrica"
+        else:
+            set_region = region.lower().replace(" ", "_")
+
+        try:
+            await channel.edit(rtc_region=set_region, reason=f"command executed by @{ctx.author.name}")
+            await ctx.respond(f"Changed region to {region} for {channel.mention}")
+        except:
+            await ctx.respond(f"Failed to change region for {channel.mention}")
+
+
 
 def setup(bot: commands.Bot) -> None:
       bot.add_cog(channel(bot))
