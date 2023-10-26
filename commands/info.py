@@ -37,7 +37,7 @@ class info(commands.Cog):
         
         embed.add_field(name="Account created", value=f"<t:{creation_time}:R>", inline=True)
         embed.add_field(name="Joined server", value=f"<t:{join_time}:R>", inline=True)
-        await ctx.respond(embed=embed)
+        await ctx.respond(embed=embed, ephemeral=True)
     
 
     @info.command(name="server", description="Show info about this server")
@@ -98,7 +98,7 @@ class info(commands.Cog):
         if guild.icon != None:
             embed.set_thumbnail(url=guild.icon)
 
-        await ctx.respond(embed=embed)
+        await ctx.respond(embed=embed, ephemeral=True)
 
 
     @info.command(name="role", description="Show info about a role")
@@ -126,7 +126,7 @@ class info(commands.Cog):
         embed.add_field(name="Created", value=f"<t:{creation_time}:R>", inline=True)
         embed.add_field(name="Role ID", value=f"||{role.id}||", inline=True)
 
-        await ctx.respond(embed=embed)
+        await ctx.respond(embed=embed, ephemeral=True)
 
 
 

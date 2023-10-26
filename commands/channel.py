@@ -73,7 +73,7 @@ class channel(commands.Cog):
 
         try:
             await channel.edit(rtc_region=set_region, reason=f"command executed by @{ctx.author.name}")
-            await ctx.respond(f"Changed region to {region} for {channel.mention}")
+            await ctx.respond(f"Changed region to {region} for {channel.mention}", ephemeral=True)
         except:
             await ctx.respond(f"Failed to change region for {channel.mention}")
 

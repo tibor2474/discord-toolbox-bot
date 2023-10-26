@@ -56,7 +56,7 @@ class members(commands.Cog):
             await ctx.respond(embed=embed)
         
         else:
-            await ctx.respond(f"{member.display_name} doesn't have a server avatar")
+            await ctx.respond(f"{member.display_name} doesn't have a server avatar", ephemeral=True)
 
 
     @member.command(name="banner", description="Show someones banner (if they have one)")
@@ -69,7 +69,7 @@ class members(commands.Cog):
             embed.set_image(url=member.banner)
             await ctx.respond(embed=embed)
         else:
-            await ctx.respond(f"{member.name} doesn't have a banner")
+            await ctx.respond(f"{member.name} doesn't have a banner", ephemeral=True)
 
 
     @member.command(name="move", description="Move member to a different voice channel")

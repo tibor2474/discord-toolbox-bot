@@ -20,7 +20,7 @@ class permission(commands.Cog):
 
         embed = discord.Embed(color=bot_color, description=permissions)
         embed.set_author(name=f"Permissions for {member.name}", icon_url=member_icon)
-        await ctx.respond(embed=embed)
+        await ctx.respond(embed=embed, ephemeral=True)
 
 
     @show.command(name="role", description="Show permissions for a role")
@@ -33,7 +33,7 @@ class permission(commands.Cog):
 
         embed = discord.Embed(color=bot_color, description=permissions)
         embed.set_author(name=f"Permissions for {role.name}", icon_url=role_icon)
-        await ctx.respond(embed=embed)
+        await ctx.respond(embed=embed, ephemeral=True)
 
 
 def setup(bot: commands.Bot) -> None:

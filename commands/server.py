@@ -33,7 +33,7 @@ class server(commands.Cog):
             await ctx.respond(embed=embed)
         
         else:
-            await ctx.respond(f"This server doesn't have an icon")
+            await ctx.respond(f"This server doesn't have an icon", ephemeral=True)
 
 
     @server.command(name="banner", description="Show server banner image")
@@ -54,7 +54,7 @@ class server(commands.Cog):
             await ctx.respond(embed=embed)
 
         else:
-            await ctx.respond(f"This server doesn't have a banner")
+            await ctx.respond(f"This server doesn't have a banner", ephemeral=True)
 
 
     @server.command(name="invite_background", description="Show server invite background")
@@ -74,7 +74,7 @@ class server(commands.Cog):
             await ctx.respond(embed=embed)
 
         else:
-            await ctx.respond(f"This server doesn't have an invite background")
+            await ctx.respond(f"This server doesn't have an invite background", ephemeral=True)
 
 
     @server.command(name="emojis", description="Show server emojis")
@@ -85,7 +85,7 @@ class server(commands.Cog):
         embed = discord.Embed(color=bot_color, description=" ".join(emojis))
         embed.set_author(name="Server emojis", icon_url=emoji_icon)
         embed.set_footer(text=f"{len(emojis)} emojis total")
-        await ctx.respond(embed=embed)
+        await ctx.respond(embed=embed, ephemeral=True)
 
 
 def setup(bot: commands.Bot) -> None:
