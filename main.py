@@ -13,11 +13,20 @@ bot = commands.Bot(intents=intents, help_command=None)
 # load commands
 for f in os.listdir("./commands"):
     if f.endswith(".py"):
-        #try:
+        try:
             bot.load_extension("commands." + f[:-3])
-        #except Exception as error:
-            #print((discord.utils.utcnow().strftime(f"[{bot_time}]")), f"ERROR {f} could not be loaded: {error}")
-        #else:
+        except Exception as error:
+            print((discord.utils.utcnow().strftime(f"[{bot_time}]")), f"ERROR {f} could not be loaded: {error}")
+        else:
+            print((discord.utils.utcnow().strftime(f"[{bot_time}]")),f"Loaded {f}")
+
+for f in os.listdir("./context_menus"):
+    if f.endswith(".py"):
+        try:
+            bot.load_extension("context_menus." + f[:-3])
+        except Exception as error:
+            print((discord.utils.utcnow().strftime(f"[{bot_time}]")), f"ERROR {f} could not be loaded: {error}")
+        else:
             print((discord.utils.utcnow().strftime(f"[{bot_time}]")),f"Loaded {f}")
 
 # sync commands
