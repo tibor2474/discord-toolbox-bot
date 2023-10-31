@@ -44,7 +44,7 @@ class channel(commands.Cog):
 
 
     @discord.slash_command(name="vcregion", description="Change region for a voice channel", guild_only=True)
-    @discord.commands.default_permissions(move_members=True)
+    @discord.commands.default_permissions(manage_channels=True)
     @discord.option("channel", Union[discord.StageChannel, discord.VoiceChannel], description="Select a channel", required=True)
     @discord.option("region", str, description="Select a region", required=True, choices=[
         "Automatic",

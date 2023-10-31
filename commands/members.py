@@ -71,6 +71,7 @@ class members(commands.Cog):
 
 
     @discord.slash_command(name="vcmove", description="Move member to a different voice channel")
+    @discord.commands.default_permissions(move_members=True)
     @discord.option("member", discord.Member, description="Select a member", required=True)
     @discord.option("channel", Union[discord.VoiceChannel, discord.StageChannel], description="Select a channel", required=True)
     async def member_move(self, ctx: commands.Context, member: discord.Member, channel: Union[discord.VoiceChannel, discord.StageChannel]) -> None:

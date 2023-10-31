@@ -7,6 +7,8 @@ class permission(commands.Cog):
         self.bot = bot
 
 
+    permission = discord.SlashCommandGroup("permission", "Manage permissions", hidden=False, guild_only=True, default_member_permissions=discord.Permissions(manage_roles=True))
+
     @permission.command(name="showmember", description="Show permissions for a member")
     @discord.option("member", discord.Member, description="Select a member", required=True)
     async def show_member_perms(self, ctx: commands.Context, member: discord.Member) -> None:

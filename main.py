@@ -63,8 +63,8 @@ bot.run(bot_token)
 # set permissions for roles
 # set permissions for channels
 # show permissions for a role - done
-# add a help command
+# add a help command - skipped, not really needed
 # purge messages from a specific member
 # configure vc channel user limit - done
 # change regian for voice channel - done
-# change server verification level
+# change server verification level - skipped, for better security

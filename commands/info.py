@@ -40,7 +40,7 @@ class info(commands.Cog):
     
 
     @discord.slash_command(name="serverinfo", description="Show info about this server")
-    @discord.commands.default_permissions(kick_members=True)
+    @discord.commands.default_permissions(manage_guild=True)
     async def info_server(self, ctx: commands.Context) -> None:
         guild = ctx.guild
         user_count = len([m for m in guild.members if not m.bot])
@@ -55,15 +55,9 @@ class info(commands.Cog):
         afk_timeout = guild.afk_timeout / 60
 
         if guild.mfa_level == 0:
-            mfa_level = "None"
+            mfa_level = "disabled"
         elif guild.mfa_level == 1:
-            mfa_level = "Low"
-        elif guild.mfa_level == 2:
-            mfa_level = "Medium"
-        elif guild.mfa_level == 3:
-            mfa_level = "High"
-        elif guild.mfa_level == 4:
-            mfa_level = "Very High"
+            mfa_level = "enabled"
 
         if guild.afk_channel == None:
             afk_channel = "Not set"
@@ -78,9 +72,9 @@ class info(commands.Cog):
         embed.set_author(name="Server info", icon_url=server_icon)
         embed.add_field(name="Name", value=f"{guild.name}", inline=False)
 
-        embed.add_field(name="Owner", value=f"@{guild.owner.name}", inline=True) # guild.owner shows username#0 so used guild.owner.name as a workaround
+        embed.add_field(name="Owner", value=f"@{guild.owner.mention}", inline=True)
         embed.add_field(name="Region", value=f"{guild.preferred_locale}", inline=True)
-        embed.add_field(name="Verification level", value=f"{mfa_level}", inline=True)
+        embed.add_field(name="Verification level", value=f"{guild.verification_level} (2fa {mfa_level})", inline=True)
 
         embed.add_field(name="Server boosts", value=f"{guild.premium_subscription_count} boosts\n{len(guild.premium_subscribers)} booster", inline=True)
         embed.add_field(name="AFK channel", value=f"{afk_channel}\n{afk_timeout} min timeout", inline=True)
@@ -93,7 +87,7 @@ class info(commands.Cog):
         embed.add_field(name="Roles", value=f"{len(guild.roles)} roles", inline=True)
         embed.add_field(name="Created", value=f"<t:{guild_date}:R>", inline=True)
         
-        embed.add_field(name="Server ID", value=f"||{guild.id}||", inline=False)
+        embed.add_field(name="Server ID", value=f"||{guild.id}||", inline=True)
         
         if guild.icon != None:
             embed.set_thumbnail(url=guild.icon)
