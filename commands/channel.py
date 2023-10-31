@@ -8,9 +8,8 @@ class channel(commands.Cog):
         self.bot = bot
 
 
-    channel = discord.SlashCommandGroup("channel", "Change channel settings", hidden=False, guild_only=True, default_member_permissions=discord.Permissions(manage_channels=True))
-
-    @channel.command(name="slowmode", description="Set custom slowmode for a channel")
+    @discord.slash_command(name="slowmode", description="Set custom slowmode for a channel", guild_only=True)
+    @discord.commands.default_permissions(manage_channels=True)
     @discord.option("channel", Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel], description="Select a channel", required=True)
     @discord.option("seconds", int, description="Slowmode delay in seconds (set to 0 to disable)", required=True)
     async def channel_slowmode(self, ctx: commands.Context, channel: Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel], seconds: int):
@@ -20,7 +19,8 @@ class channel(commands.Cog):
         await ctx.respond(f"Changed slowmode for {channel.mention} to {seconds} seconds")
 
 
-    @channel.command(name="nsfw", description="Turn on or off age-restricted mode")
+    @discord.slash_command(name="nsfw", description="Turn on or off age-restricted mode for a channel", guild_only=True)
+    @discord.commands.default_permissions(manage_channels=True)
     @discord.option("channel", Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel, discord.ForumChannel], description="Select a channel", required=True)
     @discord.option("mode", bool, description="Turn on or off", required=True)
     async def channel_nsfw(self, ctx: commands.Context, channel: Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel, discord.ForumChannel], mode: bool):
@@ -32,7 +32,8 @@ class channel(commands.Cog):
             await ctx.respond(f"Turned off age-restriction for {channel.mention}")
 
     
-    @channel.command(name="limit", description="Set user limit for voice channels")
+    @discord.slash_command(name="vclimit", description="Set user limit for voice channels", guild_only=True)
+    @discord.commands.default_permissions(manage_channels=True)
     @discord.option("channel", Union[discord.StageChannel, discord.VoiceChannel], description="Select a channel", required=True)
     @discord.option("limit", int, description="User limit (set to 0 to disable)", required=True)
     async def channel_limit(self, ctx: commands.Context, channel: Union[discord.StageChannel, discord.VoiceChannel], limit: int):
@@ -42,7 +43,8 @@ class channel(commands.Cog):
         await ctx.respond(f"Changed user limit for {channel.mention} to {limit} members")
 
 
-    @channel.command(name="region", description="Change region for a voice channel")
+    @discord.slash_command(name="vcregion", description="Change region for a voice channel", guild_only=True)
+    @discord.commands.default_permissions(move_members=True)
     @discord.option("channel", Union[discord.StageChannel, discord.VoiceChannel], description="Select a channel", required=True)
     @discord.option("region", str, description="Select a region", required=True, choices=[
         "Automatic",

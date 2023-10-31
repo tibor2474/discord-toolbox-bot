@@ -6,10 +6,9 @@ class info(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
-
-    info = discord.SlashCommandGroup("info", "Get info", hidden=False, guild_only=True, default_member_permissions=discord.Permissions(kick_members=True, manage_roles=True))
     
-    @info.command(name="member", description="Show info about someone")
+    @discord.slash_command(name="memberinfo", description="Show info about someone")
+    @discord.commands.default_permissions(kick_members=True)
     @discord.option("member", discord.Member, description="Select someone", required=True)
     async def info_member(self, ctx: commands.Context, member: discord.Member) -> None:
         creation_time = int(member.created_at.timestamp())
@@ -40,7 +39,8 @@ class info(commands.Cog):
         await ctx.respond(embed=embed, ephemeral=True)
     
 
-    @info.command(name="server", description="Show info about this server")
+    @discord.slash_command(name="serverinfo", description="Show info about this server")
+    @discord.commands.default_permissions(kick_members=True)
     async def info_server(self, ctx: commands.Context) -> None:
         guild = ctx.guild
         user_count = len([m for m in guild.members if not m.bot])
@@ -101,7 +101,8 @@ class info(commands.Cog):
         await ctx.respond(embed=embed, ephemeral=True)
 
 
-    @info.command(name="role", description="Show info about a role")
+    @discord.slash_command(name="roleinfo", description="Show info about a role")
+    @discord.commands.default_permissions(manage_roles=True)
     @discord.option("role", discord.Role, description="Select a role", required=True)
     async def info_role(self, ctx: commands.Context, role: discord.Role):
         creation_time = int(role.created_at.timestamp())

@@ -7,10 +7,8 @@ class members(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
-
-    member = discord.SlashCommandGroup("member", "Commands for member things", hidden=False, guild_only=True, default_member_permissions=discord.Permissions(kick_members=True, move_members=True))
     
-    @member.command(name="avatar", description="Show someones avatar")
+    @discord.slash_command(name="avatar", description="Show someones avatar")
     @discord.option("member", discord.Member, description="Select a user", required=True)
     async def member_avatar(self, ctx: commands.Context, member: discord.Member) -> None:
         png = member.avatar.with_format("png")
@@ -33,7 +31,7 @@ class members(commands.Cog):
         await ctx.respond(embed=embed)
 
 
-    @member.command(name="guild_avatar", description="Show someones server avatar")
+    @discord.slash_command(name="serveravatar", description="Show someones server avatar")
     async def member_guild_avatar(self, ctx: commands.Context, member: discord.Member) -> None:
         if member.guild_avatar != None:
             png = member.guild_avatar.with_format("png")
@@ -59,7 +57,7 @@ class members(commands.Cog):
             await ctx.respond(f"{member.display_name} doesn't have a server avatar", ephemeral=True)
 
 
-    @member.command(name="banner", description="Show someones banner (if they have one)")
+    @discord.slash_command(name="banner", description="Show someones banner (if they have one)")
     @discord.option("member", discord.Member, description="Select a user", required=True)
     async def member_banner(self, ctx: commands.Context, member: discord.Member) -> None:
         embed = discord.Embed(color=bot_color)
@@ -72,7 +70,7 @@ class members(commands.Cog):
             await ctx.respond(f"{member.name} doesn't have a banner", ephemeral=True)
 
 
-    @member.command(name="move", description="Move member to a different voice channel")
+    @discord.slash_command(name="vcmove", description="Move member to a different voice channel")
     @discord.option("member", discord.Member, description="Select a member", required=True)
     @discord.option("channel", Union[discord.VoiceChannel, discord.StageChannel], description="Select a channel", required=True)
     async def member_move(self, ctx: commands.Context, member: discord.Member, channel: Union[discord.VoiceChannel, discord.StageChannel]) -> None:

@@ -7,9 +7,7 @@ class server(commands.Cog):
         self.bot = bot
 
 
-    server = discord.SlashCommandGroup("server", "Server managemnt", hidden=False, guild_only=True, default_member_permissions=discord.Permissions(kick_members=True, manage_roles=True))
-
-    @server.command(name="icon", description="Show server icon")
+    @discord.slash_command(name="servericon", description="Show server icon")
     async def guild_icon(self, ctx: commands.Context) -> None:
         guild = ctx.guild
         if guild.icon != None:
@@ -36,7 +34,7 @@ class server(commands.Cog):
             await ctx.respond(f"This server doesn't have an icon", ephemeral=True)
 
 
-    @server.command(name="banner", description="Show server banner image")
+    @discord.slash_command(name="serverbanner", description="Show server banner image")
     async def guild_banner(self, ctx: commands.Context) -> None:
         guild = ctx.guild
         if guild.banner != None:
@@ -57,7 +55,7 @@ class server(commands.Cog):
             await ctx.respond(f"This server doesn't have a banner", ephemeral=True)
 
 
-    @server.command(name="invite_background", description="Show server invite background")
+    @discord.slash_command(name="serverbackground", description="Show server invite background")
     async def guild_invite_background(self, ctx: commands.Context) -> None:
         guild = ctx.guild
         if guild.splash != None:
@@ -77,7 +75,7 @@ class server(commands.Cog):
             await ctx.respond(f"This server doesn't have an invite background", ephemeral=True)
 
 
-    @server.command(name="emojis", description="Show server emojis")
+    @discord.slash_command(name="serveremojis", description="Show server emojis")
     async def guild_emojis(self, ctx: commands.Context) -> None:
         guild = ctx.guild
         emojis = [str(x) for x in guild.emojis]
