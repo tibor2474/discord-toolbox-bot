@@ -60,8 +60,8 @@ bot.run(bot_token)
 # create/delete webhooks - skipped
 # set name and pfp for webhooks - skipped
 # convert colors (ex. hex to rgb) - skipped, kinda pointless
-# set permissions for roles
-# set permissions for channels
+# set permissions for roles - skipped, for better security
+# set permissions for channels - skipped, same
 # show permissions for a role - done
 # add a help command - skipped, not really needed
 # purge messages from a specific member
