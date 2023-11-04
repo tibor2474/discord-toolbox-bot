@@ -29,6 +29,7 @@ for f in os.listdir("./context_menus"):
         else:
             print((discord.utils.utcnow().strftime(f"[{bot_time}]")),f"Loaded {f}")
 
+
 # sync commands
 @bot.event
 async def on_connect():
@@ -43,6 +44,25 @@ async def on_ready():
 async def on_message(message):
     if message.author == bot.user:
         return
+
+
+# logging
+@bot.event
+async def on_application_command(ctx: discord.ApplicationContext) -> None: #log command execution
+    print((discord.utils.utcnow().strftime(f"[{bot_time}]")), f"User @{ctx.author.name} (ID:{ctx.author.id}) used the {ctx.command.name} command")
+
+# error checks
+@bot.event
+async def on_application_command_error(ctx: discord.ApplicationContext, error) -> None: #log app command error
+    if isinstance(error, commands.BotMissingPermissions): #bot has missing permissions
+        return await ctx.respond("I don't have the correct permissions to do that.", ephemeral=True)
+
+    elif isinstance(error, commands.MissingPermissions): #user doesn't have perms
+        return await ctx.respond("You don't have the correct permissions to do that.", ephemeral=True)
+        
+    else: #or something else
+        await ctx.respond("An error occured while executing the command.", ephemeral=True)
+    raise error
 
 
 bot.run(bot_token)
