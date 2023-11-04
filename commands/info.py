@@ -17,8 +17,8 @@ class info(commands.Cog):
         embed = discord.Embed(color=bot_color)
         embed.set_thumbnail(url=member.avatar)
         embed.set_author(name="Member info", icon_url=member_icon)
+        embed.add_field(name="User mention", value=member.mention, inline=True)
         embed.add_field(name="User name", value=member.name, inline=True)
-        embed.add_field(name="Display name", value=member.display_name, inline=True) # since py-cord isn't updated yet, it still shows the member name instead
         embed.add_field(name="Nickname", value=member.nick, inline=True)
             
         embed.add_field(name="Server booster", value=bool(member.premium_since), inline=True)
