@@ -13,12 +13,22 @@ bot = commands.Bot(intents=intents, help_command=None)
 # load commands
 for f in os.listdir("./commands"):
     if f.endswith(".py"):
-        #try:
+        try:
             bot.load_extension("commands." + f[:-3])
-        #except Exception as error:
-            #print((discord.utils.utcnow().strftime(f"[{bot_time}]")), f"ERROR {f} could not be loaded: {error}")
-        #else:
+        except Exception as error:
+            print((discord.utils.utcnow().strftime(f"[{bot_time}]")), f"ERROR {f} could not be loaded: {error}")
+        else:
             print((discord.utils.utcnow().strftime(f"[{bot_time}]")),f"Loaded {f}")
+
+for f in os.listdir("./context_menus"):
+    if f.endswith(".py"):
+        try:
+            bot.load_extension("context_menus." + f[:-3])
+        except Exception as error:
+            print((discord.utils.utcnow().strftime(f"[{bot_time}]")), f"ERROR {f} could not be loaded: {error}")
+        else:
+            print((discord.utils.utcnow().strftime(f"[{bot_time}]")),f"Loaded {f}")
+
 
 # sync commands
 @bot.event
@@ -36,6 +46,25 @@ async def on_message(message):
         return
 
 
+# logging
+@bot.event
+async def on_application_command(ctx: discord.ApplicationContext) -> None: #log command execution
+    print((discord.utils.utcnow().strftime(f"[{bot_time}]")), f"User @{ctx.author.name} (ID:{ctx.author.id}) used the {ctx.command.name} command")
+
+# error checks
+@bot.event
+async def on_application_command_error(ctx: discord.ApplicationContext, error) -> None: #log app command error
+    if isinstance(error, commands.BotMissingPermissions): #bot has missing permissions
+        return await ctx.respond("I don't have the correct permissions to do that.", ephemeral=True)
+
+    elif isinstance(error, commands.MissingPermissions): #user doesn't have perms
+        return await ctx.respond("You don't have the correct permissions to do that.", ephemeral=True)
+        
+    else: #or something else
+        await ctx.respond("An error occured while executing the command.", ephemeral=True)
+    raise error
+
+
 bot.run(bot_token)
 
 
@@ -51,11 +80,11 @@ bot.run(bot_token)
 # create/delete webhooks - skipped
 # set name and pfp for webhooks - skipped
 # convert colors (ex. hex to rgb) - skipped, kinda pointless
-# set permissions for roles
-# set permissions for channels
+# set permissions for roles - skipped, for better security
+# set permissions for channels - skipped, same
 # show permissions for a role - done
-# add a help command
+# add a help command - skipped, not really needed
 # purge messages from a specific member
 # configure vc channel user limit - done
 # change regian for voice channel - done
-# change server verification level
+# change server verification level - skipped, for better security

@@ -6,10 +6,9 @@ class info(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
-
-    info = discord.SlashCommandGroup("info", "Get info", hidden=False, guild_only=True, default_member_permissions=discord.Permissions(kick_members=True, manage_roles=True))
     
-    @info.command(name="member", description="Show info about someone")
+    @discord.slash_command(name="memberinfo", description="Show info about someone")
+    @discord.commands.default_permissions(kick_members=True)
     @discord.option("member", discord.Member, description="Select someone", required=True)
     async def info_member(self, ctx: commands.Context, member: discord.Member) -> None:
         creation_time = int(member.created_at.timestamp())
@@ -18,8 +17,8 @@ class info(commands.Cog):
         embed = discord.Embed(color=bot_color)
         embed.set_thumbnail(url=member.avatar)
         embed.set_author(name="Member info", icon_url=member_icon)
+        embed.add_field(name="User mention", value=member.mention, inline=True)
         embed.add_field(name="User name", value=member.name, inline=True)
-        embed.add_field(name="Display name", value=member.display_name, inline=True) # since py-cord isn't updated yet, it still shows the member name instead
         embed.add_field(name="Nickname", value=member.nick, inline=True)
             
         embed.add_field(name="Server booster", value=bool(member.premium_since), inline=True)
@@ -37,10 +36,11 @@ class info(commands.Cog):
         
         embed.add_field(name="Account created", value=f"<t:{creation_time}:R>", inline=True)
         embed.add_field(name="Joined server", value=f"<t:{join_time}:R>", inline=True)
-        await ctx.respond(embed=embed)
+        await ctx.respond(embed=embed, ephemeral=True)
     
 
-    @info.command(name="server", description="Show info about this server")
+    @discord.slash_command(name="serverinfo", description="Show info about this server")
+    @discord.commands.default_permissions(manage_guild=True)
     async def info_server(self, ctx: commands.Context) -> None:
         guild = ctx.guild
         user_count = len([m for m in guild.members if not m.bot])
@@ -55,15 +55,9 @@ class info(commands.Cog):
         afk_timeout = guild.afk_timeout / 60
 
         if guild.mfa_level == 0:
-            mfa_level = "None"
+            mfa_level = "disabled"
         elif guild.mfa_level == 1:
-            mfa_level = "Low"
-        elif guild.mfa_level == 2:
-            mfa_level = "Medium"
-        elif guild.mfa_level == 3:
-            mfa_level = "High"
-        elif guild.mfa_level == 4:
-            mfa_level = "Very High"
+            mfa_level = "enabled"
 
         if guild.afk_channel == None:
             afk_channel = "Not set"
@@ -78,9 +72,9 @@ class info(commands.Cog):
         embed.set_author(name="Server info", icon_url=server_icon)
         embed.add_field(name="Name", value=f"{guild.name}", inline=False)
 
-        embed.add_field(name="Owner", value=f"@{guild.owner.name}", inline=True) # guild.owner shows username#0 so used guild.owner.name as a workaround
+        embed.add_field(name="Owner", value=f"@{guild.owner.mention}", inline=True)
         embed.add_field(name="Region", value=f"{guild.preferred_locale}", inline=True)
-        embed.add_field(name="Verification level", value=f"{mfa_level}", inline=True)
+        embed.add_field(name="Verification level", value=f"{guild.verification_level} (2fa {mfa_level})", inline=True)
 
         embed.add_field(name="Server boosts", value=f"{guild.premium_subscription_count} boosts\n{len(guild.premium_subscribers)} booster", inline=True)
         embed.add_field(name="AFK channel", value=f"{afk_channel}\n{afk_timeout} min timeout", inline=True)
@@ -93,15 +87,16 @@ class info(commands.Cog):
         embed.add_field(name="Roles", value=f"{len(guild.roles)} roles", inline=True)
         embed.add_field(name="Created", value=f"<t:{guild_date}:R>", inline=True)
         
-        embed.add_field(name="Server ID", value=f"||{guild.id}||", inline=False)
+        embed.add_field(name="Server ID", value=f"||{guild.id}||", inline=True)
         
         if guild.icon != None:
             embed.set_thumbnail(url=guild.icon)
 
-        await ctx.respond(embed=embed)
+        await ctx.respond(embed=embed, ephemeral=True)
 
 
-    @info.command(name="role", description="Show info about a role")
+    @discord.slash_command(name="roleinfo", description="Show info about a role")
+    @discord.commands.default_permissions(manage_roles=True)
     @discord.option("role", discord.Role, description="Select a role", required=True)
     async def info_role(self, ctx: commands.Context, role: discord.Role):
         creation_time = int(role.created_at.timestamp())
@@ -126,7 +121,7 @@ class info(commands.Cog):
         embed.add_field(name="Created", value=f"<t:{creation_time}:R>", inline=True)
         embed.add_field(name="Role ID", value=f"||{role.id}||", inline=True)
 
-        await ctx.respond(embed=embed)
+        await ctx.respond(embed=embed, ephemeral=True)
 
 
 

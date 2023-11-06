@@ -7,10 +7,9 @@ class permission(commands.Cog):
         self.bot = bot
 
 
-    permission = discord.SlashCommandGroup("permission", "Modify permissions", hidden=False, guild_only=True, default_member_permissions=discord.Permissions(manage_roles=True))
-    show = permission.create_subgroup("show", "Show permissions")
+    permission = discord.SlashCommandGroup("permission", "Manage permissions", hidden=False, guild_only=True, default_member_permissions=discord.Permissions(manage_roles=True))
 
-    @show.command(name="member", description="Show permissions for a member")
+    @permission.command(name="showmember", description="Show permissions for a member")
     @discord.option("member", discord.Member, description="Select a member", required=True)
     async def show_member_perms(self, ctx: commands.Context, member: discord.Member) -> None:
         permissions = ', '.join([str(perm[0]).replace("_", " ") for perm in member.guild_permissions if perm[1]])
@@ -20,10 +19,10 @@ class permission(commands.Cog):
 
         embed = discord.Embed(color=bot_color, description=permissions)
         embed.set_author(name=f"Permissions for {member.name}", icon_url=member_icon)
-        await ctx.respond(embed=embed)
+        await ctx.respond(embed=embed, ephemeral=True)
 
 
-    @show.command(name="role", description="Show permissions for a role")
+    @permission.command(name="showrole", description="Show permissions for a role")
     @discord.option("role", discord.Role, description="Select a role", required=True)
     async def show_role_perms(self, ctx: commands.Context, role: discord.Role) -> None:
         permissions = ', '.join([str(perm[0]).replace("_", " ") for perm in role.permissions if perm[1]])
@@ -33,7 +32,7 @@ class permission(commands.Cog):
 
         embed = discord.Embed(color=bot_color, description=permissions)
         embed.set_author(name=f"Permissions for {role.name}", icon_url=role_icon)
-        await ctx.respond(embed=embed)
+        await ctx.respond(embed=embed, ephemeral=True)
 
 
 def setup(bot: commands.Bot) -> None:
