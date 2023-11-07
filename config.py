@@ -2,9 +2,9 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-bot_token = os.getenv("TOKEN")
-bot_time = "%d/%b/%Y %H:%M:%S"
-bot_color = 0xb4befe
+bot_token = os.getenv("TOKEN") # your token - set it in your secrets file
+bot_time = "%d/%b/%Y %H:%M:%S" # time structure for logging
+bot_color = 0xb4befe # embed color (#ffffff -> 0xffffff)
 
 # ICONS
 member_icon = "https://i.imgur.com/c7DXPqC.png"
