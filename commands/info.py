@@ -72,7 +72,7 @@ class info(commands.Cog):
         embed.set_author(name="Server info", icon_url=server_icon)
         embed.add_field(name="Name", value=f"{guild.name}", inline=False)
 
-        embed.add_field(name="Owner", value=f"@{guild.owner.mention}", inline=True)
+        embed.add_field(name="Owner", value=f"{guild.owner.mention}", inline=True)
         embed.add_field(name="Region", value=f"{guild.preferred_locale}", inline=True)
         embed.add_field(name="Verification level", value=f"{guild.verification_level} (2fa {mfa_level})", inline=True)
 
