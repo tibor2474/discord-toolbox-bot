@@ -39,7 +39,7 @@ class info(commands.Cog):
         await ctx.respond(embed=embed, ephemeral=True)
     
 
-    @discord.slash_command(name="serverinfo", description="Show info about this server")
+    @discord.slash_command(name="serverinfo", description="Show info about this server", guild_only=True)
     @discord.commands.default_permissions(manage_guild=True)
     async def info_server(self, ctx: commands.Context) -> None:
         guild = ctx.guild
@@ -95,7 +95,7 @@ class info(commands.Cog):
         await ctx.respond(embed=embed, ephemeral=True)
 
 
-    @discord.slash_command(name="roleinfo", description="Show info about a role")
+    @discord.slash_command(name="roleinfo", description="Show info about a role", guild_only=True)
     @discord.commands.default_permissions(manage_roles=True)
     @discord.option("role", discord.Role, description="Select a role", required=True)
     async def info_role(self, ctx: commands.Context, role: discord.Role):
