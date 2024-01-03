@@ -7,7 +7,7 @@ class thread(commands.Cog):
         self.bot = bot
 
 
-    @discord.slash_command(name="threadclose", description="Allows the staff member or the thread owner to close the thread")
+    @discord.slash_command(name="threadclose", description="Allows a staff member or the thread owner to close the thread", guild_only=True)
     @discord.option("lock", bool, description="Lock thread?", required=True)
     async def thread_close(self, ctx: commands.Context, lock: bool = False) -> None:
         assert isinstance(ctx.author, discord.Member)
@@ -16,21 +16,21 @@ class thread(commands.Cog):
 
         if ctx.channel.permissions_for(ctx.author).manage_threads:
             if lock:
-                await ctx.respond("This thread has been archived and locked by staff.")
+                await ctx.respond("This thread was archived and locked by a staff member.")
 
             else:
-                await ctx.respond("This thread has been archived by a staff.")
+                await ctx.respond("This thread was archived by a staff member.")
             await ctx.channel.archive(locked=lock)
 
         elif ctx.author.id == ctx.channel.owner_id:
-            await ctx.respond("This thread has been archived by the user that opened it.")
+            await ctx.respond("This thread was archived by the user that opened it.")
             await ctx.channel.archive()
 
         else:
-            await ctx.respond("This command can only be used by the owner of the thread or a staff.", ephemeral=True)
+            await ctx.respond("This command can only be used by the owner of the thread or a staff member.", ephemeral=True)
 
 
-    @discord.slash_command(name="threadname", description="Change the name of the thread")
+    @discord.slash_command(name="threadname", description="Change the name of the thread", guild_only=True)
     @discord.option("name", str, description="New name for this thread", required=True)
     async def thread_name(self, ctx: commands.Context, name: str) -> None:
         assert isinstance(ctx.author, discord.Member)
@@ -42,7 +42,7 @@ class thread(commands.Cog):
             await ctx.respond(f"Changed thread name to: **{name}**")
 
         else:
-            await ctx.respond("This command can only be used by the owner of the thread or a staff.", ephemeral=True)
+            await ctx.respond("This command can only be used by the owner of the thread or a staff member.", ephemeral=True)
 
 
     @discord.slash_command(name="threadslowmode", description="Set custom slowmode for a thread", guild_only=True)
