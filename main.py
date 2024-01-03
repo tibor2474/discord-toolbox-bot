@@ -86,5 +86,7 @@ bot.run(bot_token)
 # add a help command - skipped, not really needed
 # purge messages from a specific member
 # configure vc channel user limit - done
-# change regian for voice channel - done
+# change region for voice channel - done
 # change server verification level - skipped, for better security
+# add commands for soundboard management
+# manage threads
