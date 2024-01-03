@@ -89,4 +89,4 @@ bot.run(bot_token)
 # change region for voice channel - done
 # change server verification level - skipped, for better security
 # add commands for soundboard management
-# manage threads
+# manage threads - done
