@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 from typing import Union
-from config import bot_color
 
 class channel(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
