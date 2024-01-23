@@ -31,7 +31,7 @@ class members(commands.Cog):
         await ctx.respond(embed=embed)
 
 
-    @discord.slash_command(name="serveravatar", description="Show someones server avatar")
+    @discord.slash_command(name="serveravatar", description="Show someones server avatar", guild_only=True)
     async def member_guild_avatar(self, ctx: commands.Context, member: discord.Member) -> None:
         if member.guild_avatar != None:
             png = member.guild_avatar.with_format("png")
@@ -70,7 +70,7 @@ class members(commands.Cog):
             await ctx.respond(f"{member.name} doesn't have a banner", ephemeral=True)
 
 
-    @discord.slash_command(name="vcmove", description="Move member to a different voice channel")
+    @discord.slash_command(name="vcmove", description="Move member to a different voice channel", guild_only=True)
     @discord.commands.default_permissions(move_members=True)
     @discord.option("member", discord.Member, description="Select a member", required=True)
     @discord.option("channel", Union[discord.VoiceChannel, discord.StageChannel], description="Select a channel", required=True)
