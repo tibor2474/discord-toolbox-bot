@@ -8,7 +8,7 @@ class thread(commands.Cog):
 
     @discord.slash_command(name="threadclose", description="Allows a staff member or the thread owner to close the thread", guild_only=True)
     @discord.option("lock", bool, description="Lock thread?", required=True)
-    async def thread_close(self, ctx: commands.Context, lock: bool = False) -> None:
+    async def thread_close(self, ctx, lock: bool = False) -> None:
         assert isinstance(ctx.author, discord.Member)
         if not isinstance(ctx.channel, discord.Thread):
             return await ctx.respond("This command can only be used in threads.", ephemeral=True)
@@ -31,7 +31,7 @@ class thread(commands.Cog):
 
     @discord.slash_command(name="threadname", description="Change the name of the thread", guild_only=True)
     @discord.option("name", str, description="New name for this thread", required=True)
-    async def thread_name(self, ctx: commands.Context, name: str) -> None:
+    async def thread_name(self, ctx, name: str) -> None:
         assert isinstance(ctx.author, discord.Member)
         if not isinstance(ctx.channel, discord.Thread):
             return await ctx.respond("This command can only be used in threads.", ephemeral=True)
@@ -47,7 +47,7 @@ class thread(commands.Cog):
     @discord.slash_command(name="threadslowmode", description="Set custom slowmode for a thread", guild_only=True)
     @discord.commands.default_permissions(manage_channels=True)
     @discord.option("seconds", int, description="Slowmode delay in seconds (set to 0 to disable)", required=True)
-    async def thread_slowmode(self, ctx: commands.Context, seconds: int):
+    async def thread_slowmode(self, ctx, seconds: int):
         assert isinstance(ctx.author, discord.Member)
         if not isinstance(ctx.channel, discord.Thread):
             return await ctx.respond("This command can only be used in threads.", ephemeral=True)

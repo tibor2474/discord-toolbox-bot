@@ -11,7 +11,7 @@ class permission(commands.Cog):
 
     @permission.command(name="showmember", description="Show permissions for a member")
     @discord.option("member", discord.Member, description="Select a member", required=True)
-    async def show_member_perms(self, ctx: commands.Context, member: discord.Member) -> None:
+    async def show_member_perms(self, ctx, member: discord.Member) -> None:
         permissions = ', '.join([str(perm[0]).replace("_", " ") for perm in member.guild_permissions if perm[1]])
 
         if permissions == "":
@@ -24,7 +24,7 @@ class permission(commands.Cog):
 
     @permission.command(name="showrole", description="Show permissions for a role")
     @discord.option("role", discord.Role, description="Select a role", required=True)
-    async def show_role_perms(self, ctx: commands.Context, role: discord.Role) -> None:
+    async def show_role_perms(self, ctx, role: discord.Role) -> None:
         permissions = ', '.join([str(perm[0]).replace("_", " ") for perm in role.permissions if perm[1]])
 
         if permissions == "":

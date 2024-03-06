@@ -9,7 +9,7 @@ class context_message(commands.Cog):
 
 
     @discord.message_command(name="Show raw message")
-    async def raw_message(self, ctx: commands.Context, message: discord.Message) -> None:
+    async def raw_message(self, ctx, message: discord.Message) -> None:
         if message.content == "":
             return await ctx.respond("The message doesn't have any content that i can show", ephemeral=True)   
 

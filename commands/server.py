@@ -8,7 +8,7 @@ class server(commands.Cog):
 
 
     @discord.slash_command(name="servericon", description="Show server icon", guild_only=True)
-    async def guild_icon(self, ctx: commands.Context) -> None:
+    async def guild_icon(self, ctx) -> None:
         guild = ctx.guild
         if guild.icon != None:
             png = guild.icon.with_format("png")
@@ -35,7 +35,7 @@ class server(commands.Cog):
 
 
     @discord.slash_command(name="serverbanner", description="Show server banner image", guild_only=True)
-    async def guild_banner(self, ctx: commands.Context) -> None:
+    async def guild_banner(self, ctx) -> None:
         guild = ctx.guild
         if guild.banner != None:
             png = guild.banner.with_format("png")
@@ -56,7 +56,7 @@ class server(commands.Cog):
 
 
     @discord.slash_command(name="serverbackground", description="Show server invite background", guild_only=True)
-    async def guild_invite_background(self, ctx: commands.Context) -> None:
+    async def guild_invite_background(self, ctx) -> None:
         guild = ctx.guild
         if guild.splash != None:
             png = guild.splash.with_format("png")
@@ -76,7 +76,7 @@ class server(commands.Cog):
 
 
     @discord.slash_command(name="serveremojis", description="Show server emojis", guild_only=True)
-    async def guild_emojis(self, ctx: commands.Context) -> None:
+    async def guild_emojis(self, ctx) -> None:
         guild = ctx.guild
         emojis = [str(x) for x in guild.emojis]
 

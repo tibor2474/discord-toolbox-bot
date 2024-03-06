@@ -10,7 +10,7 @@ class context_member(commands.Cog):
 
     @discord.user_command(name="Show info")
     @discord.commands.default_permissions(kick_members=True)
-    async def info_member(self, ctx: commands.Context, member: discord.Member) -> None:
+    async def info_member(self, ctx, member: discord.Member) -> None:
         creation_time = int(member.created_at.timestamp())
         join_time = int(member.joined_at.timestamp())
     

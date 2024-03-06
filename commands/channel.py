@@ -11,7 +11,7 @@ class channel(commands.Cog):
     @discord.commands.default_permissions(manage_channels=True)
     @discord.option("channel", Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel], description="Select a channel", required=True)
     @discord.option("seconds", int, description="Slowmode delay in seconds (set to 0 to disable)", required=True)
-    async def channel_slowmode(self, ctx: commands.Context, channel: Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel], seconds: int):
+    async def channel_slowmode(self, ctx, channel: Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel], seconds: int):
         await channel.edit(slowmode_delay=seconds)
         if seconds == 0:
             return await ctx.respond(f"Disabled slowmode for {channel.mention}")
@@ -22,7 +22,7 @@ class channel(commands.Cog):
     @discord.commands.default_permissions(manage_channels=True)
     @discord.option("channel", Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel, discord.ForumChannel], description="Select a channel", required=True)
     @discord.option("mode", bool, description="Turn on or off", required=True)
-    async def channel_nsfw(self, ctx: commands.Context, channel: Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel, discord.ForumChannel], mode: bool):
+    async def channel_nsfw(self, ctx, channel: Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel, discord.ForumChannel], mode: bool):
         if mode == True:
             await channel.edit(nsfw=True)
             await ctx.respond(f"Turned on age-restriction for {channel.mention}")
@@ -35,7 +35,7 @@ class channel(commands.Cog):
     @discord.commands.default_permissions(manage_channels=True)
     @discord.option("channel", Union[discord.StageChannel, discord.VoiceChannel], description="Select a channel", required=True)
     @discord.option("limit", int, description="User limit (set to 0 to disable)", required=True)
-    async def channel_limit(self, ctx: commands.Context, channel: Union[discord.StageChannel, discord.VoiceChannel], limit: int):
+    async def channel_limit(self, ctx, channel: Union[discord.StageChannel, discord.VoiceChannel], limit: int):
         await channel.edit(user_limit=limit)
         if limit == 0:
             return await ctx.respond(f"Disabled user limit for {channel.mention}")
@@ -61,7 +61,7 @@ class channel(commands.Cog):
         "US South",
         "US West"
     ])
-    async def channel_region(self, ctx: commands.Context, channel: Union[discord.StageChannel, discord.VoiceChannel], region: str) -> None:
+    async def channel_region(self, ctx, channel: Union[discord.StageChannel, discord.VoiceChannel], region: str) -> None:
         global set_region
         if region == "Automatic":
             set_region = None

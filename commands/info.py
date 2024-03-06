@@ -10,7 +10,7 @@ class info(commands.Cog):
     @discord.slash_command(name="memberinfo", description="Show info about someone")
     @discord.commands.default_permissions(kick_members=True)
     @discord.option("member", discord.Member, description="Select someone", required=True)
-    async def info_member(self, ctx: commands.Context, member: discord.Member) -> None:
+    async def info_member(self, ctx, member: discord.Member) -> None:
         creation_time = int(member.created_at.timestamp())
         join_time = int(member.joined_at.timestamp())
     
@@ -41,7 +41,7 @@ class info(commands.Cog):
 
     @discord.slash_command(name="serverinfo", description="Show info about this server", guild_only=True)
     @discord.commands.default_permissions(manage_guild=True)
-    async def info_server(self, ctx: commands.Context) -> None:
+    async def info_server(self, ctx) -> None:
         guild = ctx.guild
         user_count = len([m for m in guild.members if not m.bot])
         bot_count = len([b for b in guild.members if b.bot])
@@ -98,7 +98,7 @@ class info(commands.Cog):
     @discord.slash_command(name="roleinfo", description="Show info about a role", guild_only=True)
     @discord.commands.default_permissions(manage_roles=True)
     @discord.option("role", discord.Role, description="Select a role", required=True)
-    async def info_role(self, ctx: commands.Context, role: discord.Role):
+    async def info_role(self, ctx, role: discord.Role):
         creation_time = int(role.created_at.timestamp())
 
         embed = discord.Embed(color=bot_color)
