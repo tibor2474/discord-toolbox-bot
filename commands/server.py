@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
-from config import bot_color, image_icon, emoji_icon
+from config import bot_color
+from config import image_icon
+from config import emoji_icon
 
 class server(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:

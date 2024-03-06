@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
-from config import bot_color, member_icon
+from config import bot_color
+from config import member_icon
 
 class context_member(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:

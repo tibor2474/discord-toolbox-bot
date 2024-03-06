@@ -1,7 +1,9 @@
 import discord
 from discord.ext import commands
 from typing import Union
-from config import bot_color, image_icon, member_icon
+from config import bot_color
+from config import image_icon
+from config import member_icon
 
 class members(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:

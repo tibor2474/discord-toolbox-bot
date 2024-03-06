@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
-from config import bot_color, message_icon
+from config import bot_color
+from config import message_icon
 
 class context_message(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
