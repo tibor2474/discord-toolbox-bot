@@ -1,14 +1,15 @@
 import discord
 from discord.ext import commands
 
+
 class thread(commands.Cog):
-    def __init__(self, bot: commands.Bot) -> None:
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
 
     @discord.slash_command(name="threadclose", description="Allows a staff member or the thread owner to close the thread", guild_only=True)
     @discord.option("lock", bool, description="Lock thread?", required=True)
-    async def thread_close(self, ctx, lock: bool = False) -> None:
+    async def thread_close(self, ctx, lock: bool = False):
         assert isinstance(ctx.author, discord.Member)
         if not isinstance(ctx.channel, discord.Thread):
             return await ctx.respond("This command can only be used in threads.", ephemeral=True)
@@ -31,7 +32,7 @@ class thread(commands.Cog):
 
     @discord.slash_command(name="threadname", description="Change the name of the thread", guild_only=True)
     @discord.option("name", str, description="New name for this thread", required=True)
-    async def thread_name(self, ctx, name: str) -> None:
+    async def thread_name(self, ctx, name: str):
         assert isinstance(ctx.author, discord.Member)
         if not isinstance(ctx.channel, discord.Thread):
             return await ctx.respond("This command can only be used in threads.", ephemeral=True)
@@ -56,9 +57,10 @@ class thread(commands.Cog):
         await channel.edit(slowmode_delay=seconds)
 
         if seconds == 0:
-            return await ctx.respond(f"Disabled slowmode")
+            return await ctx.respond("Disabled slowmode")
         await ctx.respond(f"Changed slowmode to {seconds} seconds")
 
 
-def setup(bot: commands.Bot) -> None:
-      bot.add_cog(thread(bot))
+def setup(bot: commands.Bot):
+    bot.add_cog(thread(bot))
+      

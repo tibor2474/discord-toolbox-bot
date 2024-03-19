@@ -1,9 +1,10 @@
+from typing import Union
 import discord
 from discord.ext import commands
-from typing import Union
+
 
 class channel(commands.Cog):
-    def __init__(self, bot: commands.Bot) -> None:
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
 
@@ -61,7 +62,7 @@ class channel(commands.Cog):
         "US South",
         "US West"
     ])
-    async def channel_region(self, ctx, channel: Union[discord.StageChannel, discord.VoiceChannel], region: str) -> None:
+    async def channel_region(self, ctx, channel: Union[discord.StageChannel, discord.VoiceChannel], region: str):
         global set_region
         if region == "Automatic":
             set_region = None
@@ -80,5 +81,6 @@ class channel(commands.Cog):
 
 
 
-def setup(bot: commands.Bot) -> None:
-      bot.add_cog(channel(bot))
+def setup(bot: commands.Bot):
+    bot.add_cog(channel(bot))
+      

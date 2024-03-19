@@ -1,6 +1,7 @@
-import discord
 import os
+import discord
 from discord.ext import commands
+
 from config import bot_token
 from config import bot_time
 
