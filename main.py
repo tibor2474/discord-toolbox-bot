@@ -1,7 +1,9 @@
-import discord
 import os
+import discord
 from discord.ext import commands
-from config import bot_token, bot_time
+
+from config import bot_token
+from config import bot_time
 
 # set intents
 intents = discord.Intents.default()
@@ -66,27 +68,3 @@ async def on_application_command_error(ctx: discord.ApplicationContext, error) -
 
 
 bot.run(bot_token)
-
-
-
-
-# TODO:
-# view server stats (count of users/bots, emojis, etc) - done
-# user stats - done
-# view emojis/stickers - done (skipped stickers)
-# user images in different formats - done
-# server logo and banner in different formats - done
-# set custom slowmode for channels - done
-# create/delete webhooks - skipped
-# set name and pfp for webhooks - skipped
-# convert colors (ex. hex to rgb) - skipped, kinda pointless
-# set permissions for roles - skipped, for better security
-# set permissions for channels - skipped, same
-# show permissions for a role - done
-# add a help command - skipped, not really needed
-# purge messages from a specific member
-# configure vc channel user limit - done
-# change region for voice channel - done
-# change server verification level - skipped, for better security
-# add commands for soundboard management
-# manage threads - done

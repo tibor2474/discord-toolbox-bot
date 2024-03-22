@@ -1,16 +1,18 @@
 import discord
 from discord.ext import commands
-from config import bot_color, member_icon
+
+from config import bot_color
+from config import member_icon
+
 
 class context_member(commands.Cog):
-    def __init__(self, bot: commands.Bot) -> None:
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
-
 
 
     @discord.user_command(name="Show info")
     @discord.commands.default_permissions(kick_members=True)
-    async def info_member(self, ctx: commands.Context, member: discord.Member) -> None:
+    async def info_member(self, ctx, member: discord.Member):
         creation_time = int(member.created_at.timestamp())
         join_time = int(member.joined_at.timestamp())
     
@@ -40,5 +42,6 @@ class context_member(commands.Cog):
 
 
 
-def setup(bot: commands.Bot) -> None:
-      bot.add_cog(context_member(bot))
+def setup(bot: commands.Bot):
+    bot.add_cog(context_member(bot))
+      

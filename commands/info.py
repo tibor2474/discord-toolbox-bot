@@ -1,16 +1,26 @@
 import discord
 from discord.ext import commands
-from config import bot_color, member_icon, server_icon, role_icon
+
+from config import bot_color
+from config import member_icon
+from config import server_icon
+from config import role_icon
+
 
 class info(commands.Cog):
-    def __init__(self, bot: commands.Bot) -> None:
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     
     @discord.slash_command(name="memberinfo", description="Show info about someone")
     @discord.commands.default_permissions(kick_members=True)
     @discord.option("member", discord.Member, description="Select someone", required=True)
-    async def info_member(self, ctx: commands.Context, member: discord.Member) -> None:
+    async def info_member(self, ctx, member: discord.Member):
+        if member.is_migrated == False:
+            membername = f"{member.name}#{member.discriminator}"
+        else:
+            membername = member.name
+
         creation_time = int(member.created_at.timestamp())
         join_time = int(member.joined_at.timestamp())
     
@@ -18,17 +28,18 @@ class info(commands.Cog):
         embed.set_thumbnail(url=member.avatar)
         embed.set_author(name="Member info", icon_url=member_icon)
         embed.add_field(name="User mention", value=member.mention, inline=True)
-        embed.add_field(name="User name", value=member.name, inline=True)
+        embed.add_field(name="Display name", value=member.display_name, inline=True)
         embed.add_field(name="Nickname", value=member.nick, inline=True)
+        embed.add_field(name="Username", value=membername, inline=True)
             
         embed.add_field(name="Server booster", value=bool(member.premium_since), inline=True)
         embed.add_field(name="In voice", value=bool(member.voice), inline=True)
         embed.add_field(name="Timed out", value=bool(member.timed_out), inline=True)
         
         if member.activity != None:
-            embed.add_field(name="Activity", value=member.activity, inline=False)
+            embed.add_field(name="Activity", value=member.activity, inline=True)
         else:
-            embed.add_field(name="Activity", value="*None/hidden or offline*", inline=False)
+            embed.add_field(name="Activity", value="*None/hidden or offline*", inline=True)
 
         embed.add_field(name="Bot", value=member.bot, inline=True)
         embed.add_field(name="Status", value=member.status, inline=True)
@@ -41,7 +52,7 @@ class info(commands.Cog):
 
     @discord.slash_command(name="serverinfo", description="Show info about this server", guild_only=True)
     @discord.commands.default_permissions(manage_guild=True)
-    async def info_server(self, ctx: commands.Context) -> None:
+    async def info_server(self, ctx):
         guild = ctx.guild
         user_count = len([m for m in guild.members if not m.bot])
         bot_count = len([b for b in guild.members if b.bot])
@@ -98,7 +109,7 @@ class info(commands.Cog):
     @discord.slash_command(name="roleinfo", description="Show info about a role", guild_only=True)
     @discord.commands.default_permissions(manage_roles=True)
     @discord.option("role", discord.Role, description="Select a role", required=True)
-    async def info_role(self, ctx: commands.Context, role: discord.Role):
+    async def info_role(self, ctx, role: discord.Role):
         creation_time = int(role.created_at.timestamp())
 
         embed = discord.Embed(color=bot_color)
@@ -125,5 +136,6 @@ class info(commands.Cog):
 
 
 
-def setup(bot: commands.Bot) -> None:
-      bot.add_cog(info(bot))
+def setup(bot: commands.Bot):
+    bot.add_cog(info(bot))
+      

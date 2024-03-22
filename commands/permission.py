@@ -1,9 +1,13 @@
 import discord
 from discord.ext import commands
-from config import bot_color, member_icon, role_icon
+
+from config import bot_color
+from config import member_icon
+from config import role_icon
+
 
 class permission(commands.Cog):
-    def __init__(self, bot: commands.Bot) -> None:
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
 
@@ -11,7 +15,7 @@ class permission(commands.Cog):
 
     @permission.command(name="showmember", description="Show permissions for a member")
     @discord.option("member", discord.Member, description="Select a member", required=True)
-    async def show_member_perms(self, ctx: commands.Context, member: discord.Member) -> None:
+    async def show_member_perms(self, ctx, member: discord.Member):
         permissions = ', '.join([str(perm[0]).replace("_", " ") for perm in member.guild_permissions if perm[1]])
 
         if permissions == "":
@@ -24,7 +28,7 @@ class permission(commands.Cog):
 
     @permission.command(name="showrole", description="Show permissions for a role")
     @discord.option("role", discord.Role, description="Select a role", required=True)
-    async def show_role_perms(self, ctx: commands.Context, role: discord.Role) -> None:
+    async def show_role_perms(self, ctx, role: discord.Role):
         permissions = ', '.join([str(perm[0]).replace("_", " ") for perm in role.permissions if perm[1]])
 
         if permissions == "":
@@ -35,5 +39,6 @@ class permission(commands.Cog):
         await ctx.respond(embed=embed, ephemeral=True)
 
 
-def setup(bot: commands.Bot) -> None:
-      bot.add_cog(permission(bot))
+def setup(bot: commands.Bot):
+    bot.add_cog(permission(bot))
+      

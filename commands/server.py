@@ -1,14 +1,18 @@
 import discord
 from discord.ext import commands
-from config import bot_color, image_icon, emoji_icon
+
+from config import bot_color
+from config import image_icon
+from config import emoji_icon
+
 
 class server(commands.Cog):
-    def __init__(self, bot: commands.Bot) -> None:
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
 
     @discord.slash_command(name="servericon", description="Show server icon", guild_only=True)
-    async def guild_icon(self, ctx: commands.Context) -> None:
+    async def guild_icon(self, ctx):
         guild = ctx.guild
         if guild.icon != None:
             png = guild.icon.with_format("png")
@@ -31,11 +35,11 @@ class server(commands.Cog):
             await ctx.respond(embed=embed)
         
         else:
-            await ctx.respond(f"This server doesn't have an icon", ephemeral=True)
+            await ctx.respond("This server doesn't have an icon", ephemeral=True)
 
 
     @discord.slash_command(name="serverbanner", description="Show server banner image", guild_only=True)
-    async def guild_banner(self, ctx: commands.Context) -> None:
+    async def guild_banner(self, ctx):
         guild = ctx.guild
         if guild.banner != None:
             png = guild.banner.with_format("png")
@@ -52,11 +56,11 @@ class server(commands.Cog):
             await ctx.respond(embed=embed)
 
         else:
-            await ctx.respond(f"This server doesn't have a banner", ephemeral=True)
+            await ctx.respond("This server doesn't have a banner", ephemeral=True)
 
 
     @discord.slash_command(name="serverbackground", description="Show server invite background", guild_only=True)
-    async def guild_invite_background(self, ctx: commands.Context) -> None:
+    async def guild_invite_background(self, ctx):
         guild = ctx.guild
         if guild.splash != None:
             png = guild.splash.with_format("png")
@@ -72,11 +76,11 @@ class server(commands.Cog):
             await ctx.respond(embed=embed)
 
         else:
-            await ctx.respond(f"This server doesn't have an invite background", ephemeral=True)
+            await ctx.respond("This server doesn't have an invite background", ephemeral=True)
 
 
     @discord.slash_command(name="serveremojis", description="Show server emojis", guild_only=True)
-    async def guild_emojis(self, ctx: commands.Context) -> None:
+    async def guild_emojis(self, ctx):
         guild = ctx.guild
         emojis = [str(x) for x in guild.emojis]
 
@@ -86,5 +90,5 @@ class server(commands.Cog):
         await ctx.respond(embed=embed, ephemeral=True)
 
 
-def setup(bot: commands.Bot) -> None:
-      bot.add_cog(server(bot))
+def setup(bot: commands.Bot):
+    bot.add_cog(server(bot))

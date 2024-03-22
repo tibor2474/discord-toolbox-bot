@@ -1,16 +1,20 @@
+from typing import Union
 import discord
 from discord.ext import commands
-from typing import Union
-from config import bot_color, image_icon, member_icon
+
+from config import bot_color
+from config import image_icon
+from config import member_icon
+
 
 class members(commands.Cog):
-    def __init__(self, bot: commands.Bot) -> None:
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     
     @discord.slash_command(name="avatar", description="Show someones avatar")
     @discord.option("member", discord.Member, description="Select a user", required=True)
-    async def member_avatar(self, ctx: commands.Context, member: discord.Member) -> None:
+    async def member_avatar(self, ctx, member: discord.Member):
         png = member.avatar.with_format("png")
         jpg = member.avatar.with_format("jpg")
         webp = member.avatar.with_format("webp")
@@ -32,7 +36,7 @@ class members(commands.Cog):
 
 
     @discord.slash_command(name="serveravatar", description="Show someones server avatar", guild_only=True)
-    async def member_guild_avatar(self, ctx: commands.Context, member: discord.Member) -> None:
+    async def member_guild_avatar(self, ctx, member: discord.Member):
         if member.guild_avatar != None:
             png = member.guild_avatar.with_format("png")
             jpg = member.guild_avatar.with_format("jpg")
@@ -59,7 +63,7 @@ class members(commands.Cog):
 
     @discord.slash_command(name="banner", description="Show someones banner (if they have one)")
     @discord.option("member", discord.Member, description="Select a user", required=True)
-    async def member_banner(self, ctx: commands.Context, member: discord.Member) -> None:
+    async def member_banner(self, ctx, member: discord.Member):
         embed = discord.Embed(color=bot_color)
 
         if member.banner != None:
@@ -74,7 +78,7 @@ class members(commands.Cog):
     @discord.commands.default_permissions(move_members=True)
     @discord.option("member", discord.Member, description="Select a member", required=True)
     @discord.option("channel", Union[discord.VoiceChannel, discord.StageChannel], description="Select a channel", required=True)
-    async def member_move(self, ctx: commands.Context, member: discord.Member, channel: Union[discord.VoiceChannel, discord.StageChannel]) -> None:
+    async def member_move(self, ctx, member: discord.Member, channel: Union[discord.VoiceChannel, discord.StageChannel]):
         if member.voice is None:
             await ctx.respond(f"{member.mention} is not in a voice channel", ephemeral=True)
         else:
@@ -83,5 +87,6 @@ class members(commands.Cog):
 
 
 
-def setup(bot: commands.Bot) -> None:
+def setup(bot: commands.Bot):
     bot.add_cog(members(bot))
+    
