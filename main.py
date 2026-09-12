@@ -1,70 +1,177 @@
+"""Main entry point for the Toolbox Discord bot.
+
+Configures dual UTC logging (console and timestamped file under logs/),
+initializes the bot with Discord.py v2, loads cogs, and configures error handling.
+"""
+
+import logging
 import os
+import sys
+import time
+from datetime import datetime, timezone
+from typing import Optional
+
 import discord
+from discord import app_commands
 from discord.ext import commands
 
 from config import bot_token
-from config import bot_time
 
-# set intents
-intents = discord.Intents.default()
-intents.members = True
-intents.presences = True
 
-bot = commands.Bot(intents=intents, help_command=None)
+# ==============================================================================
+# Logging Configuration
+# ==============================================================================
 
-# load commands
-for f in os.listdir("./commands"):
-    if f.endswith(".py"):
+# Ensure logs directory exists
+os.makedirs("logs", exist_ok=True)
+
+# Generate timestamped log filename (UTC)
+log_timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d_%H-%M-%S")
+log_filepath = os.path.join("logs", f"bot_{log_timestamp}.log")
+
+# Standard format using UTC time
+log_formatter = logging.Formatter(
+    fmt="[%(asctime)s] [%(levelname)s] %(name)s: %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+log_formatter.converter = time.gmtime
+
+# Console handler (stdout)
+console_handler = logging.StreamHandler(sys.stdout)
+console_handler.setFormatter(log_formatter)
+console_handler.setLevel(logging.INFO)
+
+# File handler (logs/bot_<timestamp>.log)
+file_handler = logging.FileHandler(log_filepath, encoding="utf-8")
+file_handler.setFormatter(log_formatter)
+file_handler.setLevel(logging.INFO)
+
+# Configure root logger
+root_logger = logging.getLogger()
+root_logger.setLevel(logging.INFO)
+root_logger.addHandler(console_handler)
+root_logger.addHandler(file_handler)
+
+logger = logging.getLogger("toolbox")
+
+
+# ==============================================================================
+# Bot Class Definition
+# ==============================================================================
+
+class ToolboxBot(commands.Bot):
+    """Toolbox Discord Bot managing cogs and application command trees."""
+
+    def __init__(self) -> None:
+        intents = discord.Intents.default()
+        intents.members = True
+        intents.presences = True
+
+        super().__init__(
+            command_prefix=commands.when_mentioned_or("!"),
+            intents=intents,
+            help_command=None,
+        )
+
+    async def setup_hook(self) -> None:
+        """Asynchronous setup hook executed prior to login.
+
+        Loads all extensions from the cogs/ directory and syncs the app command tree.
+        """
+        # Load extensions from cogs directory
+        for filename in sorted(os.listdir("./cogs")):
+            if filename.endswith(".py"):
+                extension = f"cogs.{filename[:-3]}"
+                try:
+                    await self.load_extension(extension)
+                    logger.info(f"Loaded {filename}")
+                except Exception as error:
+                    logger.error(f"ERROR {filename} could not be loaded: {error}", exc_info=True)
+
+        # Synchronize application command tree with Discord
         try:
-            bot.load_extension("commands." + f[:-3])
+            synced = await self.tree.sync()
+            logger.info(f"Synced {len(synced)} application commands")
         except Exception as error:
-            print((discord.utils.utcnow().strftime(f"[{bot_time}]")), f"ERROR {f} could not be loaded: {error}")
-        else:
-            print((discord.utils.utcnow().strftime(f"[{bot_time}]")),f"Loaded {f}")
-
-for f in os.listdir("./context_menus"):
-    if f.endswith(".py"):
-        try:
-            bot.load_extension("context_menus." + f[:-3])
-        except Exception as error:
-            print((discord.utils.utcnow().strftime(f"[{bot_time}]")), f"ERROR {f} could not be loaded: {error}")
-        else:
-            print((discord.utils.utcnow().strftime(f"[{bot_time}]")),f"Loaded {f}")
+            logger.error(f"Failed to sync application commands: {error}", exc_info=True)
 
 
-# sync commands
-@bot.event
-async def on_connect():
-    await bot.sync_commands(delete_existing=True)
-    print((discord.utils.utcnow().strftime(f"[{bot_time}]")), "Synced commands")
+bot = ToolboxBot()
+
+
+# ==============================================================================
+# Event Listeners
+# ==============================================================================
 
 @bot.event
-async def on_ready():
-    print((discord.utils.utcnow().strftime(f"[{bot_time}]")), f"Logged in as {bot.user}")
+async def on_ready() -> None:
+    """Invoked when the bot has successfully established a gateway connection."""
+    logger.info(f"Logged in as {bot.user} (ID: {bot.user.id if bot.user else 'Unknown'})")
 
-@bot.listen
-async def on_message(message):
+
+@bot.listen("on_message")
+async def on_message(message: discord.Message) -> None:
+    """Listener for incoming messages."""
     if message.author == bot.user:
         return
 
 
-# logging
-@bot.event
-async def on_application_command(ctx: discord.ApplicationContext) -> None: #log command execution
-    print((discord.utils.utcnow().strftime(f"[{bot_time}]")), f"User @{ctx.author.name} (ID:{ctx.author.id}) used the {ctx.command.name} command")
-
-# error checks
-@bot.event
-async def on_application_command_error(ctx: discord.ApplicationContext, error) -> None: #log app command error
-    if isinstance(error, commands.BotMissingPermissions): #bot has missing permissions
-        return await ctx.respond("I don't have the correct permissions to do that.", ephemeral=True)
-
-    elif isinstance(error, commands.MissingPermissions): #user doesn't have perms
-        return await ctx.respond("You don't have the correct permissions to do that.", ephemeral=True)
-        
-    else: #or something else
-        await ctx.respond("An error occured while executing the command.", ephemeral=True)
-    raise error
+@bot.listen("on_interaction")
+async def on_interaction(interaction: discord.Interaction) -> None:
+    """Logs application command executions."""
+    if interaction.type == discord.InteractionType.application_command:
+        command_name = interaction.command.name if interaction.command else "unknown"
+        user = interaction.user
+        logger.info(f"User @{user.name} (ID:{user.id}) used the {command_name} command")
 
 
-bot.run(bot_token)
+# ==============================================================================
+# Error Handling
+# ==============================================================================
+
+@bot.tree.error
+async def on_app_command_error(
+    interaction: discord.Interaction,
+    error: app_commands.AppCommandError
+) -> None:
+    """Global error handler for application commands."""
+    command_name = interaction.command.name if interaction.command else "unknown"
+    logger.error(f"Error executing command '{command_name}': {error}", exc_info=error)
+
+    # Unwrap original error if wrapped in CommandInvokeError
+    original_error = getattr(error, "original", error)
+
+    if isinstance(error, app_commands.BotMissingPermissions) or isinstance(original_error, commands.BotMissingPermissions):
+        response_text = "I don't have the correct permissions to do that."
+    elif isinstance(error, app_commands.MissingPermissions) or isinstance(original_error, commands.MissingPermissions):
+        response_text = "You don't have the correct permissions to do that."
+    elif isinstance(error, app_commands.CheckFailure):
+        response_text = "You do not meet the requirements to execute this command."
+    else:
+        response_text = "An error occurred while executing the command."
+
+    try:
+        if interaction.response.is_done():
+            await interaction.followup.send(response_text, ephemeral=True)
+        else:
+            await interaction.response.send_message(response_text, ephemeral=True)
+    except Exception as send_err:
+        logger.error(f"Failed to deliver error response: {send_err}")
+
+
+# ==============================================================================
+# Bot Runner
+# ==============================================================================
+
+def main() -> None:
+    """Validates configuration and launches the bot."""
+    if not bot_token:
+        logger.critical("No bot token provided! Please define the TOKEN environment variable in your secrets.")
+        sys.exit(1)
+
+    # Pass log_handler=None to retain our custom logging configuration
+    bot.run(bot_token, log_handler=None)
+
+
+if __name__ == "__main__":
+    main()
