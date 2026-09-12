@@ -1,94 +1,107 @@
 import discord
+from discord import app_commands
 from discord.ext import commands
 
-from config import bot_color
-from config import image_icon
-from config import emoji_icon
+from config import bot_color, emoji_icon, image_icon
 
 
-class server(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+class Server(commands.Cog):
+    """Cog for server-related asset and media commands."""
+
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
+    @app_commands.command(name="servericon", description="Show server icon")
+    @app_commands.guild_only()
+    async def guild_icon(self, interaction: discord.Interaction) -> None:
+        """Displays the server's icon in various image formats."""
+        guild = interaction.guild
+        if guild is None or guild.icon is None:
+            await interaction.response.send_message("This server doesn't have an icon", ephemeral=True)
+            return
 
-    @discord.slash_command(name="servericon", description="Show server icon", guild_only=True)
-    async def guild_icon(self, ctx):
-        guild = ctx.guild
-        if guild.icon != None:
-            png = guild.icon.with_format("png")
-            jpg = guild.icon.with_format("jpg")
-            webp = guild.icon.with_format("webp")
+        png = guild.icon.replace(format="png")
+        jpg = guild.icon.replace(format="jpg")
+        webp = guild.icon.replace(format="webp")
+        gif = guild.icon.replace(format="gif") if guild.icon.is_animated() else None
 
-            try:
-                gif = guild.icon.with_format("gif")
-            except:
-                gif = None
+        desc = (
+            f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp}) - [GIF]({gif})"
+            if gif
+            else f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp})"
+        )
 
-            embed = discord.Embed(
-                description=f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp}) - [GIF]({gif})"
-                if gif
-                else f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp})",
-                color=bot_color)
+        embed = discord.Embed(description=desc, color=bot_color)
+        embed.set_author(name="Server icon", icon_url=image_icon)
+        embed.set_image(url=guild.icon.url)
+        await interaction.response.send_message(embed=embed)
 
-            embed.set_author(name="Server icon", icon_url=image_icon)
-            embed.set_image(url=guild.icon)
-            await ctx.respond(embed=embed)
-        
-        else:
-            await ctx.respond("This server doesn't have an icon", ephemeral=True)
+    @app_commands.command(name="serverbanner", description="Show server banner image")
+    @app_commands.guild_only()
+    async def guild_banner(self, interaction: discord.Interaction) -> None:
+        """Displays the server's banner image if available."""
+        guild = interaction.guild
+        if guild is None or guild.banner is None:
+            await interaction.response.send_message("This server doesn't have a banner", ephemeral=True)
+            return
 
+        png = guild.banner.replace(format="png")
+        jpg = guild.banner.replace(format="jpg")
+        webp = guild.banner.replace(format="webp")
+        gif = guild.banner.replace(format="gif") if guild.banner.is_animated() else None
 
-    @discord.slash_command(name="serverbanner", description="Show server banner image", guild_only=True)
-    async def guild_banner(self, ctx):
-        guild = ctx.guild
-        if guild.banner != None:
-            png = guild.banner.with_format("png")
-            jpg = guild.banner.with_format("jpg")
-            webp = guild.banner.with_format("webp")
-            # no gif because animated banners are not a thing yet
+        desc = (
+            f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp}) - [GIF]({gif})"
+            if gif
+            else f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp})"
+        )
 
-            embed = discord.Embed(
-                description=f"[PNG]({png}) -" f"[JPG]({jpg}) -" f"[WEBP]({webp})", 
-                color=bot_color)
+        embed = discord.Embed(description=desc, color=bot_color)
+        embed.set_author(name="Server banner", icon_url=image_icon)
+        embed.set_image(url=guild.banner.url)
+        await interaction.response.send_message(embed=embed)
 
-            embed.set_author(name="Server banner", icon_url=image_icon)
-            embed.set_image(url=guild.banner)
-            await ctx.respond(embed=embed)
+    @app_commands.command(name="serverbackground", description="Show server invite background")
+    @app_commands.guild_only()
+    async def guild_invite_background(self, interaction: discord.Interaction) -> None:
+        """Displays the server's invite splash background."""
+        guild = interaction.guild
+        if guild is None or guild.splash is None:
+            await interaction.response.send_message("This server doesn't have an invite background", ephemeral=True)
+            return
 
-        else:
-            await ctx.respond("This server doesn't have a banner", ephemeral=True)
+        png = guild.splash.replace(format="png")
+        jpg = guild.splash.replace(format="jpg")
+        webp = guild.splash.replace(format="webp")
 
+        embed = discord.Embed(
+            description=f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp})",
+            color=bot_color
+        )
+        embed.set_author(name="Server invite background", icon_url=image_icon)
+        embed.set_image(url=guild.splash.url)
+        await interaction.response.send_message(embed=embed)
 
-    @discord.slash_command(name="serverbackground", description="Show server invite background", guild_only=True)
-    async def guild_invite_background(self, ctx):
-        guild = ctx.guild
-        if guild.splash != None:
-            png = guild.splash.with_format("png")
-            jpg = guild.splash.with_format("jpg")
-            webp = guild.splash.with_format("webp")
+    @app_commands.command(name="serveremojis", description="Show server emojis")
+    @app_commands.guild_only()
+    async def guild_emojis(self, interaction: discord.Interaction) -> None:
+        """Displays all custom emojis available in the server."""
+        guild = interaction.guild
+        if guild is None:
+            await interaction.response.send_message("This command can only be used in a server.", ephemeral=True)
+            return
 
-            embed = discord.Embed(
-                description=f"[PNG]({png}) -" f"[JPG]({jpg}) -" f"[WEBP]({webp})", 
-                color=bot_color)
-
-            embed.set_author(name="Server invite background", icon_url=image_icon)
-            embed.set_image(url=guild.splash)
-            await ctx.respond(embed=embed)
-
-        else:
-            await ctx.respond("This server doesn't have an invite background", ephemeral=True)
-
-
-    @discord.slash_command(name="serveremojis", description="Show server emojis", guild_only=True)
-    async def guild_emojis(self, ctx):
-        guild = ctx.guild
         emojis = [str(x) for x in guild.emojis]
+        if not emojis:
+            await interaction.response.send_message("This server doesn't have any custom emojis", ephemeral=True)
+            return
 
         embed = discord.Embed(color=bot_color, description=" ".join(emojis))
         embed.set_author(name="Server emojis", icon_url=emoji_icon)
         embed.set_footer(text=f"{len(emojis)} emojis total")
-        await ctx.respond(embed=embed, ephemeral=True)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
-def setup(bot: commands.Bot):
-    bot.add_cog(server(bot))
+async def setup(bot: commands.Bot) -> None:
+    """Extension setup entry point."""
+    await bot.add_cog(Server(bot))

@@ -1,26 +1,48 @@
 import discord
+from discord import app_commands
 from discord.ext import commands
 
-from config import bot_color
-from config import message_icon
+from config import bot_color, message_icon
 
 
-class context_message(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+class Message(commands.Cog):
+    """Cog for message-related commands and context menus."""
+
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
+        self.ctx_menu = app_commands.ContextMenu(
+            name="Show raw message",
+            callback=self.raw_message,
+        )
+        self.ctx_menu.guild_only = True
 
+    async def cog_load(self) -> None:
+        """Register the message context menu upon cog load."""
+        self.bot.tree.add_command(self.ctx_menu)
 
-    @discord.message_command(name="Show raw message")
-    async def raw_message(self, ctx, message: discord.Message):
-        if message.content == "":
-            return await ctx.respond("The message doesn't have any content that i can show", ephemeral=True)   
+    async def cog_unload(self) -> None:
+        """Unregister the message context menu upon cog unload."""
+        self.bot.tree.remove_command(self.ctx_menu.name, type=self.ctx_menu.type)
 
-        embed = discord.Embed(color=bot_color, title=f"Raw of ID:{message.id}", description=f"```{message.content}```")
+    async def raw_message(self, interaction: discord.Interaction, message: discord.Message) -> None:
+        """Context menu command to display the raw content of a message."""
+        if not message.content:
+            await interaction.response.send_message(
+                "The message doesn't have any content that I can show",
+                ephemeral=True
+            )
+            return
+
+        embed = discord.Embed(
+            color=bot_color,
+            title=f"Raw of ID:{message.id}",
+            description=f"```{message.content}```"
+        )
         embed.set_author(name="Raw message", icon_url=message_icon)
-        embed.set_footer(text="The formating might be inaccurate if you're viewing code blocks")
-        await ctx.respond(embed=embed, ephemeral=True) 
+        embed.set_footer(text="The formatting might be inaccurate if you're viewing code blocks")
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
-
-def setup(bot: commands.Bot):
-    bot.add_cog(context_message(bot))
+async def setup(bot: commands.Bot) -> None:
+    """Extension setup entry point."""
+    await bot.add_cog(Message(bot))

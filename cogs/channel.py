@@ -1,86 +1,131 @@
 from typing import Union
 import discord
+from discord import app_commands
 from discord.ext import commands
 
 
-class channel(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+class Channel(commands.Cog):
+    """Cog for channel administration and configuration commands."""
+
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
-
-    @discord.slash_command(name="slowmode", description="Set custom slowmode for a channel", guild_only=True)
-    @discord.commands.default_permissions(manage_channels=True)
-    @discord.option("channel", Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel], description="Select a channel", required=True)
-    @discord.option("seconds", int, description="Slowmode delay in seconds (set to 0 to disable)", required=True)
-    async def channel_slowmode(self, ctx, channel: Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel], seconds: int):
+    @app_commands.command(name="slowmode", description="Set custom slowmode for a channel")
+    @app_commands.guild_only()
+    @app_commands.default_permissions(manage_channels=True)
+    @app_commands.describe(
+        channel="Select a channel",
+        seconds="Slowmode delay in seconds (set to 0 to disable)"
+    )
+    async def channel_slowmode(
+        self,
+        interaction: discord.Interaction,
+        channel: Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel],
+        seconds: int
+    ) -> None:
+        """Sets slowmode delay in seconds for the selected channel."""
         await channel.edit(slowmode_delay=seconds)
         if seconds == 0:
-            return await ctx.respond(f"Disabled slowmode for {channel.mention}")
-        await ctx.respond(f"Changed slowmode for {channel.mention} to {seconds} seconds")
+            await interaction.response.send_message(f"Disabled slowmode for {channel.mention}")
+            return
+        await interaction.response.send_message(f"Changed slowmode for {channel.mention} to {seconds} seconds")
 
-
-    @discord.slash_command(name="nsfw", description="Turn on or off age-restricted mode for a channel", guild_only=True)
-    @discord.commands.default_permissions(manage_channels=True)
-    @discord.option("channel", Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel, discord.ForumChannel], description="Select a channel", required=True)
-    @discord.option("mode", bool, description="Turn on or off", required=True)
-    async def channel_nsfw(self, ctx, channel: Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel, discord.ForumChannel], mode: bool):
-        if mode == True:
+    @app_commands.command(name="nsfw", description="Turn on or off age-restricted mode for a channel")
+    @app_commands.guild_only()
+    @app_commands.default_permissions(manage_channels=True)
+    @app_commands.describe(
+        channel="Select a channel",
+        mode="Turn on or off"
+    )
+    async def channel_nsfw(
+        self,
+        interaction: discord.Interaction,
+        channel: Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel, discord.ForumChannel],
+        mode: bool
+    ) -> None:
+        """Toggles the age-restriction (NSFW) setting on a channel."""
+        if mode:
             await channel.edit(nsfw=True)
-            await ctx.respond(f"Turned on age-restriction for {channel.mention}")
-        elif mode == False:
+            await interaction.response.send_message(f"Turned on age-restriction for {channel.mention}")
+        else:
             await channel.edit(nsfw=False)
-            await ctx.respond(f"Turned off age-restriction for {channel.mention}")
+            await interaction.response.send_message(f"Turned off age-restriction for {channel.mention}")
 
-    
-    @discord.slash_command(name="vclimit", description="Set user limit for voice channels", guild_only=True)
-    @discord.commands.default_permissions(manage_channels=True)
-    @discord.option("channel", Union[discord.StageChannel, discord.VoiceChannel], description="Select a channel", required=True)
-    @discord.option("limit", int, description="User limit (set to 0 to disable)", required=True)
-    async def channel_limit(self, ctx, channel: Union[discord.StageChannel, discord.VoiceChannel], limit: int):
+    @app_commands.command(name="vclimit", description="Set user limit for voice channels")
+    @app_commands.guild_only()
+    @app_commands.default_permissions(manage_channels=True)
+    @app_commands.describe(
+        channel="Select a channel",
+        limit="User limit (set to 0 to disable)"
+    )
+    async def channel_limit(
+        self,
+        interaction: discord.Interaction,
+        channel: Union[discord.StageChannel, discord.VoiceChannel],
+        limit: int
+    ) -> None:
+        """Sets the maximum user limit for a voice or stage channel."""
         await channel.edit(user_limit=limit)
         if limit == 0:
-            return await ctx.respond(f"Disabled user limit for {channel.mention}")
-        await ctx.respond(f"Changed user limit for {channel.mention} to {limit} members")
+            await interaction.response.send_message(f"Disabled user limit for {channel.mention}")
+            return
+        await interaction.response.send_message(f"Changed user limit for {channel.mention} to {limit} members")
 
+    REGION_CHOICES = [
+        app_commands.Choice(name="Automatic", value="Automatic"),
+        app_commands.Choice(name="Brazil", value="Brazil"),
+        app_commands.Choice(name="Hong Kong", value="Hong Kong"),
+        app_commands.Choice(name="India", value="India"),
+        app_commands.Choice(name="Japan", value="Japan"),
+        app_commands.Choice(name="Rotterdam", value="Rotterdam"),
+        app_commands.Choice(name="Russia", value="Russia"),
+        app_commands.Choice(name="Singapore", value="Singapore"),
+        app_commands.Choice(name="South Africa", value="South Africa"),
+        app_commands.Choice(name="Sydney", value="Sydney"),
+        app_commands.Choice(name="US Central", value="US Central"),
+        app_commands.Choice(name="US East", value="US East"),
+        app_commands.Choice(name="US South", value="US South"),
+        app_commands.Choice(name="US West", value="US West"),
+    ]
 
-    @discord.slash_command(name="vcregion", description="Change region for a voice channel", guild_only=True)
-    @discord.commands.default_permissions(manage_channels=True)
-    @discord.option("channel", Union[discord.StageChannel, discord.VoiceChannel], description="Select a channel", required=True)
-    @discord.option("region", str, description="Select a region", required=True, choices=[
-        "Automatic",
-        "Brazil",
-        "Hong Kong",
-        "India",
-        "Japan",
-        "Rotterdam",
-        "Russia",
-        "Singapore",
-        "South Africa",
-        "Sydney",
-        "US Central",
-        "US East",
-        "US South",
-        "US West"
-    ])
-    async def channel_region(self, ctx, channel: Union[discord.StageChannel, discord.VoiceChannel], region: str):
-        global set_region
-        if region == "Automatic":
+    @app_commands.command(name="vcregion", description="Change region for a voice channel")
+    @app_commands.guild_only()
+    @app_commands.default_permissions(manage_channels=True)
+    @app_commands.describe(
+        channel="Select a channel",
+        region="Select a region"
+    )
+    @app_commands.choices(region=REGION_CHOICES)
+    async def channel_region(
+        self,
+        interaction: discord.Interaction,
+        channel: Union[discord.StageChannel, discord.VoiceChannel],
+        region: app_commands.Choice[str]
+    ) -> None:
+        """Changes the RTC voice region for a voice or stage channel."""
+        region_value = region.value
+        if region_value == "Automatic":
             set_region = None
-        elif region == "Hong Kong":
+        elif region_value == "Hong Kong":
             set_region = "hongkong"
-        elif region == "South Africa":
+        elif region_value == "South Africa":
             set_region = "southafrica"
         else:
-            set_region = region.lower().replace(" ", "_")
+            set_region = region_value.lower().replace(" ", "_")
 
         try:
-            await channel.edit(rtc_region=set_region, reason=f"command executed by @{ctx.author.name}")
-            await ctx.respond(f"Changed region to {region} for {channel.mention}", ephemeral=True)
-        except:
-            await ctx.respond(f"Failed to change region for {channel.mention}")
+            await channel.edit(rtc_region=set_region, reason=f"command executed by @{interaction.user.name}")
+            await interaction.response.send_message(
+                f"Changed region to {region_value} for {channel.mention}",
+                ephemeral=True
+            )
+        except Exception:
+            await interaction.response.send_message(
+                f"Failed to change region for {channel.mention}",
+                ephemeral=True
+            )
 
 
-
-def setup(bot: commands.Bot):
-    bot.add_cog(channel(bot))
-      
+async def setup(bot: commands.Bot) -> None:
+    """Extension setup entry point."""
+    await bot.add_cog(Channel(bot))
