@@ -18,9 +18,15 @@ class Permission(commands.GroupCog, name="permission", description="Manage and v
 
     @app_commands.command(name="showmember", description="Show permissions for a member")
     @app_commands.describe(member="Select a member")
-    async def show_member_perms(self, interaction: discord.Interaction, member: discord.Member) -> None:
+    async def show_member_perms(
+        self,
+        interaction: discord.Interaction,
+        member: discord.Member
+    ) -> None:
         """Displays all granted guild permissions for the specified member."""
-        permissions = ", ".join([str(perm[0]).replace("_", " ") for perm in member.guild_permissions if perm[1]])
+        permissions = ", ".join(
+            str(perm[0]).replace("_", " ") for perm in member.guild_permissions if perm[1]
+        )
 
         if not permissions:
             permissions = "*There are no permissions for this member*"
@@ -31,9 +37,15 @@ class Permission(commands.GroupCog, name="permission", description="Manage and v
 
     @app_commands.command(name="showrole", description="Show permissions for a role")
     @app_commands.describe(role="Select a role")
-    async def show_role_perms(self, interaction: discord.Interaction, role: discord.Role) -> None:
+    async def show_role_perms(
+        self,
+        interaction: discord.Interaction,
+        role: discord.Role
+    ) -> None:
         """Displays all granted permissions for the specified role."""
-        permissions = ", ".join([str(perm[0]).replace("_", " ") for perm in role.permissions if perm[1]])
+        permissions = ", ".join(
+            str(perm[0]).replace("_", " ") for perm in role.permissions if perm[1]
+        )
 
         if not permissions:
             permissions = "*There are no permission offsets for this role*"

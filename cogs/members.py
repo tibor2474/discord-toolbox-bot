@@ -28,7 +28,11 @@ class Members(commands.Cog):
         """Unregister the user context menu upon cog unload."""
         self.bot.tree.remove_command(self.ctx_menu.name, type=self.ctx_menu.type)
 
-    async def info_member_context(self, interaction: discord.Interaction, member: discord.Member) -> None:
+    async def info_member_context(
+        self,
+        interaction: discord.Interaction,
+        member: discord.Member
+    ) -> None:
         """Context menu command to display comprehensive member information."""
         creation_time = int(member.created_at.timestamp())
         join_time = int(member.joined_at.timestamp()) if member.joined_at else 0
@@ -81,7 +85,11 @@ class Members(commands.Cog):
     @app_commands.command(name="serveravatar", description="Show someone's server avatar")
     @app_commands.guild_only()
     @app_commands.describe(member="Select a user")
-    async def member_guild_avatar(self, interaction: discord.Interaction, member: discord.Member) -> None:
+    async def member_guild_avatar(
+        self,
+        interaction: discord.Interaction,
+        member: discord.Member
+    ) -> None:
         """Displays the specified member's guild-specific avatar."""
         if member.guild_avatar is not None:
             avatar = member.guild_avatar

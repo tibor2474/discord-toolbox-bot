@@ -29,13 +29,19 @@ class Thread(commands.Cog):
         assert isinstance(interaction.user, discord.Member)
         if interaction.channel.permissions_for(interaction.user).manage_threads:
             if lock:
-                await interaction.response.send_message("This thread was archived and locked by a staff member.")
+                await interaction.response.send_message(
+                    "This thread was archived and locked by a staff member."
+                )
             else:
-                await interaction.response.send_message("This thread was archived by a staff member.")
+                await interaction.response.send_message(
+                    "This thread was archived by a staff member."
+                )
             await interaction.channel.edit(archived=True, locked=lock)
 
         elif interaction.user.id == interaction.channel.owner_id:
-            await interaction.response.send_message("This thread was archived by the user that opened it.")
+            await interaction.response.send_message(
+                "This thread was archived by the user that opened it."
+            )
             await interaction.channel.edit(archived=True)
 
         else:
@@ -57,7 +63,11 @@ class Thread(commands.Cog):
             return
 
         assert isinstance(interaction.user, discord.Member)
-        if interaction.channel.permissions_for(interaction.user).manage_threads or interaction.user.id == interaction.channel.owner_id:
+        can_manage = (
+            interaction.channel.permissions_for(interaction.user).manage_threads
+            or interaction.user.id == interaction.channel.owner_id
+        )
+        if can_manage:
             await interaction.channel.edit(name=name)
             await interaction.response.send_message(f"Changed thread name to: **{name}**")
         else:

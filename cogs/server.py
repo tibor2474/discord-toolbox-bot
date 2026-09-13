@@ -19,7 +19,10 @@ class Server(commands.Cog):
         """Displays the server's icon in various image formats."""
         guild = interaction.guild
         if guild is None or guild.icon is None:
-            await interaction.response.send_message("This server doesn't have an icon", ephemeral=True)
+            await interaction.response.send_message(
+                "This server doesn't have an icon",
+                ephemeral=True
+            )
             return
 
         png = guild.icon.replace(format="png")
@@ -44,7 +47,10 @@ class Server(commands.Cog):
         """Displays the server's banner image if available."""
         guild = interaction.guild
         if guild is None or guild.banner is None:
-            await interaction.response.send_message("This server doesn't have a banner", ephemeral=True)
+            await interaction.response.send_message(
+                "This server doesn't have a banner",
+                ephemeral=True
+            )
             return
 
         png = guild.banner.replace(format="png")
@@ -69,7 +75,10 @@ class Server(commands.Cog):
         """Displays the server's invite splash background."""
         guild = interaction.guild
         if guild is None or guild.splash is None:
-            await interaction.response.send_message("This server doesn't have an invite background", ephemeral=True)
+            await interaction.response.send_message(
+                "This server doesn't have an invite background",
+                ephemeral=True
+            )
             return
 
         png = guild.splash.replace(format="png")
@@ -90,12 +99,18 @@ class Server(commands.Cog):
         """Displays all custom emojis available in the server."""
         guild = interaction.guild
         if guild is None:
-            await interaction.response.send_message("This command can only be used in a server.", ephemeral=True)
+            await interaction.response.send_message(
+                "This command can only be used in a server.",
+                ephemeral=True
+            )
             return
 
         emojis = [str(x) for x in guild.emojis]
         if not emojis:
-            await interaction.response.send_message("This server doesn't have any custom emojis", ephemeral=True)
+            await interaction.response.send_message(
+                "This server doesn't have any custom emojis",
+                ephemeral=True
+            )
             return
 
         embed = discord.Embed(color=bot_color, description=" ".join(emojis))

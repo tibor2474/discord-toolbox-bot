@@ -141,9 +141,15 @@ async def on_app_command_error(
     # Unwrap original error if wrapped in CommandInvokeError
     original_error = getattr(error, "original", error)
 
-    if isinstance(error, app_commands.BotMissingPermissions) or isinstance(original_error, commands.BotMissingPermissions):
+    if (
+        isinstance(error, app_commands.BotMissingPermissions)
+        or isinstance(original_error, commands.BotMissingPermissions)
+    ):
         response_text = "I don't have the correct permissions to do that."
-    elif isinstance(error, app_commands.MissingPermissions) or isinstance(original_error, commands.MissingPermissions):
+    elif (
+        isinstance(error, app_commands.MissingPermissions)
+        or isinstance(original_error, commands.MissingPermissions)
+    ):
         response_text = "You don't have the correct permissions to do that."
     elif isinstance(error, app_commands.CheckFailure):
         response_text = "You do not meet the requirements to execute this command."
@@ -166,7 +172,9 @@ async def on_app_command_error(
 def main() -> None:
     """Validates configuration and launches the bot."""
     if not bot_token:
-        logger.critical("No bot token provided! Please define the TOKEN environment variable in your secrets.")
+        logger.critical(
+            "No bot token provided! Please define the TOKEN environment variable in your secrets."
+        )
         sys.exit(1)
 
     # Pass log_handler=None to retain our custom logging configuration

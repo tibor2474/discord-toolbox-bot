@@ -59,7 +59,10 @@ class Info(commands.Cog):
         """Displays detailed statistics and configuration for the current server."""
         guild = interaction.guild
         if guild is None:
-            await interaction.response.send_message("This command can only be used in a server.", ephemeral=True)
+            await interaction.response.send_message(
+                "This command can only be used in a server.",
+                ephemeral=True
+            )
             return
 
         user_count = len([m for m in guild.members if not m.bot])
@@ -90,30 +93,42 @@ class Info(commands.Cog):
         owner_mention = guild.owner.mention if guild.owner else "Unknown"
         embed.add_field(name="Owner", value=owner_mention, inline=True)
         embed.add_field(name="Region", value=f"{guild.preferred_locale}", inline=True)
-        embed.add_field(name="Verification level", value=f"{guild.verification_level} (2fa {mfa_level})", inline=True)
+        embed.add_field(
+            name="Verification level",
+            value=f"{guild.verification_level} (2fa {mfa_level})",
+            inline=True
+        )
 
         embed.add_field(
             name="Server boosts",
-            value=f"{guild.premium_subscription_count} boosts\n{len(guild.premium_subscribers)} booster",
+            value=(
+                f"{guild.premium_subscription_count} boosts\n"
+                f"{len(guild.premium_subscribers)} booster"
+            ),
             inline=True
         )
-        embed.add_field(name="AFK channel", value=f"{afk_channel}\n{afk_timeout} min timeout", inline=True)
+        embed.add_field(
+            name="AFK channel",
+            value=f"{afk_channel}\n{afk_timeout} min timeout",
+            inline=True
+        )
         embed.add_field(
             name="Emojis and stickers",
             value=f"{len(guild.emojis)} emojis\n{len(guild.stickers)} stickers",
             inline=True
         )
 
-        embed.add_field(
-            name="Channels",
-            value=f"{category_count} categories\n{text_count} text\n{voice_count} voice\n{forum_count} forum\n{stage_count} stage",
-            inline=True
+        channels_desc = (
+            f"{category_count} categories\n{text_count} text\n"
+            f"{voice_count} voice\n{forum_count} forum\n{stage_count} stage"
         )
-        embed.add_field(
-            name="Limits",
-            value=f"{file_limit:.1f} MB files\n{guild.sticker_limit} stickers\n{guild.emoji_limit} emojis\n{guild.max_members} users",
-            inline=True
+        embed.add_field(name="Channels", value=channels_desc, inline=True)
+
+        limits_desc = (
+            f"{file_limit:.1f} MB files\n{guild.sticker_limit} stickers\n"
+            f"{guild.emoji_limit} emojis\n{guild.max_members} users"
         )
+        embed.add_field(name="Limits", value=limits_desc, inline=True)
         embed.add_field(name="Members", value=f"{user_count} users\n{bot_count} bots", inline=True)
 
         embed.add_field(name="Roles", value=f"{len(guild.roles)} roles", inline=True)

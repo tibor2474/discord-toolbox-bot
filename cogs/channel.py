@@ -30,9 +30,14 @@ class Channel(commands.Cog):
         if seconds == 0:
             await interaction.response.send_message(f"Disabled slowmode for {channel.mention}")
             return
-        await interaction.response.send_message(f"Changed slowmode for {channel.mention} to {seconds} seconds")
+        await interaction.response.send_message(
+            f"Changed slowmode for {channel.mention} to {seconds} seconds"
+        )
 
-    @app_commands.command(name="nsfw", description="Turn on or off age-restricted mode for a channel")
+    @app_commands.command(
+        name="nsfw",
+        description="Turn on or off age-restricted mode for a channel"
+    )
     @app_commands.guild_only()
     @app_commands.default_permissions(manage_channels=True)
     @app_commands.describe(
@@ -42,16 +47,23 @@ class Channel(commands.Cog):
     async def channel_nsfw(
         self,
         interaction: discord.Interaction,
-        channel: Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel, discord.ForumChannel],
+        channel: Union[
+            discord.TextChannel, discord.StageChannel,
+            discord.VoiceChannel, discord.ForumChannel
+        ],
         mode: bool
     ) -> None:
         """Toggles the age-restriction (NSFW) setting on a channel."""
         if mode:
             await channel.edit(nsfw=True)
-            await interaction.response.send_message(f"Turned on age-restriction for {channel.mention}")
+            await interaction.response.send_message(
+                f"Turned on age-restriction for {channel.mention}"
+            )
         else:
             await channel.edit(nsfw=False)
-            await interaction.response.send_message(f"Turned off age-restriction for {channel.mention}")
+            await interaction.response.send_message(
+                f"Turned off age-restriction for {channel.mention}"
+            )
 
     @app_commands.command(name="vclimit", description="Set user limit for voice channels")
     @app_commands.guild_only()
@@ -71,7 +83,9 @@ class Channel(commands.Cog):
         if limit == 0:
             await interaction.response.send_message(f"Disabled user limit for {channel.mention}")
             return
-        await interaction.response.send_message(f"Changed user limit for {channel.mention} to {limit} members")
+        await interaction.response.send_message(
+            f"Changed user limit for {channel.mention} to {limit} members"
+        )
 
     REGION_CHOICES = [
         app_commands.Choice(name="Automatic", value="Automatic"),
@@ -116,7 +130,10 @@ class Channel(commands.Cog):
             set_region = region_value.lower().replace(" ", "_")
 
         try:
-            await channel.edit(rtc_region=set_region, reason=f"command executed by @{interaction.user.name}")
+            await channel.edit(
+                rtc_region=set_region,
+                reason=f"command executed by @{interaction.user.name}"
+            )
             await interaction.response.send_message(
                 f"Changed region to {region_value} for {channel.mention}",
                 ephemeral=True
