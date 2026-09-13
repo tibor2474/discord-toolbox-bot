@@ -1,3 +1,5 @@
+"""Member management commands, avatars, banners, and context menu actions."""
+
 from typing import Union
 import discord
 from discord import app_commands

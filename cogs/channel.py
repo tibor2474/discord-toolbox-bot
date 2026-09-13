@@ -1,3 +1,5 @@
+"""Channel management commands and configuration for the bot."""
+
 from typing import Union
 import discord
 from discord import app_commands
