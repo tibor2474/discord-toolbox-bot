@@ -4,7 +4,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from config import bot_color, member_icon, role_icon, server_icon
+from config import BOT_COLOR, MEMBER_ICON, ROLE_ICON, SERVER_ICON
 
 
 class Info(commands.Cog):
@@ -27,9 +27,9 @@ class Info(commands.Cog):
         creation_time = int(member.created_at.timestamp())
         join_time = int(member.joined_at.timestamp()) if member.joined_at else 0
 
-        embed = discord.Embed(color=bot_color)
+        embed = discord.Embed(color=BOT_COLOR)
         embed.set_thumbnail(url=member.display_avatar.url)
-        embed.set_author(name="Member info", icon_url=member_icon)
+        embed.set_author(name="Member info", icon_url=MEMBER_ICON)
         embed.add_field(name="User mention", value=member.mention, inline=True)
         embed.add_field(name="Display name", value=member.display_name, inline=True)
         embed.add_field(name="Nickname", value=member.nick or "*None*", inline=True)
@@ -82,12 +82,12 @@ class Info(commands.Cog):
         if guild.description:
             embed = discord.Embed(
                 description=f"**Server description**\n{guild.description}",
-                color=bot_color
+                color=BOT_COLOR
             )
         else:
-            embed = discord.Embed(color=bot_color)
+            embed = discord.Embed(color=BOT_COLOR)
 
-        embed.set_author(name="Server info", icon_url=server_icon)
+        embed.set_author(name="Server info", icon_url=SERVER_ICON)
         embed.add_field(name="Name", value=f"{guild.name}", inline=False)
 
         owner_mention = guild.owner.mention if guild.owner else "Unknown"
@@ -148,8 +148,8 @@ class Info(commands.Cog):
         """Displays attributes and permissions for the specified role."""
         creation_time = int(role.created_at.timestamp())
 
-        embed = discord.Embed(color=bot_color)
-        embed.set_author(name="Role info", icon_url=role_icon)
+        embed = discord.Embed(color=BOT_COLOR)
+        embed.set_author(name="Role info", icon_url=ROLE_ICON)
         embed.add_field(name="Role name", value=role.name, inline=False)
 
         if role.icon:

@@ -15,7 +15,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from config import bot_token
+from config import BOT_TOKEN
 
 
 # ==============================================================================
@@ -171,14 +171,14 @@ async def on_app_command_error(
 
 def main() -> None:
     """Validates configuration and launches the bot."""
-    if not bot_token:
+    if not BOT_TOKEN:
         logger.critical(
             "No bot token provided! Please define the TOKEN environment variable in your secrets."
         )
         sys.exit(1)
 
     # Pass log_handler=None to retain our custom logging configuration
-    bot.run(bot_token, log_handler=None)
+    bot.run(BOT_TOKEN, log_handler=None)
 
 
 if __name__ == "__main__":

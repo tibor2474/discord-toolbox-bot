@@ -4,7 +4,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from config import bot_color, emoji_icon, image_icon
+from config import BOT_COLOR, EMOJI_ICON, IMAGE_ICON
 
 
 class Server(commands.Cog):
@@ -36,8 +36,8 @@ class Server(commands.Cog):
             else f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp})"
         )
 
-        embed = discord.Embed(description=desc, color=bot_color)
-        embed.set_author(name="Server icon", icon_url=image_icon)
+        embed = discord.Embed(description=desc, color=BOT_COLOR)
+        embed.set_author(name="Server icon", icon_url=IMAGE_ICON)
         embed.set_image(url=guild.icon.url)
         await interaction.response.send_message(embed=embed)
 
@@ -64,8 +64,8 @@ class Server(commands.Cog):
             else f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp})"
         )
 
-        embed = discord.Embed(description=desc, color=bot_color)
-        embed.set_author(name="Server banner", icon_url=image_icon)
+        embed = discord.Embed(description=desc, color=BOT_COLOR)
+        embed.set_author(name="Server banner", icon_url=IMAGE_ICON)
         embed.set_image(url=guild.banner.url)
         await interaction.response.send_message(embed=embed)
 
@@ -87,9 +87,9 @@ class Server(commands.Cog):
 
         embed = discord.Embed(
             description=f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp})",
-            color=bot_color
+            color=BOT_COLOR
         )
-        embed.set_author(name="Server invite background", icon_url=image_icon)
+        embed.set_author(name="Server invite background", icon_url=IMAGE_ICON)
         embed.set_image(url=guild.splash.url)
         await interaction.response.send_message(embed=embed)
 
@@ -113,8 +113,8 @@ class Server(commands.Cog):
             )
             return
 
-        embed = discord.Embed(color=bot_color, description=" ".join(emojis))
-        embed.set_author(name="Server emojis", icon_url=emoji_icon)
+        embed = discord.Embed(color=BOT_COLOR, description=" ".join(emojis))
+        embed.set_author(name="Server emojis", icon_url=EMOJI_ICON)
         embed.set_footer(text=f"{len(emojis)} emojis total")
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
