@@ -84,16 +84,16 @@ class ToolboxBot(commands.Bot):
                 extension = f"cogs.{filename[:-3]}"
                 try:
                     await self.load_extension(extension)
-                    logger.info(f"Loaded {filename}")
+                    logger.info("Loaded %s", filename)
                 except Exception as error:
-                    logger.error(f"ERROR {filename} could not be loaded: {error}", exc_info=True)
+                    logger.error("ERROR %s could not be loaded: %s", filename, error, exc_info=True)
 
         # Synchronize application command tree with Discord
         try:
             synced = await self.tree.sync()
-            logger.info(f"Synced {len(synced)} application commands")
+            logger.info("Synced %d application commands", len(synced))
         except Exception as error:
-            logger.error(f"Failed to sync application commands: {error}", exc_info=True)
+            logger.error("Failed to sync application commands: %s", error, exc_info=True)
 
 
 bot = ToolboxBot()
@@ -106,7 +106,7 @@ bot = ToolboxBot()
 @bot.event
 async def on_ready() -> None:
     """Invoked when the bot has successfully established a gateway connection."""
-    logger.info(f"Logged in as {bot.user} (ID: {bot.user.id if bot.user else 'Unknown'})")
+    logger.info("Logged in as %s (ID: %s)", bot.user, bot.user.id if bot.user else "Unknown")
 
 
 @bot.listen("on_message")
@@ -122,7 +122,7 @@ async def on_interaction(interaction: discord.Interaction) -> None:
     if interaction.type == discord.InteractionType.application_command:
         command_name = interaction.command.name if interaction.command else "unknown"
         user = interaction.user
-        logger.info(f"User @{user.name} (ID:{user.id}) used the {command_name} command")
+        logger.info("User @%s (ID:%s) used the %s command", user.name, user.id, command_name)
 
 
 # ==============================================================================
@@ -136,7 +136,7 @@ async def on_app_command_error(
 ) -> None:
     """Global error handler for application commands."""
     command_name = interaction.command.name if interaction.command else "unknown"
-    logger.error(f"Error executing command '{command_name}': {error}", exc_info=error)
+    logger.error("Error executing command '%s': %s", command_name, error, exc_info=error)
 
     # Unwrap original error if wrapped in CommandInvokeError
     original_error = getattr(error, "original", error)
@@ -156,7 +156,7 @@ async def on_app_command_error(
         else:
             await interaction.response.send_message(response_text, ephemeral=True)
     except Exception as send_err:
-        logger.error(f"Failed to deliver error response: {send_err}")
+        logger.error("Failed to deliver error response: %s", send_err)
 
 
 # ==============================================================================
