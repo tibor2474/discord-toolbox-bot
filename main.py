@@ -8,7 +8,6 @@ import logging
 import os
 import sys
 import time
-from datetime import datetime, timezone
 from typing import Optional
 
 import discord
@@ -26,7 +25,7 @@ from config import BOT_TOKEN
 os.makedirs("logs", exist_ok=True)
 
 # Generate timestamped log filename (UTC)
-log_timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d_%H-%M-%S")
+log_timestamp = discord.utils.utcnow().strftime("%Y-%m-%d_%H-%M-%S")
 log_filepath = os.path.join("logs", f"bot_{log_timestamp}.log")
 
 # Standard format using UTC time
