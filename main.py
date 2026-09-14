@@ -52,7 +52,7 @@ root_logger.setLevel(logging.INFO)
 root_logger.addHandler(console_handler)
 root_logger.addHandler(file_handler)
 
-logger = logging.getLogger("toolbox")
+logger = logging.getLogger("discord.app")
 
 
 # ==============================================================================
