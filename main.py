@@ -22,11 +22,12 @@ from config import BOT_TOKEN
 # ==============================================================================
 
 # Ensure logs directory exists
-os.makedirs("logs", exist_ok=True)
+log_dir = os.path.join(os.path.dirname(__file__), "logs")
+os.makedirs(log_dir, exist_ok=True)
 
 # Generate timestamped log filename (UTC)
 log_timestamp = discord.utils.utcnow().strftime("%Y-%m-%d_%H-%M-%S")
-log_filepath = os.path.join("logs", f"bot_{log_timestamp}.log")
+log_filepath = os.path.join(log_dir, f"bot_{log_timestamp}.log")
 
 # Standard format using UTC time
 log_formatter = logging.Formatter(
