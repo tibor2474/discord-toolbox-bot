@@ -4,7 +4,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from config import BOT_COLOR, MESSAGE_ICON
+from config import BOT_COLOR
 
 
 class Message(commands.Cog):
@@ -37,10 +37,9 @@ class Message(commands.Cog):
 
         embed = discord.Embed(
             color=BOT_COLOR,
-            title=f"Raw of ID:{message.id}",
+            title=f"Raw message | ID:{message.id}",
             description=f"```{message.content}```"
         )
-        embed.set_author(name="Raw message", icon_url=MESSAGE_ICON)
         embed.set_footer(text="The formatting might be inaccurate if you're viewing code blocks")
         await interaction.response.send_message(embed=embed, ephemeral=True)
 

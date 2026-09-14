@@ -5,7 +5,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from config import BOT_COLOR, IMAGE_ICON, MEMBER_ICON
+from config import BOT_COLOR
 
 
 class Members(commands.Cog):
@@ -37,9 +37,8 @@ class Members(commands.Cog):
         creation_time = int(member.created_at.timestamp())
         join_time = int(member.joined_at.timestamp()) if member.joined_at else 0
 
-        embed = discord.Embed(color=BOT_COLOR)
+        embed = discord.Embed(color=BOT_COLOR, title="Member info")
         embed.set_thumbnail(url=member.display_avatar.url)
-        embed.set_author(name="Member info", icon_url=MEMBER_ICON)
         embed.add_field(name="User mention", value=member.mention, inline=True)
         embed.add_field(name="User name", value=member.name, inline=True)
         embed.add_field(name="Nickname", value=member.nick or "*None*", inline=True)
@@ -77,8 +76,7 @@ class Members(commands.Cog):
             else f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp})"
         )
 
-        embed = discord.Embed(description=desc, color=BOT_COLOR)
-        embed.set_author(name=f"{member.display_name}'s avatar", icon_url=IMAGE_ICON)
+        embed = discord.Embed(description=desc, color=BOT_COLOR, title=f"{member.display_name}'s avatar")
         embed.set_image(url=avatar.url)
         await interaction.response.send_message(embed=embed)
 
@@ -104,8 +102,7 @@ class Members(commands.Cog):
                 else f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp})"
             )
 
-            embed = discord.Embed(description=desc, color=BOT_COLOR)
-            embed.set_author(name=f"{member.display_name}'s server avatar", icon_url=IMAGE_ICON)
+            embed = discord.Embed(description=desc, color=BOT_COLOR, title=f"{member.display_name}'s server avatar")
             embed.set_image(url=avatar.url)
             await interaction.response.send_message(embed=embed)
         else:
@@ -132,8 +129,7 @@ class Members(commands.Cog):
                 else f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp})"
             )
 
-            embed = discord.Embed(description=desc, color=BOT_COLOR)
-            embed.set_author(name=f"{member.name}'s banner", icon_url=MEMBER_ICON)
+            embed = discord.Embed(description=desc, color=BOT_COLOR, title=f"{member.name}'s banner")
             embed.set_image(url=banner.url)
             await interaction.response.send_message(embed=embed)
         else:

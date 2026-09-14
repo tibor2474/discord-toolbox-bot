@@ -4,7 +4,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from config import BOT_COLOR, MEMBER_ICON, ROLE_ICON
+from config import BOT_COLOR
 
 
 @app_commands.default_permissions(manage_roles=True)
@@ -31,8 +31,7 @@ class Permission(commands.GroupCog, name="permission", description="Manage and v
         if not permissions:
             permissions = "*There are no permissions for this member*"
 
-        embed = discord.Embed(color=BOT_COLOR, description=permissions)
-        embed.set_author(name=f"Permissions for {member.name}", icon_url=MEMBER_ICON)
+        embed = discord.Embed(color=BOT_COLOR, description=permissions, title=f"Permissions for {member.name}")
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
     @app_commands.command(name="showrole", description="Show permissions for a role")
@@ -50,8 +49,7 @@ class Permission(commands.GroupCog, name="permission", description="Manage and v
         if not permissions:
             permissions = "*There are no permission offsets for this role*"
 
-        embed = discord.Embed(color=BOT_COLOR, description=permissions)
-        embed.set_author(name=f"Permissions for {role.name}", icon_url=ROLE_ICON)
+        embed = discord.Embed(color=BOT_COLOR, description=permissions, title=f"Permissions for {role.name}")
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
