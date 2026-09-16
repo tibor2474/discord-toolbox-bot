@@ -8,14 +8,12 @@ import logging
 import os
 import sys
 import time
-from typing import Optional
 
 import discord
 from discord import app_commands
 from discord.ext import commands
 
 from config import BOT_TOKEN
-
 
 # ==============================================================================
 # Logging Configuration
