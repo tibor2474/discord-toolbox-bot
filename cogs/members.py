@@ -8,57 +8,60 @@ from discord.ext import commands
 from config import BOT_COLOR
 
 
+@app_commands.context_menu(name="Show info")
+@app_commands.guild_only()
+@app_commands.default_permissions(kick_members=True)
+async def info_member_context(
+    interaction: discord.Interaction,
+    member: discord.Member
+) -> None:
+    """Context menu command to display comprehensive member information."""
+    if member.discriminator and member.discriminator != "0":
+        membername = f"{member.name}#{member.discriminator}"
+    else:
+        membername = member.name
+
+    creation_time = int(member.created_at.timestamp())
+    join_time = int(member.joined_at.timestamp()) if member.joined_at else 0
+
+    embed = discord.Embed(color=BOT_COLOR, title="Member info")
+    embed.set_thumbnail(url=member.display_avatar.url)
+    embed.add_field(name="User mention", value=member.mention, inline=True)
+    embed.add_field(name="Display name", value=member.display_name, inline=True)
+    embed.add_field(name="Nickname", value=member.nick or "*None*", inline=True)
+    embed.add_field(name="Username", value=membername, inline=True)
+
+    embed.add_field(name="Server booster", value=bool(member.premium_since), inline=True)
+    embed.add_field(name="In voice", value=bool(member.voice), inline=True)
+    embed.add_field(name="Timed out", value=member.is_timed_out(), inline=True)
+
+    if member.activity is not None:
+        embed.add_field(name="Activity", value=str(member.activity), inline=False)
+    else:
+        embed.add_field(name="Activity", value="*None/hidden or offline*", inline=False)
+
+    embed.add_field(name="Bot", value=member.bot, inline=True)
+    embed.add_field(name="Status", value=str(member.status), inline=True)
+    embed.add_field(name="User ID", value=f"||{member.id}||", inline=True)
+
+    embed.add_field(name="Account created", value=f"<t:{creation_time}:R>", inline=True)
+    embed.add_field(name="Joined server", value=f"<t:{join_time}:R>", inline=True)
+    await interaction.response.send_message(embed=embed, ephemeral=True)
+
+
 class Members(commands.Cog):
     """Cog for member actions, avatars, banners, and member context menu."""
 
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
-        self.ctx_menu = app_commands.ContextMenu(
-            name="Show info",
-            callback=self.info_member_context,
-        )
-        self.ctx_menu.default_permissions = discord.Permissions(kick_members=True)
-        self.ctx_menu.guild_only = True
 
     async def cog_load(self) -> None:
         """Register the user context menu upon cog load."""
-        self.bot.tree.add_command(self.ctx_menu)
+        self.bot.tree.add_command(info_member_context)
 
     async def cog_unload(self) -> None:
         """Unregister the user context menu upon cog unload."""
-        self.bot.tree.remove_command(self.ctx_menu.name, type=self.ctx_menu.type)
-
-    async def info_member_context(
-        self,
-        interaction: discord.Interaction,
-        member: discord.Member
-    ) -> None:
-        """Context menu command to display comprehensive member information."""
-        creation_time = int(member.created_at.timestamp())
-        join_time = int(member.joined_at.timestamp()) if member.joined_at else 0
-
-        embed = discord.Embed(color=BOT_COLOR, title="Member info")
-        embed.set_thumbnail(url=member.display_avatar.url)
-        embed.add_field(name="User mention", value=member.mention, inline=True)
-        embed.add_field(name="User name", value=member.name, inline=True)
-        embed.add_field(name="Nickname", value=member.nick or "*None*", inline=True)
-
-        embed.add_field(name="Server booster", value=bool(member.premium_since), inline=True)
-        embed.add_field(name="In voice", value=bool(member.voice), inline=True)
-        embed.add_field(name="Timed out", value=member.is_timed_out(), inline=True)
-
-        if member.activity is not None:
-            embed.add_field(name="Activity", value=str(member.activity), inline=False)
-        else:
-            embed.add_field(name="Activity", value="*None/hidden or offline*", inline=False)
-
-        embed.add_field(name="Bot", value=member.bot, inline=True)
-        embed.add_field(name="Status", value=str(member.status), inline=True)
-        embed.add_field(name="User ID", value=f"||{member.id}||", inline=True)
-
-        embed.add_field(name="Account created", value=f"<t:{creation_time}:R>", inline=True)
-        embed.add_field(name="Joined server", value=f"<t:{join_time}:R>", inline=True)
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        self.bot.tree.remove_command(info_member_context.name, type=info_member_context.type)
 
     @app_commands.command(name="avatar", description="Show someone's avatar")
     @app_commands.describe(member="Select a user")
