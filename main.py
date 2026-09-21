@@ -107,13 +107,6 @@ async def on_ready() -> None:
     logger.info("Logged in as %s (ID: %s)", bot.user, bot.user.id if bot.user else "Unknown")
 
 
-@bot.listen("on_message")
-async def on_message(message: discord.Message) -> None:
-    """Listener for incoming messages."""
-    if message.author == bot.user:
-        return
-
-
 @bot.listen("on_interaction")
 async def on_interaction(interaction: discord.Interaction) -> None:
     """Logs application command executions."""
