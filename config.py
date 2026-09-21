@@ -9,4 +9,5 @@ load_dotenv()
 # Authentication
 BOT_TOKEN = os.getenv("TOKEN")  # Bot token from environment / secrets file
 
-BOT_COLOR = os.getenv("BOT_COLOR", 0xb4befe)  # Embed accent color
+_color_env = os.getenv("BOT_COLOR")
+BOT_COLOR = int(_color_env.lstrip("#"), 16) if _color_env else 0xb4befe  # Embed accent color
