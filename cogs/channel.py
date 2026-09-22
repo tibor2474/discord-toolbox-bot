@@ -97,7 +97,6 @@ class Channel(commands.Cog):
         app_commands.Choice(name="India", value="india"),
         app_commands.Choice(name="Japan", value="japan"),
         app_commands.Choice(name="Rotterdam", value="rotterdam"),
-        app_commands.Choice(name="Russia", value="russia"),
         app_commands.Choice(name="Singapore", value="singapore"),
         app_commands.Choice(name="South Africa", value="southafrica"),
         app_commands.Choice(name="Sydney", value="sydney"),
