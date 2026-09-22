@@ -144,6 +144,7 @@ class Members(commands.Cog):
     @app_commands.command(name="vcmove", description="Move member to a different voice channel")
     @app_commands.guild_only()
     @app_commands.default_permissions(move_members=True)
+    @app_commands.checks.bot_has_permissions(move_members=True)
     @app_commands.describe(member="Select a member", channel="Select a channel")
     async def member_move(
         self,

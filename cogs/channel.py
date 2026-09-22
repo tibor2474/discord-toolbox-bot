@@ -15,6 +15,7 @@ class Channel(commands.Cog):
     @app_commands.command(name="slowmode", description="Set custom slowmode for a channel")
     @app_commands.guild_only()
     @app_commands.default_permissions(manage_channels=True)
+    @app_commands.checks.bot_has_permissions(manage_channels=True)
     @app_commands.describe(
         channel="Select a channel",
         seconds="Slowmode delay in seconds (set to 0 to disable)"
@@ -40,6 +41,7 @@ class Channel(commands.Cog):
     )
     @app_commands.guild_only()
     @app_commands.default_permissions(manage_channels=True)
+    @app_commands.checks.bot_has_permissions(manage_channels=True)
     @app_commands.describe(
         channel="Select a channel",
         mode="Turn on or off"
@@ -68,6 +70,7 @@ class Channel(commands.Cog):
     @app_commands.command(name="vclimit", description="Set user limit for voice channels")
     @app_commands.guild_only()
     @app_commands.default_permissions(manage_channels=True)
+    @app_commands.checks.bot_has_permissions(manage_channels=True)
     @app_commands.describe(
         channel="Select a channel",
         limit="User limit (set to 0 to disable)"
@@ -107,6 +110,7 @@ class Channel(commands.Cog):
     @app_commands.command(name="vcregion", description="Change region for a voice channel")
     @app_commands.guild_only()
     @app_commands.default_permissions(manage_channels=True)
+    @app_commands.checks.bot_has_permissions(manage_channels=True)
     @app_commands.describe(
         channel="Select a channel",
         region="Select a region"
