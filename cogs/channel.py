@@ -91,20 +91,20 @@ class Channel(commands.Cog):
         )
 
     REGION_CHOICES = [
-        app_commands.Choice(name="Automatic", value="Automatic"),
-        app_commands.Choice(name="Brazil", value="Brazil"),
-        app_commands.Choice(name="Hong Kong", value="Hong Kong"),
-        app_commands.Choice(name="India", value="India"),
-        app_commands.Choice(name="Japan", value="Japan"),
-        app_commands.Choice(name="Rotterdam", value="Rotterdam"),
-        app_commands.Choice(name="Russia", value="Russia"),
-        app_commands.Choice(name="Singapore", value="Singapore"),
-        app_commands.Choice(name="South Africa", value="South Africa"),
-        app_commands.Choice(name="Sydney", value="Sydney"),
-        app_commands.Choice(name="US Central", value="US Central"),
-        app_commands.Choice(name="US East", value="US East"),
-        app_commands.Choice(name="US South", value="US South"),
-        app_commands.Choice(name="US West", value="US West"),
+        app_commands.Choice(name="Automatic", value="automatic"),
+        app_commands.Choice(name="Brazil", value="brazil"),
+        app_commands.Choice(name="Hong Kong", value="hongkong"),
+        app_commands.Choice(name="India", value="india"),
+        app_commands.Choice(name="Japan", value="japan"),
+        app_commands.Choice(name="Rotterdam", value="rotterdam"),
+        app_commands.Choice(name="Russia", value="russia"),
+        app_commands.Choice(name="Singapore", value="singapore"),
+        app_commands.Choice(name="South Africa", value="southafrica"),
+        app_commands.Choice(name="Sydney", value="sydney"),
+        app_commands.Choice(name="US Central", value="us-central"),
+        app_commands.Choice(name="US East", value="us-east"),
+        app_commands.Choice(name="US South", value="us-south"),
+        app_commands.Choice(name="US West", value="us-west"),
     ]
 
     @app_commands.command(name="vcregion", description="Change region for a voice channel")
@@ -124,14 +124,7 @@ class Channel(commands.Cog):
     ) -> None:
         """Changes the RTC voice region for a voice or stage channel."""
         region_value = region.value
-        if region_value == "Automatic":
-            set_region = None
-        elif region_value == "Hong Kong":
-            set_region = "hongkong"
-        elif region_value == "South Africa":
-            set_region = "southafrica"
-        else:
-            set_region = region_value.lower().replace(" ", "_")
+        set_region = None if region.value == "automatic" else region.value
 
         try:
             await channel.edit(
