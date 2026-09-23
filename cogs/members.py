@@ -160,8 +160,9 @@ class Members(commands.Cog):
                 ephemeral=True
             )
         else:
+            await interaction.response.defer(ephemeral=True)
             await member.move_to(channel, reason=f"command executed by @{interaction.user.name}")
-            await interaction.response.send_message(
+            await interaction.followup.send(
                 f"Moved {member.mention} to {channel.mention}",
                 ephemeral=True
             )
