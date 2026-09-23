@@ -55,7 +55,7 @@ class Thread(commands.Cog):
     @app_commands.guild_only()
     @app_commands.checks.bot_has_permissions(manage_threads=True)
     @app_commands.describe(name="New name for this thread")
-    async def thread_name(self, interaction: discord.Interaction, name: str) -> None:
+    async def thread_name(self, interaction: discord.Interaction, name: app_commands.Range[str, 1, 100]) -> None:
         """Renames the current thread."""
         if not isinstance(interaction.channel, discord.Thread):
             await interaction.response.send_message(
@@ -91,7 +91,7 @@ class Thread(commands.Cog):
     @app_commands.default_permissions(manage_channels=True)
     @app_commands.checks.bot_has_permissions(manage_threads=True)
     @app_commands.describe(seconds="Slowmode delay in seconds (set to 0 to disable)")
-    async def thread_slowmode(self, interaction: discord.Interaction, seconds: int) -> None:
+    async def thread_slowmode(self, interaction: discord.Interaction, seconds: app_commands.Range[int, 0, 21600]) -> None:
         """Sets slowmode delay in seconds for the current thread."""
         if not isinstance(interaction.channel, discord.Thread):
             await interaction.response.send_message(

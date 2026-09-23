@@ -24,7 +24,7 @@ class Channel(commands.Cog):
         self,
         interaction: discord.Interaction,
         channel: Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel],
-        seconds: int
+        seconds: app_commands.Range[int, 0, 21600]
     ) -> None:
         """Sets slowmode delay in seconds for the selected channel."""
         await channel.edit(slowmode_delay=seconds)
@@ -79,7 +79,7 @@ class Channel(commands.Cog):
         self,
         interaction: discord.Interaction,
         channel: Union[discord.StageChannel, discord.VoiceChannel],
-        limit: int
+        limit: app_commands.Range[int, 0, 99]
     ) -> None:
         """Sets the maximum user limit for a voice or stage channel."""
         await channel.edit(user_limit=limit)
