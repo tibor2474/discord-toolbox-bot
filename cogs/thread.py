@@ -70,8 +70,16 @@ class Thread(commands.Cog):
             or interaction.user.id == interaction.channel.owner_id
         )
         if can_manage:
-            await interaction.channel.edit(name=name)
-            await interaction.response.send_message(f"Changed thread name to: **{name}**")
+            await interaction.response.defer()
+            try:
+                await interaction.channel.edit(name=name)
+            except (discord.HTTPException, discord.RateLimited):
+                await interaction.followup.send(
+                    "Discord limits each thread to two name changes every 10 minutes. Please try again later.",
+                    ephemeral=True
+                )
+                return
+            await interaction.followup.send(f"Changed thread name to: **{name}**")
         else:
             await interaction.response.send_message(
                 "This command can only be used by the owner of the thread or a staff member.",
