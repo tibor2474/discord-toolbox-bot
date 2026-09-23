@@ -118,6 +118,7 @@ class Members(commands.Cog):
     @app_commands.describe(member="Select a user")
     async def member_banner(self, interaction: discord.Interaction, member: discord.Member) -> None:
         """Displays the specified user's profile banner if present."""
+        await interaction.response.defer()
         user = await self.bot.fetch_user(member.id)
         if user.banner is not None:
             banner = user.banner
@@ -134,9 +135,9 @@ class Members(commands.Cog):
 
             embed = discord.Embed(description=desc, color=BOT_COLOR, title=f"{member.name}'s banner")
             embed.set_image(url=banner.url)
-            await interaction.response.send_message(embed=embed)
+            await interaction.followup.send(embed=embed)
         else:
-            await interaction.response.send_message(
+            await interaction.followup.send(
                 f"{member.name} doesn't have a banner",
                 ephemeral=True
             )
