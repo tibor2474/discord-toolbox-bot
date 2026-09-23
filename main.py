@@ -69,6 +69,7 @@ class ToolboxBot(commands.Bot):
             command_prefix=commands.when_mentioned_or("!"),
             intents=intents,
             help_command=None,
+            max_ratelimit_timeout=30.0,
         )
 
     async def setup_hook(self) -> None:
