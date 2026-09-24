@@ -69,7 +69,10 @@ class Info(commands.Cog):
         category_count = len(guild.categories)
         text_count = len(guild.text_channels)
         voice_count = len(guild.voice_channels)
-        forum_count = len(guild.forum_channels)
+        forum_count = sum(
+            isinstance(channel, discord.ForumChannel)
+            for channel in guild.channels
+        )
         stage_count = len(guild.stage_channels)
         guild_date = int(guild.created_at.timestamp())
         file_limit = guild.filesize_limit / 1048576  # convert bytes to megabytes
