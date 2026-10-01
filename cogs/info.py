@@ -36,12 +36,15 @@ class Info(commands.Cog):
             )
             return
 
-        user_count = len([m for m in guild.members if not m.bot])
-        bot_count = len([b for b in guild.members if b.bot])
+        cached_user_count = len([member for member in guild.members if not member.bot])
+        cached_bot_count = len([member for member in guild.members if member.bot])
         category_count = len(guild.categories)
         text_count = len(guild.text_channels)
         voice_count = len(guild.voice_channels)
-        forum_count = len(guild.forum_channels)
+        forum_count = sum(
+            isinstance(channel, discord.ForumChannel)
+            for channel in guild.channels
+        )
         stage_count = len(guild.stage_channels)
         guild_date = int(guild.created_at.timestamp())
         file_limit = guild.filesize_limit / 1048576  # convert bytes to megabytes
@@ -100,7 +103,14 @@ class Info(commands.Cog):
             f"{guild.emoji_limit} emojis\n{guild.max_members} users"
         )
         embed.add_field(name="Limits", value=limits_desc, inline=True)
-        embed.add_field(name="Members", value=f"{user_count} users\n{bot_count} bots", inline=True)
+        embed.add_field(
+            name="Members",
+            value=(
+                f"{guild.member_count} total\n"
+                f"{cached_user_count} users, {cached_bot_count} bots"
+            ),
+            inline=True
+        )
 
         embed.add_field(name="Roles", value=f"{len(guild.roles)} roles", inline=True)
         embed.add_field(name="Created", value=f"<t:{guild_date}:R>", inline=True)
