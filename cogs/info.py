@@ -5,6 +5,7 @@ from discord import app_commands
 from discord.ext import commands
 
 from config import BOT_COLOR
+from utils.member_embed import build_member_embed
 
 
 class Info(commands.Cog):
@@ -19,36 +20,7 @@ class Info(commands.Cog):
     @app_commands.describe(member="Select someone")
     async def info_member(self, interaction: discord.Interaction, member: discord.Member) -> None:
         """Displays information about a server member."""
-        if member.discriminator and member.discriminator != "0":
-            membername = f"{member.name}#{member.discriminator}"
-        else:
-            membername = member.name
-
-        creation_time = int(member.created_at.timestamp())
-        join_time = int(member.joined_at.timestamp()) if member.joined_at else 0
-
-        embed = discord.Embed(color=BOT_COLOR, title="Member info")
-        embed.set_thumbnail(url=member.display_avatar.url)
-        embed.add_field(name="User mention", value=member.mention, inline=True)
-        embed.add_field(name="Display name", value=member.display_name, inline=True)
-        embed.add_field(name="Nickname", value=member.nick or "*None*", inline=True)
-        embed.add_field(name="Username", value=membername, inline=True)
-
-        embed.add_field(name="Server booster", value=bool(member.premium_since), inline=True)
-        embed.add_field(name="In voice", value=bool(member.voice), inline=True)
-        embed.add_field(name="Timed out", value=member.is_timed_out(), inline=True)
-
-        if member.activity is not None:
-            embed.add_field(name="Activity", value=str(member.activity), inline=True)
-        else:
-            embed.add_field(name="Activity", value="*None/hidden or offline*", inline=True)
-
-        embed.add_field(name="Bot", value=member.bot, inline=True)
-        embed.add_field(name="Status", value=str(member.status), inline=True)
-        embed.add_field(name="User ID", value=f"||{member.id}||", inline=True)
-
-        embed.add_field(name="Account created", value=f"<t:{creation_time}:R>", inline=True)
-        embed.add_field(name="Joined server", value=f"<t:{join_time}:R>", inline=True)
+        embed = build_member_embed(member)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
     @app_commands.command(name="serverinfo", description="Show info about this server")
