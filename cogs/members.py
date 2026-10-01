@@ -6,7 +6,7 @@ from discord import app_commands
 from discord.ext import commands
 
 from config import BOT_COLOR
-from cogs.member_embed import build_member_embed
+from utils.member_embed import build_member_embed
 
 
 @app_commands.context_menu(name="Show info")
