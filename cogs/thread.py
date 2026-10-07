@@ -51,6 +51,56 @@ class Thread(commands.Cog):
                 ephemeral=True
             )
 
+    @app_commands.command(
+        name="threadopen",
+        description="Reopen an archived thread"
+    )
+    @app_commands.guild_only()
+    @app_commands.checks.bot_has_permissions(manage_threads=True)
+    @app_commands.describe(thread_id="ID of the archived thread (defaults to this thread)")
+    async def thread_open(self, interaction: discord.Interaction, thread_id: str | None = None) -> None:
+        """Reopens and unlocks the current thread or the thread with the given ID."""
+        thread: discord.Thread | None = None
+        if thread_id is None:
+            if isinstance(interaction.channel, discord.Thread):
+                thread = interaction.channel
+        else:
+            try:
+                channel_id = int(thread_id)
+            except ValueError:
+                await interaction.response.send_message(
+                    "Thread ID must be a number.", ephemeral=True
+                )
+                return
+
+            channel = interaction.guild.get_thread(channel_id) if interaction.guild else None
+            if channel is None:
+                try:
+                    channel = await self.bot.fetch_channel(channel_id)
+                except (discord.NotFound, discord.Forbidden, discord.HTTPException):
+                    channel = None
+            if isinstance(channel, discord.Thread):
+                thread = channel
+
+        if thread is None or thread.guild.id != interaction.guild_id:
+            await interaction.response.send_message(
+                "That is not a valid thread ID.", ephemeral=True
+            )
+            return
+
+        assert isinstance(interaction.user, discord.Member)
+        is_staff = thread.permissions_for(interaction.user).manage_threads
+        is_owner = interaction.user.id == thread.owner_id
+        if not (is_staff or is_owner):
+            await interaction.response.send_message(
+                "This command can only be used by the owner of the thread or a staff member.",
+                ephemeral=True
+            )
+            return
+
+        await thread.edit(archived=False, locked=False)
+        await interaction.response.send_message("Reopened thread.")
+
     @app_commands.command(name="threadname", description="Change the name of the thread")
     @app_commands.guild_only()
     @app_commands.checks.bot_has_permissions(manage_threads=True)
