@@ -37,13 +37,20 @@ class Thread(commands.Cog):
                 await interaction.response.send_message(
                     "This thread was archived by a staff member."
                 )
-            await interaction.channel.edit(archived=True, locked=lock)
+            await interaction.channel.edit(
+                archived=True,
+                locked=lock,
+                reason=f"Action by @{interaction.user.name} ({interaction.user.id})"
+            )
 
         elif interaction.user.id == interaction.channel.owner_id:
             await interaction.response.send_message(
                 "This thread was archived by the user that opened it."
             )
-            await interaction.channel.edit(archived=True)
+            await interaction.channel.edit(
+                archived=True,
+                reason=f"Action by @{interaction.user.name} ({interaction.user.id})"
+            )
 
         else:
             await interaction.response.send_message(
@@ -98,7 +105,11 @@ class Thread(commands.Cog):
             )
             return
 
-        await thread.edit(archived=False, locked=False)
+        await thread.edit(
+            archived=False,
+            locked=False,
+            reason=f"Action by @{interaction.user.name} ({interaction.user.id})"
+        )
         await interaction.response.send_message("Reopened thread.")
 
     @app_commands.command(name="threadname", description="Change the name of the thread")
@@ -122,7 +133,10 @@ class Thread(commands.Cog):
         if can_manage:
             await interaction.response.defer()
             try:
-                await interaction.channel.edit(name=name)
+                await interaction.channel.edit(
+                    name=name,
+                    reason=f"Action by @{interaction.user.name} ({interaction.user.id})"
+                )
             except (discord.HTTPException, discord.RateLimited):
                 await interaction.followup.send(
                     "Discord limits each thread to two name changes every 10 minutes. Please try again later.",
@@ -151,7 +165,10 @@ class Thread(commands.Cog):
             return
 
         channel = interaction.channel
-        await channel.edit(slowmode_delay=seconds)
+        await channel.edit(
+            slowmode_delay=seconds,
+            reason=f"Action by @{interaction.user.name} ({interaction.user.id})"
+        )
 
         if seconds == 0:
             await interaction.response.send_message("Disabled slowmode")
