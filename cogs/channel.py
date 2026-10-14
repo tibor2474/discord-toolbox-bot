@@ -140,7 +140,7 @@ class Channel(commands.Cog):
         try:
             await channel.edit(
                 rtc_region=set_region,
-                reason=f"command executed by @{interaction.user.name}"
+                reason=f"Action by @{interaction.user.name} ({interaction.user.id})"
             )
             await interaction.response.send_message(
                 f"Changed region to {region_value} for {channel.mention}",
