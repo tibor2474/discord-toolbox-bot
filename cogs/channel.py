@@ -17,23 +17,16 @@ class Channel(commands.Cog):
     @app_commands.default_permissions(manage_channels=True)
     @app_commands.checks.bot_has_permissions(manage_channels=True)
     @app_commands.describe(
-        channel="Select a channel (defaults to this channel)",
+        channel="Select a channel",
         seconds="Slowmode delay in seconds (set to 0 to disable)"
     )
     async def channel_slowmode(
         self,
         interaction: discord.Interaction,
-        seconds: app_commands.Range[int, 0, 21600],
-        channel: Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel, None] = None
+        channel: Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel],
+        seconds: app_commands.Range[int, 0, 21600]
     ) -> None:
         """Sets slowmode delay in seconds for the selected channel."""
-        channel = channel if channel is not None else interaction.channel
-        if not isinstance(channel, (discord.TextChannel, discord.StageChannel, discord.VoiceChannel)):
-            await interaction.response.send_message(
-                "This channel does not support this command. Select a supported channel.",
-                ephemeral=True
-            )
-            return
         await channel.edit(
             slowmode_delay=seconds,
             reason=f"Action by @{interaction.user.name} ({interaction.user.id})"
@@ -53,23 +46,19 @@ class Channel(commands.Cog):
     @app_commands.default_permissions(manage_channels=True)
     @app_commands.checks.bot_has_permissions(manage_channels=True)
     @app_commands.describe(
-        channel="Select a channel (defaults to this channel)",
+        channel="Select a channel",
         mode="Turn on or off"
     )
     async def channel_nsfw(
         self,
         interaction: discord.Interaction,
-        mode: bool,
-        channel: Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel, discord.ForumChannel, None] = None
+        channel: Union[
+            discord.TextChannel, discord.StageChannel,
+            discord.VoiceChannel, discord.ForumChannel
+        ],
+        mode: bool
     ) -> None:
         """Toggles the age-restriction (NSFW) setting on a channel."""
-        channel = channel if channel is not None else interaction.channel
-        if not isinstance(channel, (discord.TextChannel, discord.StageChannel, discord.VoiceChannel, discord.ForumChannel)):
-            await interaction.response.send_message(
-                "This channel does not support this command. Select a supported channel.",
-                ephemeral=True
-            )
-            return
         if mode:
             await channel.edit(
                 nsfw=True,
@@ -92,23 +81,16 @@ class Channel(commands.Cog):
     @app_commands.default_permissions(manage_channels=True)
     @app_commands.checks.bot_has_permissions(manage_channels=True)
     @app_commands.describe(
-        channel="Select a channel (defaults to this channel)",
+        channel="Select a channel",
         limit="User limit (set to 0 to disable)"
     )
     async def channel_limit(
         self,
         interaction: discord.Interaction,
-        limit: app_commands.Range[int, 0, 99],
-        channel: Union[discord.StageChannel, discord.VoiceChannel, None] = None
+        channel: Union[discord.StageChannel, discord.VoiceChannel],
+        limit: app_commands.Range[int, 0, 99]
     ) -> None:
         """Sets the maximum user limit for a voice or stage channel."""
-        channel = channel if channel is not None else interaction.channel
-        if not isinstance(channel, (discord.StageChannel, discord.VoiceChannel)):
-            await interaction.response.send_message(
-                "This channel does not support this command. Select a supported channel.",
-                ephemeral=True
-            )
-            return
         await channel.edit(
             user_limit=limit,
             reason=f"Action by @{interaction.user.name} ({interaction.user.id})"
@@ -141,24 +123,17 @@ class Channel(commands.Cog):
     @app_commands.default_permissions(manage_channels=True)
     @app_commands.checks.bot_has_permissions(manage_channels=True)
     @app_commands.describe(
-        channel="Select a channel (defaults to this channel)",
+        channel="Select a channel",
         region="Select a region"
     )
     @app_commands.choices(region=REGION_CHOICES)
     async def channel_region(
         self,
         interaction: discord.Interaction,
-        region: app_commands.Choice[str],
-        channel: Union[discord.StageChannel, discord.VoiceChannel, None] = None
+        channel: Union[discord.StageChannel, discord.VoiceChannel],
+        region: app_commands.Choice[str]
     ) -> None:
         """Changes the RTC voice region for a voice or stage channel."""
-        channel = channel if channel is not None else interaction.channel
-        if not isinstance(channel, (discord.StageChannel, discord.VoiceChannel)):
-            await interaction.response.send_message(
-                "This channel does not support this command. Select a supported channel.",
-                ephemeral=True
-            )
-            return
         region_value = region.value
         set_region = None if region.value == "automatic" else region.value
 
