@@ -27,7 +27,10 @@ class Channel(commands.Cog):
         seconds: app_commands.Range[int, 0, 21600]
     ) -> None:
         """Sets slowmode delay in seconds for the selected channel."""
-        await channel.edit(slowmode_delay=seconds)
+        await channel.edit(
+            slowmode_delay=seconds,
+            reason=f"Action by @{interaction.user.name} ({interaction.user.id})"
+        )
         if seconds == 0:
             await interaction.response.send_message(f"Disabled slowmode for {channel.mention}")
             return
@@ -57,12 +60,18 @@ class Channel(commands.Cog):
     ) -> None:
         """Toggles the age-restriction (NSFW) setting on a channel."""
         if mode:
-            await channel.edit(nsfw=True)
+            await channel.edit(
+                nsfw=True,
+                reason=f"Action by @{interaction.user.name} ({interaction.user.id})"
+            )
             await interaction.response.send_message(
                 f"Turned on age-restriction for {channel.mention}"
             )
         else:
-            await channel.edit(nsfw=False)
+            await channel.edit(
+                nsfw=False,
+                reason=f"Action by @{interaction.user.name} ({interaction.user.id})"
+            )
             await interaction.response.send_message(
                 f"Turned off age-restriction for {channel.mention}"
             )
@@ -82,7 +91,10 @@ class Channel(commands.Cog):
         limit: app_commands.Range[int, 0, 99]
     ) -> None:
         """Sets the maximum user limit for a voice or stage channel."""
-        await channel.edit(user_limit=limit)
+        await channel.edit(
+            user_limit=limit,
+            reason=f"Action by @{interaction.user.name} ({interaction.user.id})"
+        )
         if limit == 0:
             await interaction.response.send_message(f"Disabled user limit for {channel.mention}")
             return
@@ -128,7 +140,7 @@ class Channel(commands.Cog):
         try:
             await channel.edit(
                 rtc_region=set_region,
-                reason=f"command executed by @{interaction.user.name}"
+                reason=f"Action by @{interaction.user.name} ({interaction.user.id})"
             )
             await interaction.response.send_message(
                 f"Changed region to {region_value} for {channel.mention}",
