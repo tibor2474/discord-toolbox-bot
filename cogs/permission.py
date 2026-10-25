@@ -17,14 +17,13 @@ class Permission(commands.GroupCog, name="permission", description="Manage and v
         super().__init__()
 
     @app_commands.command(name="showmember", description="Show permissions for a member")
-    @app_commands.describe(member="Select a member (defaults to you)")
+    @app_commands.describe(member="Select a member")
     async def show_member_perms(
         self,
         interaction: discord.Interaction,
-        member: discord.Member | None = None
+        member: discord.Member
     ) -> None:
         """Displays all granted guild permissions for the specified member."""
-        member = member if member is not None else interaction.user
         permissions = ", ".join(
             str(perm[0]).replace("_", " ") for perm in member.guild_permissions if perm[1]
         )
