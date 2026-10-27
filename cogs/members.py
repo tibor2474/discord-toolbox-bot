@@ -36,9 +36,10 @@ class Members(commands.Cog):
         self.bot.tree.remove_command(info_member_context.name, type=info_member_context.type)
 
     @app_commands.command(name="avatar", description="Show someone's avatar")
-    @app_commands.describe(member="Select a user")
-    async def member_avatar(self, interaction: discord.Interaction, member: discord.Member) -> None:
+    @app_commands.describe(member="Select a user (defaults to you)")
+    async def member_avatar(self, interaction: discord.Interaction, member: discord.Member | None = None) -> None:
         """Displays the specified member's avatar in various formats."""
+        member = member if member is not None else interaction.user
         avatar = member.display_avatar
         png = avatar.replace(format="png")
         jpg = avatar.replace(format="jpg")
@@ -57,13 +58,14 @@ class Members(commands.Cog):
 
     @app_commands.command(name="serveravatar", description="Show someone's server avatar")
     @app_commands.guild_only()
-    @app_commands.describe(member="Select a user")
+    @app_commands.describe(member="Select a user (defaults to you)")
     async def member_guild_avatar(
         self,
         interaction: discord.Interaction,
-        member: discord.Member
+        member: discord.Member | None = None
     ) -> None:
         """Displays the specified member's guild-specific avatar."""
+        member = member if member is not None else interaction.user
         if member.guild_avatar is not None:
             avatar = member.guild_avatar
             png = avatar.replace(format="png")
@@ -87,9 +89,10 @@ class Members(commands.Cog):
             )
 
     @app_commands.command(name="banner", description="Show someone's banner (if they have one)")
-    @app_commands.describe(member="Select a user")
-    async def member_banner(self, interaction: discord.Interaction, member: discord.Member) -> None:
+    @app_commands.describe(member="Select a user (defaults to you)")
+    async def member_banner(self, interaction: discord.Interaction, member: discord.Member | None = None) -> None:
         """Displays the specified user's profile banner if present."""
+        member = member if member is not None else interaction.user
         await interaction.response.defer()
         user = await self.bot.fetch_user(member.id)
         if user.banner is not None:
@@ -118,14 +121,22 @@ class Members(commands.Cog):
     @app_commands.guild_only()
     @app_commands.default_permissions(move_members=True)
     @app_commands.checks.bot_has_permissions(move_members=True)
-    @app_commands.describe(member="Select a member", channel="Select a channel")
+    @app_commands.describe(member="Select a member (defaults to you)", channel="Select a channel (defaults to this channel)")
     async def member_move(
         self,
         interaction: discord.Interaction,
-        member: discord.Member,
-        channel: Union[discord.VoiceChannel, discord.StageChannel]
+        member: discord.Member | None = None,
+        channel: Union[discord.VoiceChannel, discord.StageChannel, None] = None
     ) -> None:
         """Moves a connected voice member to another voice/stage channel."""
+        member = member if member is not None else interaction.user
+        channel = channel if channel is not None else interaction.channel
+        if not isinstance(channel, (discord.VoiceChannel, discord.StageChannel)):
+            await interaction.response.send_message(
+                "Select a voice or stage channel, or run this command in one.",
+                ephemeral=True
+            )
+            return
         if member.voice is None:
             await interaction.response.send_message(
                 f"{member.mention} is not in a voice channel",
