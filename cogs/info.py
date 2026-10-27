@@ -12,10 +12,12 @@ from utils.permissions import build_permissions_embed
 class Info(commands.Cog):
     """Cog for displaying detailed information about members, servers, and roles."""
 
+    info = app_commands.Group(name="info", description="Information about members, roles, and servers")
+
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
-    @app_commands.command(name="memberinfo", description="Show info about someone")
+    @info.command(name="member", description="Show info about someone")
     @app_commands.guild_only()
     @app_commands.default_permissions(kick_members=True)
     @app_commands.describe(member="Select a member (defaults to you)")
@@ -25,11 +27,14 @@ class Info(commands.Cog):
         embed = build_member_embed(member)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @app_commands.command(name="serverinfo", description="Show info about this server")
+    @info.command(name="server", description="Show info about this server")
     @app_commands.guild_only()
     @app_commands.default_permissions(manage_guild=True)
     async def info_server(self, interaction: discord.Interaction) -> None:
         """Displays detailed statistics and configuration for the current server."""
+        await self._send_server_info(interaction)
+
+    async def _send_server_info(self, interaction: discord.Interaction) -> None:
         guild = interaction.guild
         if guild is None:
             await interaction.response.send_message(
@@ -123,7 +128,7 @@ class Info(commands.Cog):
 
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @app_commands.command(name="roleinfo", description="Show info about a role")
+    @info.command(name="role", description="Show info about a role")
     @app_commands.guild_only()
     @app_commands.default_permissions(manage_roles=True)
     @app_commands.describe(role="Select a role")

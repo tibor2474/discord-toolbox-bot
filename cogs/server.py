@@ -10,10 +10,12 @@ from config import BOT_COLOR
 class Server(commands.Cog):
     """Cog for server-related asset and media commands."""
 
+    server = app_commands.Group(name="server", description="Server information and assets")
+
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
-    @app_commands.command(name="servericon", description="Show server icon")
+    @server.command(name="icon", description="Show server icon")
     @app_commands.guild_only()
     async def guild_icon(self, interaction: discord.Interaction) -> None:
         """Displays the server's icon in various image formats."""
@@ -40,7 +42,7 @@ class Server(commands.Cog):
         embed.set_image(url=guild.icon.url)
         await interaction.response.send_message(embed=embed)
 
-    @app_commands.command(name="serverbanner", description="Show server banner image")
+    @server.command(name="banner", description="Show server banner image")
     @app_commands.guild_only()
     async def guild_banner(self, interaction: discord.Interaction) -> None:
         """Displays the server's banner image if available."""
@@ -67,7 +69,7 @@ class Server(commands.Cog):
         embed.set_image(url=guild.banner.url)
         await interaction.response.send_message(embed=embed)
 
-    @app_commands.command(name="serverbackground", description="Show server invite background")
+    @server.command(name="splash", description="Show server invite background")
     @app_commands.guild_only()
     async def guild_invite_background(self, interaction: discord.Interaction) -> None:
         """Displays the server's invite splash background."""
@@ -91,7 +93,7 @@ class Server(commands.Cog):
         embed.set_image(url=guild.splash.url)
         await interaction.response.send_message(embed=embed)
 
-    @app_commands.command(name="serveremojis", description="Show server emojis")
+    @server.command(name="emojis", description="Show server emojis")
     @app_commands.guild_only()
     async def guild_emojis(self, interaction: discord.Interaction) -> None:
         """Displays all custom emojis available in the server."""
@@ -114,6 +116,20 @@ class Server(commands.Cog):
         embed = discord.Embed(color=BOT_COLOR, description=" ".join(emojis), title="Server emojis")
         embed.set_footer(text=f"{len(emojis)} emojis total")
         await interaction.response.send_message(embed=embed, ephemeral=True)
+
+    @server.command(name="info", description="Show info about this server")
+    @app_commands.guild_only()
+    @app_commands.default_permissions(manage_guild=True)
+    async def guild_info(self, interaction: discord.Interaction) -> None:
+        """Displays detailed statistics and configuration for the current server."""
+        info_cog = self.bot.get_cog("Info")
+        if info_cog is None:
+            await interaction.response.send_message(
+                "Server information is currently unavailable.",
+                ephemeral=True
+            )
+            return
+        await info_cog._send_server_info(interaction)
 
 
 async def setup(bot: commands.Bot) -> None:

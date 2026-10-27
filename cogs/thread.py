@@ -8,11 +8,13 @@ from discord.ext import commands
 class Thread(commands.Cog):
     """Cog for thread management commands."""
 
+    thread = app_commands.Group(name="thread", description="Thread management commands")
+
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
-    @app_commands.command(
-        name="threadclose",
+    @thread.command(
+        name="close",
         description="Allows a staff member or the thread owner to close the thread"
     )
     @app_commands.guild_only()
@@ -58,8 +60,8 @@ class Thread(commands.Cog):
                 ephemeral=True
             )
 
-    @app_commands.command(
-        name="threadopen",
+    @thread.command(
+        name="open",
         description="Reopen an archived thread"
     )
     @app_commands.guild_only()
@@ -112,7 +114,7 @@ class Thread(commands.Cog):
         )
         await interaction.response.send_message("Reopened thread.")
 
-    @app_commands.command(name="threadname", description="Change the name of the thread")
+    @thread.command(name="rename", description="Change the name of the thread")
     @app_commands.guild_only()
     @app_commands.checks.bot_has_permissions(manage_threads=True)
     @app_commands.describe(name="New name for this thread")
@@ -150,7 +152,7 @@ class Thread(commands.Cog):
                 ephemeral=True
             )
 
-    @app_commands.command(name="threadslowmode", description="Set custom slowmode for a thread")
+    @thread.command(name="slowmode", description="Set custom slowmode for a thread")
     @app_commands.guild_only()
     @app_commands.default_permissions(manage_channels=True)
     @app_commands.checks.bot_has_permissions(manage_threads=True)
