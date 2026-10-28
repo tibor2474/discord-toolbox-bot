@@ -19,7 +19,7 @@ class Info(commands.Cog):
 
     @info.command(name="member", description="Show info about someone")
     @app_commands.guild_only()
-    @app_commands.default_permissions(kick_members=True)
+    @app_commands.checks.has_permissions(kick_members=True)
     @app_commands.describe(member="Select a member (defaults to you)")
     async def info_member(self, interaction: discord.Interaction, member: discord.Member | None = None) -> None:
         """Displays information about a server member."""
@@ -29,7 +29,7 @@ class Info(commands.Cog):
 
     @info.command(name="server", description="Show info about this server")
     @app_commands.guild_only()
-    @app_commands.default_permissions(manage_guild=True)
+    @app_commands.checks.has_permissions(manage_guild=True)
     async def info_server(self, interaction: discord.Interaction) -> None:
         """Displays detailed statistics and configuration for the current server."""
         await self._send_server_info(interaction)
@@ -130,7 +130,7 @@ class Info(commands.Cog):
 
     @info.command(name="role", description="Show info about a role")
     @app_commands.guild_only()
-    @app_commands.default_permissions(manage_roles=True)
+    @app_commands.checks.has_permissions(manage_roles=True)
     @app_commands.describe(role="Select a role")
     async def info_role(self, interaction: discord.Interaction, role: discord.Role) -> None:
         """Displays attributes and permissions for the specified role."""

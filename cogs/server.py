@@ -119,7 +119,7 @@ class Server(commands.Cog):
 
     @server.command(name="info", description="Show info about this server")
     @app_commands.guild_only()
-    @app_commands.default_permissions(manage_guild=True)
+    @app_commands.checks.has_permissions(manage_guild=True)
     async def guild_info(self, interaction: discord.Interaction) -> None:
         """Displays detailed statistics and configuration for the current server."""
         info_cog = self.bot.get_cog("Info")
