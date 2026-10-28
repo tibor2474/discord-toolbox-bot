@@ -4,7 +4,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from config import BOT_COLOR
+from utils.permissions import build_permissions_embed
 
 
 @app_commands.default_permissions(manage_roles=True)
@@ -17,21 +17,15 @@ class Permission(commands.GroupCog, name="permission", description="Manage and v
         super().__init__()
 
     @app_commands.command(name="showmember", description="Show permissions for a member")
-    @app_commands.describe(member="Select a member")
+    @app_commands.describe(member="Select a member (defaults to yourself if not specified)")
     async def show_member_perms(
         self,
         interaction: discord.Interaction,
-        member: discord.Member
+        member: discord.Member | None = None
     ) -> None:
         """Displays all granted guild permissions for the specified member."""
-        permissions = ", ".join(
-            str(perm[0]).replace("_", " ") for perm in member.guild_permissions if perm[1]
-        )
-
-        if not permissions:
-            permissions = "*There are no permissions for this member*"
-
-        embed = discord.Embed(color=BOT_COLOR, description=permissions, title=f"Permissions for {member.name}")
+        member = member if member is not None else interaction.user
+        embed = build_permissions_embed(member)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
     @app_commands.command(name="showrole", description="Show permissions for a role")
@@ -42,14 +36,7 @@ class Permission(commands.GroupCog, name="permission", description="Manage and v
         role: discord.Role
     ) -> None:
         """Displays all granted permissions for the specified role."""
-        permissions = ", ".join(
-            str(perm[0]).replace("_", " ") for perm in role.permissions if perm[1]
-        )
-
-        if not permissions:
-            permissions = "*There are no permission offsets for this role*"
-
-        embed = discord.Embed(color=BOT_COLOR, description=permissions, title=f"Permissions for {role.name}")
+        embed = build_permissions_embed(role)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 

@@ -6,6 +6,7 @@ from discord.ext import commands
 
 from config import BOT_COLOR
 from utils.member_embed import build_member_embed
+from utils.permissions import build_permissions_embed
 
 
 class Info(commands.Cog):
@@ -17,9 +18,10 @@ class Info(commands.Cog):
     @app_commands.command(name="memberinfo", description="Show info about someone")
     @app_commands.guild_only()
     @app_commands.default_permissions(kick_members=True)
-    @app_commands.describe(member="Select someone")
-    async def info_member(self, interaction: discord.Interaction, member: discord.Member) -> None:
+    @app_commands.describe(member="Select a member (defaults to you)")
+    async def info_member(self, interaction: discord.Interaction, member: discord.Member | None = None) -> None:
         """Displays information about a server member."""
+        member = member if member is not None else interaction.user
         embed = build_member_embed(member)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
@@ -129,7 +131,10 @@ class Info(commands.Cog):
         """Displays attributes and permissions for the specified role."""
         creation_time = int(role.created_at.timestamp())
 
-        embed = discord.Embed(color=BOT_COLOR, title="Role info")
+        embed = discord.Embed(
+            color=role.color if role.color.value else BOT_COLOR,
+            title="Role info",
+        )
         embed.add_field(name="Role name", value=role.name, inline=False)
 
         if role.icon:
@@ -148,7 +153,8 @@ class Info(commands.Cog):
         embed.add_field(name="Created", value=f"<t:{creation_time}:R>", inline=True)
         embed.add_field(name="Role ID", value=f"||{role.id}||", inline=True)
 
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        perms_embed = build_permissions_embed(role, title=f"Permissions for {role.name}")
+        await interaction.response.send_message(embeds=[embed, perms_embed], ephemeral=True)
 
 
 async def setup(bot: commands.Bot) -> None:
