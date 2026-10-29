@@ -152,7 +152,7 @@ class Thread(commands.Cog):
 
     @app_commands.command(name="threadslowmode", description="Set custom slowmode for a thread")
     @app_commands.guild_only()
-    @app_commands.default_permissions(manage_channels=True)
+    @app_commands.default_permissions(manage_threads=True)
     @app_commands.checks.bot_has_permissions(manage_threads=True)
     @app_commands.describe(seconds="Slowmode delay in seconds (set to 0 to disable)")
     async def thread_slowmode(self, interaction: discord.Interaction, seconds: app_commands.Range[int, 0, 21600]) -> None:
