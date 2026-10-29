@@ -11,7 +11,6 @@ from utils.member_embed import build_member_embed
 
 @app_commands.context_menu(name="Show info")
 @app_commands.guild_only()
-@app_commands.default_permissions(kick_members=True)
 async def info_member_context(
     interaction: discord.Interaction,
     member: discord.Member

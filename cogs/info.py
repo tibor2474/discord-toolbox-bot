@@ -17,7 +17,6 @@ class Info(commands.Cog):
 
     @app_commands.command(name="memberinfo", description="Show info about someone")
     @app_commands.guild_only()
-    @app_commands.default_permissions(kick_members=True)
     @app_commands.describe(member="Select a member (defaults to you)")
     async def info_member(self, interaction: discord.Interaction, member: discord.Member | None = None) -> None:
         """Displays information about a server member."""
