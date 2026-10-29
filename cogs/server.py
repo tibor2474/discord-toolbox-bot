@@ -5,6 +5,7 @@ from discord import app_commands
 from discord.ext import commands
 
 from config import BOT_COLOR
+from utils.image_embed import build_image_embed
 
 
 class Server(commands.Cog):
@@ -25,19 +26,7 @@ class Server(commands.Cog):
             )
             return
 
-        png = guild.icon.replace(format="png")
-        jpg = guild.icon.replace(format="jpg")
-        webp = guild.icon.replace(format="webp")
-        gif = guild.icon.replace(format="gif") if guild.icon.is_animated() else None
-
-        desc = (
-            f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp}) - [GIF]({gif})"
-            if gif
-            else f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp})"
-        )
-
-        embed = discord.Embed(description=desc, color=BOT_COLOR, title="Server icon")
-        embed.set_image(url=guild.icon.url)
+        embed = build_image_embed(guild.icon, title="Server icon", color=BOT_COLOR)
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="serverbanner", description="Show server banner image")
@@ -52,19 +41,7 @@ class Server(commands.Cog):
             )
             return
 
-        png = guild.banner.replace(format="png")
-        jpg = guild.banner.replace(format="jpg")
-        webp = guild.banner.replace(format="webp")
-        gif = guild.banner.replace(format="gif") if guild.banner.is_animated() else None
-
-        desc = (
-            f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp}) - [GIF]({gif})"
-            if gif
-            else f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp})"
-        )
-
-        embed = discord.Embed(description=desc, color=BOT_COLOR, title="Server banner")
-        embed.set_image(url=guild.banner.url)
+        embed = build_image_embed(guild.banner, title="Server banner", color=BOT_COLOR)
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="serverbackground", description="Show server invite background")
@@ -79,16 +56,12 @@ class Server(commands.Cog):
             )
             return
 
-        png = guild.splash.replace(format="png")
-        jpg = guild.splash.replace(format="jpg")
-        webp = guild.splash.replace(format="webp")
-
-        embed = discord.Embed(
-            description=f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp})",
+        embed = build_image_embed(
+            guild.splash,
             title="Server invite background",
-            color=BOT_COLOR
+            color=BOT_COLOR,
+            include_gif=False,
         )
-        embed.set_image(url=guild.splash.url)
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="serveremojis", description="Show server emojis")
