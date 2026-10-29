@@ -8,7 +8,7 @@ def build_image_embed(
     *,
     title: str,
     color: int,
-    separator: str = " - ",
+    separator: str = " ",
     gif_separator: str | None = None,
     include_gif: bool = True,
 ) -> discord.Embed:
