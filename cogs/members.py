@@ -7,6 +7,7 @@ from discord.ext import commands
 
 from config import BOT_COLOR
 from utils.member_embed import build_member_embed
+from utils.image_embed import build_image_embed
 
 
 @app_commands.context_menu(name="Show info")
@@ -40,19 +41,12 @@ class Members(commands.Cog):
         """Displays the specified member's avatar in various formats."""
         member = member if member is not None else interaction.user
         avatar = member.display_avatar
-        png = avatar.replace(format="png")
-        jpg = avatar.replace(format="jpg")
-        webp = avatar.replace(format="webp")
-        gif = avatar.replace(format="gif") if avatar.is_animated() else None
-
-        desc = (
-            f"[PNG]({png}) [JPG]({jpg}) [WEBP]({webp}) [GIF]({gif})"
-            if gif
-            else f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp})"
+        embed = build_image_embed(
+            avatar,
+            title=f"{member.display_name}'s avatar",
+            color=BOT_COLOR,
+            gif_separator=" ",
         )
-
-        embed = discord.Embed(description=desc, color=BOT_COLOR, title=f"{member.display_name}'s avatar")
-        embed.set_image(url=avatar.url)
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="serveravatar", description="Show someone's server avatar")
@@ -67,19 +61,12 @@ class Members(commands.Cog):
         member = member if member is not None else interaction.user
         if member.guild_avatar is not None:
             avatar = member.guild_avatar
-            png = avatar.replace(format="png")
-            jpg = avatar.replace(format="jpg")
-            webp = avatar.replace(format="webp")
-            gif = avatar.replace(format="gif") if avatar.is_animated() else None
-
-            desc = (
-                f"[PNG]({png}) [JPG]({jpg}) [WEBP]({webp}) [GIF]({gif})"
-                if gif
-                else f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp})"
+            embed = build_image_embed(
+                avatar,
+                title=f"{member.display_name}'s server avatar",
+                color=BOT_COLOR,
+                gif_separator=" ",
             )
-
-            embed = discord.Embed(description=desc, color=BOT_COLOR, title=f"{member.display_name}'s server avatar")
-            embed.set_image(url=avatar.url)
             await interaction.response.send_message(embed=embed)
         else:
             await interaction.response.send_message(
@@ -96,19 +83,12 @@ class Members(commands.Cog):
         user = await self.bot.fetch_user(member.id)
         if user.banner is not None:
             banner = user.banner
-            png = banner.replace(format="png")
-            jpg = banner.replace(format="jpg")
-            webp = banner.replace(format="webp")
-            gif = banner.replace(format="gif") if banner.is_animated() else None
-
-            desc = (
-                f"[PNG]({png}) [JPG]({jpg}) [WEBP]({webp}) [GIF]({gif})"
-                if gif
-                else f"[PNG]({png}) - [JPG]({jpg}) - [WEBP]({webp})"
+            embed = build_image_embed(
+                banner,
+                title=f"{member.name}'s banner",
+                color=BOT_COLOR,
+                gif_separator=" ",
             )
-
-            embed = discord.Embed(description=desc, color=BOT_COLOR, title=f"{member.name}'s banner")
-            embed.set_image(url=banner.url)
             await interaction.followup.send(embed=embed)
         else:
             await interaction.followup.send(
