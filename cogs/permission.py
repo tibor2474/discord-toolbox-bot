@@ -7,16 +7,14 @@ from discord.ext import commands
 from utils.permissions import build_permissions_embed
 
 
-@app_commands.default_permissions(manage_roles=True)
-@app_commands.guild_only()
-class Permission(commands.GroupCog, name="permission", description="Manage and view permissions"):
+class Permission(commands.Cog):
     """Cog for viewing role and member permissions within the guild."""
 
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
-        super().__init__()
 
-    @app_commands.command(name="showmember", description="Show permissions for a member")
+    @app_commands.command(name="memberpermissions", description="Show permissions for a member")
+    @app_commands.guild_only()
     @app_commands.describe(member="Select a member (defaults to yourself if not specified)")
     async def show_member_perms(
         self,
@@ -28,7 +26,8 @@ class Permission(commands.GroupCog, name="permission", description="Manage and v
         embed = build_permissions_embed(member)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @app_commands.command(name="showrole", description="Show permissions for a role")
+    @app_commands.command(name="rolepermissions", description="Show permissions for a role")
+    @app_commands.guild_only()
     @app_commands.describe(role="Select a role")
     async def show_role_perms(
         self,
