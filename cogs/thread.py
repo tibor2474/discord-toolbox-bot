@@ -108,7 +108,11 @@ class Thread(commands.Cog):
     @app_commands.guild_only()
     @app_commands.checks.bot_has_permissions(manage_threads=True)
     @app_commands.describe(thread_id="ID of the archived thread (defaults to this thread)")
-    async def thread_open(self, interaction: discord.Interaction, thread_id: str | None = None) -> None:
+    async def thread_open(
+            self,
+            interaction: discord.Interaction,
+            thread_id: str | None = None
+    ) -> None:
         """Reopens and unlocks the current thread or the thread with the given ID."""
         thread = await self._resolve_thread(interaction, thread_id)
         if thread is None:
@@ -163,7 +167,8 @@ class Thread(commands.Cog):
                 )
             except (discord.HTTPException, discord.RateLimited):
                 await interaction.followup.send(
-                    "Discord limits each thread to two name changes every 10 minutes. Please try again later.",
+                    "Discord limits each thread to two name changes every 10 minutes. "
+                    "Please try again later.",
                     ephemeral=True
                 )
                 return
@@ -210,7 +215,9 @@ class Thread(commands.Cog):
         if seconds == 0:
             await interaction.response.send_message(f"Disabled slowmode in {thread.mention}")
             return
-        await interaction.response.send_message(f"Changed slowmode in {thread.mention} to {seconds} seconds")
+        await interaction.response.send_message(
+            f"Changed slowmode in {thread.mention} to {seconds} seconds"
+        )
 
 
 async def setup(bot: commands.Bot) -> None:

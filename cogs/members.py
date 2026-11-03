@@ -37,7 +37,11 @@ class Members(commands.Cog):
 
     @app_commands.command(name="avatar", description="Show someone's avatar")
     @app_commands.describe(member="Select a user (defaults to you)")
-    async def member_avatar(self, interaction: discord.Interaction, member: discord.Member | None = None) -> None:
+    async def member_avatar(
+            self,
+            interaction: discord.Interaction,
+            member: discord.Member | None = None
+    ) -> None:
         """Displays the specified member's avatar in various formats."""
         member = member if member is not None else interaction.user
         avatar = member.display_avatar
@@ -76,7 +80,11 @@ class Members(commands.Cog):
 
     @app_commands.command(name="banner", description="Show someone's banner (if they have one)")
     @app_commands.describe(member="Select a user (defaults to you)")
-    async def member_banner(self, interaction: discord.Interaction, member: discord.Member | None = None) -> None:
+    async def member_banner(
+            self,
+            interaction: discord.Interaction,
+            member: discord.Member | None = None
+    ) -> None:
         """Displays the specified user's profile banner if present."""
         member = member if member is not None else interaction.user
         await interaction.response.defer()
@@ -100,7 +108,10 @@ class Members(commands.Cog):
     @app_commands.guild_only()
     @app_commands.default_permissions(move_members=True)
     @app_commands.checks.bot_has_permissions(move_members=True)
-    @app_commands.describe(member="Select a member (defaults to you)", channel="Select a channel (defaults to this channel)")
+    @app_commands.describe(
+        member="Select a member (defaults to you)",
+        channel="Select a channel (defaults to this channel)"
+    )
     async def member_move(
         self,
         interaction: discord.Interaction,

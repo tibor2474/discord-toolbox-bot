@@ -67,7 +67,9 @@ def build_permissions_embed(
     title: str | None = None,
 ) -> discord.Embed:
     """Build an embed listing granted guild permissions for a role or member."""
-    permissions = subject.permissions if isinstance(subject, discord.Role) else subject.guild_permissions
+    permissions = subject.permissions \
+        if isinstance(subject, discord.Role) \
+        else subject.guild_permissions
     embed = discord.Embed(
         title=title or f"Permissions for {subject.name}",
         color=BOT_COLOR,
