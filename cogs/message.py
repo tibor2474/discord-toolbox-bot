@@ -41,7 +41,7 @@ async def raw_message(interaction: discord.Interaction, message: discord.Message
         )
         return
 
-    # Escape triple backticks so markdown codeblock does not break
+    # Escape triple backticks so Markdown codeblock does not break
     escaped_content = content.replace("```", "ˋˋˋ")
     description = f"```{escaped_content}```"
     # Discord counts UTF-16 code units toward its 4096-character limit.
