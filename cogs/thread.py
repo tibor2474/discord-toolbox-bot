@@ -72,6 +72,11 @@ class Thread(commands.Cog):
 
         assert isinstance(interaction.user, discord.Member)
         if thread.permissions_for(interaction.user).manage_threads:
+            await thread.edit(
+                archived=True,
+                locked=lock,
+                reason=f"Action by @{interaction.user.name} ({interaction.user.id})"
+            )
             if lock:
                 await interaction.response.send_message(
                     f"**{label}** thread was archived and locked by a staff member."
@@ -80,19 +85,14 @@ class Thread(commands.Cog):
                 await interaction.response.send_message(
                     f"**{label}** thread was archived by a staff member."
                 )
-            await thread.edit(
-                archived=True,
-                locked=lock,
-                reason=f"Action by @{interaction.user.name} ({interaction.user.id})"
-            )
 
         elif interaction.user.id == thread.owner_id:
-            await interaction.response.send_message(
-                f"**{label}** thread was archived by the user that opened it."
-            )
             await thread.edit(
                 archived=True,
                 reason=f"Action by @{interaction.user.name} ({interaction.user.id})"
+            )
+            await interaction.response.send_message(
+                f"**{label}** thread was archived by the user that opened it."
             )
 
         else:
