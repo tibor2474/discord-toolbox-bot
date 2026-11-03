@@ -28,7 +28,9 @@ class Channel(commands.Cog):
     ) -> None:
         """Sets slowmode delay in seconds for the selected channel."""
         channel = channel if channel is not None else interaction.channel
-        if not isinstance(channel, (discord.TextChannel, discord.StageChannel, discord.VoiceChannel)):
+        if not isinstance(
+                channel,
+                (discord.TextChannel, discord.StageChannel, discord.VoiceChannel)):
             await interaction.response.send_message(
                 "This channel does not support this command. Select a supported channel.",
                 ephemeral=True
@@ -60,11 +62,20 @@ class Channel(commands.Cog):
         self,
         interaction: discord.Interaction,
         mode: bool,
-        channel: Union[discord.TextChannel, discord.StageChannel, discord.VoiceChannel, discord.ForumChannel, None] = None
+        channel: Union[
+            discord.TextChannel,
+            discord.StageChannel,
+            discord.VoiceChannel,
+            discord.ForumChannel,
+            None
+        ] = None
     ) -> None:
         """Toggles the age-restriction (NSFW) setting on a channel."""
         channel = channel if channel is not None else interaction.channel
-        if not isinstance(channel, (discord.TextChannel, discord.StageChannel, discord.VoiceChannel, discord.ForumChannel)):
+        if not isinstance(
+                channel,
+                (discord.TextChannel, discord.StageChannel,
+                 discord.VoiceChannel, discord.ForumChannel)):
             await interaction.response.send_message(
                 "This channel does not support this command. Select a supported channel.",
                 ephemeral=True
