@@ -85,14 +85,17 @@ class ToolboxBot(commands.Bot):
                     await self.load_extension(extension)
                     logger.info("Loaded %s", filename)
                 except Exception as error:
-                    logger.error("ERROR %s could not be loaded: %s", filename, error, exc_info=True)
+                    logger.critical(
+                        "Required extension %s could not be loaded: %s; stopping startup",
+                        filename,
+                        error,
+                        exc_info=True,
+                    )
+                    raise
 
         # Synchronize application command tree with Discord
-        try:
-            synced = await self.tree.sync()
-            logger.info("Synced %d application commands", len(synced))
-        except Exception as error:
-            logger.error("Failed to sync application commands: %s", error, exc_info=True)
+        synced = await self.tree.sync()
+        logger.info("Synced %d application commands", len(synced))
 
 
 bot = ToolboxBot()
