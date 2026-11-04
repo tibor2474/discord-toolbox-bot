@@ -20,29 +20,29 @@ The bot is built with [discord.py](https://github.com/Rapptz/discord.py) 2.x. It
 
 Commands with channel, thread, or member-management effects require the corresponding Discord permissions. Discord also only shows commands in contexts where they can be used.
 
-| Command | Purpose |
-| --- | --- |
-| `/slowmode` | Set or disable slowmode for a channel. |
-| `/nsfw` | Turn a channel's age-restricted setting on or off. |
-| `/vclimit` | Set the user limit for a voice channel. |
-| `/vcregion` | Change a voice channel's region. |
-| `/threadclose` | Archive a thread; staff can optionally lock it. |
-| `/threadopen` | Reopen an archived thread. |
-| `/threadname` | Rename a thread. |
-| `/threadslowmode` | Set or disable thread slowmode. |
-| `/vcmove` | Move a member to a voice channel. |
-| `/memberinfo` | Show information about a server member. |
-| `/serverinfo` | Show information about the server. |
-| `/roleinfo` | Show information about a role. |
-| `/memberpermissions` | Show a member's permissions. |
-| `/rolepermissions` | Show a role's permissions. |
-| `/avatar` | Show a user's avatar. |
-| `/serveravatar` | Show a user's avatar for this server. |
-| `/banner` | Show a user's banner, if available. |
-| `/servericon` | Show the server icon. |
-| `/serverbanner` | Show the server banner. |
-| `/serverbackground` | Show the server invite background. |
-| `/serveremojis` | Show the server's custom emoji. |
+| Command              | Purpose                                            |
+|----------------------|----------------------------------------------------|
+| `/slowmode`          | Set or disable slowmode for a channel.             |
+| `/nsfw`              | Turn a channel's age-restricted setting on or off. |
+| `/vclimit`           | Set the user limit for a voice channel.            |
+| `/vcregion`          | Change a voice channel's region.                   |
+| `/threadclose`       | Archive a thread; staff can optionally lock it.    |
+| `/threadopen`        | Reopen an archived thread.                         |
+| `/threadname`        | Rename a thread.                                   |
+| `/threadslowmode`    | Set or disable thread slowmode.                    |
+| `/vcmove`            | Move a member to a voice channel.                  |
+| `/memberinfo`        | Show information about a server member.            |
+| `/serverinfo`        | Show information about the server.                 |
+| `/roleinfo`          | Show information about a role.                     |
+| `/memberpermissions` | Show a member's permissions.                       |
+| `/rolepermissions`   | Show a role's permissions.                         |
+| `/avatar`            | Show a user's avatar.                              |
+| `/serveravatar`      | Show a user's avatar for this server.              |
+| `/banner`            | Show a user's banner, if available.                |
+| `/servericon`        | Show the server icon.                              |
+| `/serverbanner`      | Show the server banner.                            |
+| `/serverbackground`  | Show the server invite background.                 |
+| `/serveremojis`      | Show the server's custom emoji.                    |
 
 Additional context-menu actions are available by right-clicking a member and choosing **Apps → Show info**, or right-clicking a message and choosing **Apps → Show raw message**.
 
