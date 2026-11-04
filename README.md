@@ -1,38 +1,112 @@
-# 🧰 Toolbox
-Toolbox is a utility Discord bot for things you didn't know you would need one day. You can quickly set slowmode, age-restrict channels, get detailed information about a member or role, view raw messages via context menus, and a lot more!
+# Toolbox
 
-Built with [discord.py](https://github.com/Rapptz/discord.py) v2.
+Toolbox is a utility bot for Discord servers. It brings everyday moderation and server-inspection tools together in one place: manage channel settings and threads, move members between voice channels, inspect member, role, and server details, and view avatars, banners, and message contents.
+
+The bot is built with [discord.py](https://github.com/Rapptz/discord.py) 2.x. Its commands are registered as Discord slash commands. It also adds message and member context-menu actions.
+
+## Features
+
+- Update channel slowmode, age restrictions, voice user limits, and voice regions.
+- Archive, lock, reopen, rename, and set slowmode on threads.
+- Move members between voice channels.
+- View member, role, server, and permission details.
+- Display user and server icons, avatars, banners, invite backgrounds, and server emoji.
+- Inspect a message's raw contents from its context menu.
+- Write UTC logs to the console and timestamped files in `logs/`.
+
+## Commands
+
+Commands with channel, thread, or member-management effects require the corresponding Discord permissions. Discord also only shows commands in contexts where they can be used.
+
+| Command              | Purpose                                            |
+|----------------------|----------------------------------------------------|
+| `/slowmode`          | Set or disable slowmode for a channel.             |
+| `/nsfw`              | Turn a channel's age-restricted setting on or off. |
+| `/vclimit`           | Set the user limit for a voice channel.            |
+| `/vcregion`          | Change a voice channel's region.                   |
+| `/threadclose`       | Archive a thread; staff can optionally lock it.    |
+| `/threadopen`        | Reopen an archived thread.                         |
+| `/threadname`        | Rename a thread.                                   |
+| `/threadslowmode`    | Set or disable thread slowmode.                    |
+| `/vcmove`            | Move a member to a voice channel.                  |
+| `/memberinfo`        | Show information about a server member.            |
+| `/serverinfo`        | Show information about the server.                 |
+| `/roleinfo`          | Show information about a role.                     |
+| `/memberpermissions` | Show a member's permissions.                       |
+| `/rolepermissions`   | Show a role's permissions.                         |
+| `/avatar`            | Show a user's avatar.                              |
+| `/serveravatar`      | Show a user's avatar for this server.              |
+| `/banner`            | Show a user's banner, if available.                |
+| `/servericon`        | Show the server icon.                              |
+| `/serverbanner`      | Show the server banner.                            |
+| `/serverbackground`  | Show the server invite background.                 |
+| `/serveremojis`      | Show the server's custom emoji.                    |
+
+Additional context-menu actions are available by right-clicking a member and choosing **Apps → Show info**, or right-clicking a message and choosing **Apps → Show raw message**.
+
+## Prerequisites
+
+- Python 3.10 or newer.
+- A Discord application and bot token from the [Discord Developer Portal](https://discord.com/developers/applications).
+- A Discord server where you can add the bot. Invite it with the permissions required by the commands you intend to use; the bot needs the relevant channel, thread, and member permissions to perform those actions.
 
 ## Setup
-### Replit and Glitch
-First clone the repo with the buttons on top, or manually on the site. Then head over to the secrets tab, create a new secret called `TOKEN`, and place your bot token in the value field. Install all the packages using the command below, and you're done!
 
-### Source
-Clone the repo, and install all the required packages with the command below. At least Python 3.10 is required!
-```bash
-pip3 install -r requirements.txt
-```
+### Run locally
 
-Then create a `.env` file and set your bot token:
+1. Clone this repository and enter its directory.
+2. (Recommended) Create and activate a virtual environment:
+
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
+
+   On Windows, activate it with `.venv\\Scripts\\activate`.
+3. Install dependencies:
+
+   ```bash
+   python -m pip install -r requirements.txt
+   ```
+4. Create a `.env` file in the project root and add your bot token:
+
+   ```env
+   TOKEN=your_discord_bot_token
+   ```
+5. Start the bot:
+
+   ```bash
+   python main.py
+   ```
+
+On startup, the bot loads its cogs and synchronizes its slash commands with Discord. Keep the token private; do not commit `.env` or share the token publicly.
+
+### Run on Replit
+
+[![Run on Replit](https://replit.com/badge/github/tibor2474/toolbox)](https://replit.com/github/tibor2474/toolbox)
+
+Use the **Run on Replit** button to import the repository. In Replit, add a secret named `TOKEN` containing your Discord bot token, then install the packages from `requirements.txt` and run `python main.py`.
+
+### Optional configuration
+
+`config.py` loads `.env` automatically. You can set `BOT_COLOR` to a six-digit hexadecimal color (with or without a leading `#`) to customize embed accents:
+
 ```env
-TOKEN=your_bot_token_here
+BOT_COLOR=#b4befe
 ```
 
-After that, run the bot with this command:
-```bash
-python3 main.py
-```
+## Project layout
 
-## Features & Cogs
-- **channel**: Manage channel settings such as slowmode, age-restriction (NSFW), user limits, and voice regions.
-- **info**: Detailed information displays for servers, roles, and members.
-- **members**: Avatars, server avatars, user banners, voice moving, and user context menu info (`Show info`).
-- **message**: Message utilities including raw message extraction context menu (`Show raw message`).
-- **permission**: Inspect member and role guild permissions.
-- **thread**: Thread management (closing, archiving, locking, renaming, and thread slowmode).
-- **logging**: Standardized dual logging (console and timestamped log files under `logs/` in UTC time).
+- `main.py` starts the bot, loads extensions from `cogs/`, synchronizes application commands, and configures logging.
+- `cogs/` contains command groups.
+- `config.py` reads the token and optional embed color.
+- `utils/` contains shared embed and permission helpers.
+- `logs/` receives timestamped log files at runtime.
 
-## Configuration
-You can customize the bot in [config.py](config.py). You can change embed colors, time formatting strings, and icons.
+## Dependencies
 
-> All icons were provided by [Font Awesome](https://fontawesome.com/)!
+Dependencies are listed in [`requirements.txt`](requirements.txt): `discord.py` and `python-dotenv`.
+
+---
+
+&copy; 2026 Tibor Mercs &bull; [MIT License](LICENSE)
