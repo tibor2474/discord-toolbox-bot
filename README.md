@@ -106,3 +106,7 @@ BOT_COLOR=#b4befe
 ## Dependencies
 
 Dependencies are listed in [`requirements.txt`](requirements.txt): `discord.py` and `python-dotenv`.
+
+---
+
+&copy; 2026 Tibor Mercs &bull; [MIT License](LICENSE)
