@@ -1,4 +1,4 @@
-# Toolbox
+# Toolbox Discord Bot
 
 Toolbox is a utility bot for Discord servers. It brings everyday moderation and server-inspection tools together in one place: manage channel settings and threads, move members between voice channels, inspect member, role, and server details, and view avatars, banners, and message contents.
 
@@ -83,7 +83,7 @@ On startup, the bot loads its cogs and synchronizes its slash commands with Disc
 
 ### Run on Replit
 
-[![Run on Replit](https://replit.com/badge/github/tibor2474/toolbox)](https://replit.com/github/tibor2474/toolbox)
+[![Run on Replit](https://replit.com/badge/github/tibor2474/discord-toolbox-bot)](https://replit.com/github/tibor2474/discord-toolbox-bot)
 
 Use the **Run on Replit** button to import the repository. In Replit, add a secret named `TOKEN` containing your Discord bot token, then install the packages from `requirements.txt` and run `python main.py`.
 
